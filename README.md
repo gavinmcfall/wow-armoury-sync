@@ -16,7 +16,7 @@ flowchart LR
 
 1. Cloudflare wakes the Worker on a schedule. There's no public URL: any web request gets a 404.
 2. The Worker gets an app token from Battle.net using the client credentials flow, so no player login is involved.
-3. For each character it fetches the profile, then fetches these sections in parallel: equipment, statistics, specialisations, character media, PvP summary, raid progress, reputations, professions, achievements and (retail only) Mythic+ profile.
+3. For each character it fetches the profile, then fetches these sections in parallel: equipment, statistics, specialisations, character media, PvP summary, raid progress, reputations, professions, achievements, the four collections (mounts, pets, toys, heirlooms) and (retail only) Mythic+ profile.
 4. It shapes those responses into **views**: small JSON documents holding exactly what an Armory page shows, already formatted. Your site reads a view and renders it, without knowing anything about Blizzard's response formats.
 5. It writes the views to KV, plus an index your site can use to list characters.
 
@@ -30,12 +30,16 @@ A bad night never wipes good data. If Blizzard's API fails for the profile, or f
 | `view:v1:{key}:character` | The Character view for one character: gear, stats, specs, Mythic+, raids, PvP |
 | `view:v1:{key}:reputation` | The Reputation view: the character's factions, grouped by expansion (retail) or header (Forever) |
 | `view:v1:{key}:achievements` | The Achievements view: totals, progress per top-level category, the newest completions, and every completed achievement |
+| `view:v1:{key}:collections` | The Collections view: mounts, pets, toys and heirlooms, each with name and icon |
 | `ref:{namespace}:item-icon:{itemId}` | An item's icon URL. Icons never change, so each is fetched once and reused. |
 | `ref:{namespace}:class-specs:{classId}` | A class's specialisation names, in Blizzard's order |
 | `ref:{namespace}:faction-groups` | Which top-level header (expansion, on retail) each reputation faction sits under, with when it was built. Rebuilt every 30 days. |
 | `ref:{namespace}:achievement-categories` | The top-level achievement categories a character sees, in Blizzard's order, with each one's achievement count and points per faction, and when the list was built. Rebuilt every 30 days. |
 | `ref:{namespace}:achievement:{id}` | An achievement's points and category name |
 | `ref:{namespace}:achievement-icon:{id}` | An achievement's icon URL |
+| `ref:{namespace}:pet-icon:{speciesId}` | A pet species' icon URL |
+| `ref:{namespace}:mount-icon:{mountId}` | A mount's picture: the zoomed render of its first creature display, since mounts have no icon in the API |
+| `ref:{namespace}:toy-item:{toyId}`, `ref:{namespace}:heirloom-item:{heirloomId}` | The item a toy or heirloom is; its icon is then the item's |
 | `ref:portrait:{render path}` | Where the character stands in its render (`focus` and `figure`), with the image's ETag. Re-measured only when the render changes, or when the entry predates `figure`. |
 
 A character's `{key}` is `retail:{region}:{realm}:{name}` or `forever:{region}:{name}-{surname}`.
@@ -179,6 +183,26 @@ The view is written only when the reputations call succeeds (or answers 404, mea
 
 The view is written only when the achievements call succeeds (or answers 404); a server error keeps the previous one.
 
+### The Collections view
+
+```json
+{
+  "schemaVersion": 1,
+  "game": "retail",
+  "fetchedAt": "2026-11-16T14:17:00.000Z",
+  "mounts": [{ "id": 6, "name": "Brown Horse", "icon": "https://render.worldofwarcraft.com/us/npcs/zoom/creature-display-2404.jpg" }],
+  "pets": [{ "id": 41, "name": "Cornish Rex Cat", "icon": "https://render.worldofwarcraft.com/us/icons/56/….jpg", "owned": 2, "level": 12 }],
+  "toys": [{ "id": 5, "name": "Fishing Chair", "icon": "…" }],
+  "heirlooms": [{ "id": 706, "name": "Polished Helm of Valor", "icon": "…", "upgrade": 3 }]
+}
+```
+
+- Each list is sorted by name. `icon` is `null` until it has been fetched.
+- **`pets`:** one entry per species. `owned` is how many of that species the character has, and `level` the highest level among them.
+- **`heirlooms`:** `upgrade` is the heirloom's upgrade level, 0 when not upgraded.
+
+The view is written only when all four collection calls succeed (or answer 404); a server error on any keeps the previous one.
+
 ### Schema versions
 
 `index.schemaVersion` is the version of the views the sync writes. Changes to a view's shape get a new version number in the key (`view:v2:…`). When that happens, the sync writes the old and new versions side by side for a while, so a site can move over at its own pace. Fields are only ever added to the index, never removed or renamed.
@@ -311,6 +335,7 @@ Elsewhere, read KV through the [Cloudflare REST API](https://developers.cloudfla
 | `src/views/summary.js` | Builds the index summaries |
 | `src/views/reputation.js` | Builds the Reputation view |
 | `src/views/achievements.js` | Builds the Achievements view |
+| `src/views/collections.js` | Builds the Collections view |
 | `src/refs.js` | The reference-data cache (`ref:` keys) |
 | `src/portrait.js` | Finds where the character stands in its render, for portrait framing |
 | `src/blizzard.js` | Battle.net API client: app token, retry once on rate limits or server errors |
@@ -321,7 +346,7 @@ Elsewhere, read KV through the [Cloudflare REST API](https://developers.cloudfla
 
 ## Notes
 
-- **Limits:** each character costs about 10 API calls and one request for its render, plus one call per item icon (and per class, for retail) the first time it's seen. Grouping reputations walks Blizzard's faction tree, a call per faction (about 300 on retail, 60 on Forever), once every 30 days. Achievement categories take about 17 calls on retail and 8 on Forever, also every 30 days, and each of the 20 newest completions costs two calls the first time it is seen. Measuring a render takes roughly 50 ms of CPU, and only happens when the render has changed; that needs the Workers Paid plan's CPU allowance, not the free plan's 10 ms. New reference lookups are capped at 2,000 a night; anything over the cap is fetched on a later night. A few dozen characters fits comfortably within Cloudflare's and Blizzard's limits.
+- **Limits:** each character costs about 10 API calls and one request for its render, plus one call per item icon (and per class, for retail) the first time it's seen. Grouping reputations walks Blizzard's faction tree, a call per faction (about 300 on retail, 60 on Forever), once every 30 days. Achievement categories take about 17 calls on retail and 8 on Forever, also every 30 days, and each of the 20 newest completions costs two calls the first time it is seen. Each mount, pet species, toy and heirloom costs one lookup (up to two calls) the first time it is seen; retail collections are account-wide, so about 650 lookups for the first retail character and few after. Measuring a render takes roughly 50 ms of CPU, and only happens when the render has changed; that needs the Workers Paid plan's CPU allowance, not the free plan's 10 ms. New reference lookups are capped at 2,000 a night; anything over the cap is fetched on a later night. A few dozen characters fits comfortably within Cloudflare's and Blizzard's limits.
 - **Blizzard's terms:** data from the Battle.net API is covered by [Blizzard's Developer API Terms of Use](https://www.blizzard.com/legal/a2989b50-5f16-43b1-abec-2ae17cc09dd6/blizzard-developer-api-terms-of-use).
 - This isn't affiliated with or endorsed by Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment.
 

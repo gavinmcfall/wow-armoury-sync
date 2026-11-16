@@ -105,14 +105,27 @@ export function createRefs({
     return { roots };
   }
 
+  function itemIcon(ns, itemId) {
+    return lookup(`ref:${ns}:item-icon:${itemId}`, false, async () => {
+      const res = await client.get(`/data/wow/media/item/${itemId}`, ns);
+      if (res.status !== 200) return null;
+      return res.data?.assets?.find((a) => a.key === "icon")?.value ?? null;
+    });
+  }
+
+  // Toys and heirlooms are items: their record names the item (as its media
+  // id), cached at ref:{ns}:{kind}-item:{id}, and the icon comes from the
+  // item icon cache.
+  async function itemOf(ns, kind, id) {
+    const itemId = await lookup(`ref:${ns}:${kind}-item:${id}`, true, async () => {
+      const res = await client.get(`/data/wow/${kind}/${id}`, ns);
+      return res.status === 200 ? (res.data?.media?.id ?? null) : null;
+    });
+    return itemId ? itemIcon(ns, itemId) : null;
+  }
+
   return {
-    itemIcon(ns, itemId) {
-      return lookup(`ref:${ns}:item-icon:${itemId}`, false, async () => {
-        const res = await client.get(`/data/wow/media/item/${itemId}`, ns);
-        if (res.status !== 200) return null;
-        return res.data?.assets?.find((a) => a.key === "icon")?.value ?? null;
-      });
-    },
+    itemIcon,
     classSpecs(ns, classId) {
       return lookup(`ref:${ns}:class-specs:${classId}`, true, async () => {
         const res = await client.get(`/data/wow/playable-class/${classId}`, ns);
@@ -181,6 +194,30 @@ export function createRefs({
         if (res.status !== 200) return null;
         return res.data?.assets?.find((a) => a.key === "icon")?.value ?? null;
       });
+    },
+    petIcon(ns, speciesId) {
+      return lookup(`ref:${ns}:pet-icon:${speciesId}`, false, async () => {
+        const res = await client.get(`/data/wow/pet/${speciesId}`, ns);
+        return res.status === 200 ? (res.data?.icon ?? null) : null;
+      });
+    },
+    // Mounts have no icon in the API: this is the zoomed render of the
+    // mount's first creature display. Two requests, counted as one lookup.
+    mountIcon(ns, mountId) {
+      return lookup(`ref:${ns}:mount-icon:${mountId}`, false, async () => {
+        const res = await client.get(`/data/wow/mount/${mountId}`, ns);
+        const displayId = res.status === 200 ? res.data?.creature_displays?.[0]?.id : null;
+        if (!displayId) return null;
+        const media = await client.get(`/data/wow/media/creature-display/${displayId}`, ns);
+        if (media.status !== 200) return null;
+        return media.data?.assets?.find((a) => a.key === "zoom")?.value ?? null;
+      });
+    },
+    toyIcon(ns, toyId) {
+      return itemOf(ns, "toy", toyId);
+    },
+    heirloomIcon(ns, heirloomId) {
+      return itemOf(ns, "heirloom", heirloomId);
     },
     stats() {
       return { ...counts };

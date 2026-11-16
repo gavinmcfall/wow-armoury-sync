@@ -27,6 +27,10 @@ const ENDPOINTS = {
   "/reputations": "reputations",
   "/professions": "professions",
   "/achievements": "achievements",
+  "/collections/mounts": "mounts",
+  "/collections/pets": "pets",
+  "/collections/toys": "toys",
+  "/collections/heirlooms": "heirlooms",
 };
 
 // Serves the fixtures for both characters, item icons and the Paladin class.
@@ -163,8 +167,9 @@ test("returns ref lookup stats alongside the summaries", async () => {
   assert.equal(result.summaries.length, 1);
   // 13 item icons, plus three lookups the fixtures don't serve: the faction
   // tree's index, the achievement categories' index, and the details of
-  // Recurve's one completed achievement (points and icon count as two).
-  assert.equal(result.refs.fetched, 17);
+  // Recurve's one completed achievement (points and icon count as two), and
+  // an icon for each of 2 mounts, 5 pet species and 2 toys.
+  assert.equal(result.refs.fetched, 26);
   assert.equal(result.refs.skipped, 0);
 });
 
@@ -299,5 +304,47 @@ test("an achievements server error keeps the previous achievements view", async 
   await run(kv, (path) => (path.endsWith("/achievements") ? [503, undefined] : fixtureRoute(path)));
 
   assert.deepEqual(kv.json(ACH_KEY), oldView);
+  assert.equal(kv.json("index").characters[0].status, "ok");
+});
+
+const COL_KEY = "view:v1:forever:us:recurve-ravenholt:collections";
+
+test("writes a collections view for a listed character", async () => {
+  const kv = fakeKv();
+  await run(kv);
+
+  const view = kv.json(COL_KEY);
+  assert.equal(view.schemaVersion, 1);
+  assert.equal(view.fetchedAt, NOW);
+  assert.deepEqual(view.mounts.map((m) => m.name), FOREVER.mounts.mounts.map((m) => m.mount.name).sort());
+  assert.equal(view.toys.length, FOREVER.toys.toys.length);
+  assert.deepEqual(view.heirlooms, []);
+  // The fixtures serve no icons.
+  assert.ok(view.mounts.every((m) => m.icon === null));
+});
+
+test("collection icons come from the reference data", async () => {
+  const kv = fakeKv();
+  const pet = FOREVER.pets.pets[0].species;
+  const mount = FOREVER.mounts.mounts[0].mount;
+  const route = (path) => {
+    if (path === `/data/wow/pet/${pet.id}`) return [200, { icon: "https://render/icons/pet.jpg" }];
+    if (path === `/data/wow/mount/${mount.id}`) return [200, { creature_displays: [{ id: 99 }] }];
+    if (path === "/data/wow/media/creature-display/99") return [200, { assets: [{ key: "zoom", value: "https://render/zoom/99.jpg" }] }];
+    return fixtureRoute(path);
+  };
+  await run(kv, route);
+
+  const view = kv.json(COL_KEY);
+  assert.equal(view.pets.find((p) => p.id === pet.id).icon, "https://render/icons/pet.jpg");
+  assert.equal(view.mounts.find((m) => m.id === mount.id).icon, "https://render/zoom/99.jpg");
+});
+
+test("a server error on any collection keeps the previous collections view", async () => {
+  const oldView = { schemaVersion: 1, fetchedAt: "2026-11-15T14:17:00.000Z", mounts: [], pets: [], toys: [], heirlooms: [] };
+  const kv = fakeKv({ [COL_KEY]: oldView });
+  await run(kv, (path) => (path.endsWith("/collections/toys") ? [503, undefined] : fixtureRoute(path)));
+
+  assert.deepEqual(kv.json(COL_KEY), oldView);
   assert.equal(kv.json("index").characters[0].status, "ok");
 });

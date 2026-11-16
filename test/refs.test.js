@@ -302,3 +302,40 @@ test("achievementIcon returns and caches the icon url", async () => {
   assert.equal(await refs.achievementIcon(NS, 6), "https://render/icons/236562.jpg");
   assert.equal(kv.store.get("ref:static-us:achievement-icon:6"), "https://render/icons/236562.jpg");
 });
+
+function collectionRoute(path) {
+  const routes = {
+    "/data/wow/pet/39": { id: 39, icon: "https://render/icons/pet-39.jpg" },
+    "/data/wow/mount/6": { id: 6, creature_displays: [{ id: 2404 }] },
+    "/data/wow/media/creature-display/2404": { assets: [{ key: "zoom", value: "https://render/npcs/zoom/2404.jpg" }] },
+    "/data/wow/mount/7": { id: 7, creature_displays: [] },
+    "/data/wow/toy/5": { id: 5, media: { id: 187344 } },
+    "/data/wow/heirloom/706": { id: 706, media: { id: 122353 } },
+  };
+  if (routes[path]) return [200, routes[path]];
+  return iconRoute(path);
+}
+
+test("petIcon reads the species' icon and caches it", async () => {
+  const kv = fakeKv();
+  const refs = createRefs({ client: client(fakeFetch(collectionRoute)), kv });
+  assert.equal(await refs.petIcon(NS, 39), "https://render/icons/pet-39.jpg");
+  assert.equal(kv.store.get("ref:static-us:pet-icon:39"), "https://render/icons/pet-39.jpg");
+});
+
+test("mountIcon uses the mount's first creature display's zoom image", async () => {
+  const kv = fakeKv();
+  const refs = createRefs({ client: client(fakeFetch(collectionRoute)), kv });
+  assert.equal(await refs.mountIcon(NS, 6), "https://render/npcs/zoom/2404.jpg");
+  assert.equal(kv.store.get("ref:static-us:mount-icon:6"), "https://render/npcs/zoom/2404.jpg");
+  assert.equal(await refs.mountIcon(NS, 7), null);
+});
+
+test("toyIcon and heirloomIcon resolve their item and use the item icon cache", async () => {
+  const kv = fakeKv();
+  const refs = createRefs({ client: client(fakeFetch(collectionRoute)), kv });
+  assert.equal(await refs.toyIcon(NS, 5), "https://render/icons/187344.jpg");
+  assert.equal(await refs.heirloomIcon(NS, 706), "https://render/icons/122353.jpg");
+  assert.equal(kv.json("ref:static-us:toy-item:5"), 187344);
+  assert.equal(kv.store.get("ref:static-us:item-icon:122353"), "https://render/icons/122353.jpg");
+});

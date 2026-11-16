@@ -22,6 +22,10 @@ const SECTIONS = {
   reputations: "reputations",
   professions: "professions",
   achievements: "achievements",
+  mounts: "collections/mounts",
+  pets: "collections/pets",
+  toys: "collections/toys",
+  heirlooms: "collections/heirlooms",
 };
 
 const CHARACTERS = [
@@ -67,6 +71,10 @@ for (const c of CHARACTERS) {
     const todo = all.filter((a) => !a.completed_timestamp);
     out.achievements.achievements = [...done.slice(0, 50), ...todo.slice(0, 2)].map(({ criteria, ...a }) => a);
     delete out.achievements.statistics;
+  }
+  // Collections run to hundreds of entries: a dozen of each is enough.
+  for (const kind of ["mounts", "pets", "toys", "heirlooms"]) {
+    if (out[kind]?.[kind]) out[kind][kind] = out[kind][kind].slice(0, 12);
   }
   const json = JSON.stringify(strip(out), null, 1);
   await writeFile(new URL(`../test/fixtures/${c.file}`, import.meta.url), json);

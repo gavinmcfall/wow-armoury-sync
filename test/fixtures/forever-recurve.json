@@ -2051,5 +2051,150 @@
    "surname": "Ravenholt",
    "slug": "recurve-ravenholt"
   }
- }
+ },
+ "mounts": {
+  "mounts": [
+   {
+    "mount": {
+     "name": "Cerulean Prideclaw",
+     "id": 3111
+    },
+    "is_useable": true
+   },
+   {
+    "mount": {
+     "name": "Veteran Adventurer's Loyal Companion",
+     "id": 3130
+    },
+    "is_useable": true
+   }
+  ]
+ },
+ "pets": {
+  "pets": [
+   {
+    "species": {
+     "name": "Zergling",
+     "id": 5160
+    },
+    "level": 1,
+    "quality": {
+     "type": "UNCOMMON",
+     "name": "Uncommon"
+    },
+    "stats": {
+     "breed_id": 0,
+     "health": 100,
+     "power": 0,
+     "speed": 0
+    },
+    "creature_display": {
+     "id": 146954
+    },
+    "id": 66034
+   },
+   {
+    "species": {
+     "name": "Panda Cub",
+     "id": 5159
+    },
+    "level": 1,
+    "quality": {
+     "type": "UNCOMMON",
+     "name": "Uncommon"
+    },
+    "stats": {
+     "breed_id": 0,
+     "health": 100,
+     "power": 0,
+     "speed": 0
+    },
+    "creature_display": {
+     "id": 146955
+    },
+    "id": 66035
+   },
+   {
+    "species": {
+     "name": "Mini Diablo",
+     "id": 5161
+    },
+    "level": 1,
+    "quality": {
+     "type": "UNCOMMON",
+     "name": "Uncommon"
+    },
+    "stats": {
+     "breed_id": 0,
+     "health": 100,
+     "power": 0,
+     "speed": 0
+    },
+    "creature_display": {
+     "id": 146956
+    },
+    "id": 66036
+   },
+   {
+    "species": {
+     "name": "Pachimari",
+     "id": 5138
+    },
+    "level": 1,
+    "quality": {
+     "type": "UNCOMMON",
+     "name": "Uncommon"
+    },
+    "stats": {
+     "breed_id": 0,
+     "health": 100,
+     "power": 0,
+     "speed": 0
+    },
+    "creature_display": {
+     "id": 146839
+    },
+    "id": 66037
+   },
+   {
+    "species": {
+     "name": "Azurky",
+     "id": 5179
+    },
+    "level": 1,
+    "quality": {
+     "type": "UNCOMMON",
+     "name": "Uncommon"
+    },
+    "stats": {
+     "breed_id": 0,
+     "health": 100,
+     "power": 0,
+     "speed": 0
+    },
+    "creature_display": {
+     "id": 148274
+    },
+    "id": 263108
+   }
+  ],
+  "unlocked_battle_pet_slots": 0
+ },
+ "toys": {
+  "toys": [
+   {
+    "toy": {
+     "name": "Shen'dorei Windwell",
+     "id": 1761
+    }
+   },
+   {
+    "toy": {
+     "name": "Pouch of Violet Dust",
+     "id": 1792
+    }
+   }
+  ]
+ },
+ "heirlooms": {}
 }

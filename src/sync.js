@@ -7,12 +7,14 @@
 //   view:v1:{key}:character       the Character tab view for one character
 //   view:v1:{key}:reputation      the Reputation tab view
 //   view:v1:{key}:achievements    the Achievements tab view
+//   view:v1:{key}:collections     the Collections tab view
 //   ref:{namespace}:…             cached reference data (see refs.js)
 //
 // A failed run never wipes good data: if the profile fetch fails, the
 // previous view stays and the previous summary is kept, marked "error".
 import { createRefs } from "./refs.js";
 import { buildCharacterView, foreverActiveSpec } from "./views/character.js";
+import { buildCollectionsView, collectionIds } from "./views/collections.js";
 import { buildAchievementsView, recentIds } from "./views/achievements.js";
 import { buildReputationView } from "./views/reputation.js";
 import { buildSummary, notListedSummary, primaryProfessions } from "./views/summary.js";
@@ -29,12 +31,20 @@ const SECTIONS = {
   reputations: "reputations",
   professions: "professions",
   achievements: "achievements",
+  mounts: "collections/mounts",
+  pets: "collections/pets",
+  toys: "collections/toys",
+  heirlooms: "collections/heirlooms",
 };
 const RETAIL_ONLY = { mythic: "mythic-keystone-profile" };
 // Sections the Character view can't do without. A 404 on one means the API
 // has nothing for this character (stored as empty); any other failure keeps
 // the previous view.
 const CORE_SECTIONS = ["equipment", "statistics", "specializations", "media"];
+const COLLECTIONS = ["mounts", "pets", "toys", "heirlooms"];
+// Icon lookups run this many at a time, to stay under Blizzard's 100
+// requests per second.
+const ICON_CHUNK = 20;
 
 export async function syncAll({ client, kv, characters, now = () => new Date().toISOString(), maxNewLookups, fetchImage }) {
   const previous = (await kv.get("index", "json")) ?? { characters: [] };
@@ -100,6 +110,12 @@ async function syncCharacter({ client, kv, refs, character, previous, now }) {
       const achievements = buildAchievementsView({ game: character.game, fetchedAt, achievements: sections.achievements, categories, faction, details });
       await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:achievements`, JSON.stringify(achievements));
     }
+    // The four collections make one view: a failure on any keeps the old one.
+    if (!COLLECTIONS.some(failedField)) {
+      const icons = await fetchCollectionIcons(refs, sections, ns);
+      const collections = buildCollectionsView({ game: character.game, fetchedAt, ...pick(sections, COLLECTIONS), icons });
+      await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:collections`, JSON.stringify(collections));
+    }
     const professions = failedField("professions") ? (previous?.professions ?? []) : primaryProfessions(sections.professions);
     const spec = character.game === "forever" ? foreverActiveSpec(sections.specializations) : null;
     const portrait = await measurePortrait(refs, view.render);
@@ -161,4 +177,26 @@ async function fetchAchievementDetails(refs, achievements, ns) {
     }),
   );
   return details;
+}
+
+const pick = (obj, keys) => Object.fromEntries(keys.map((k) => [k, obj[k]]));
+
+// Returns { mounts, pets, toys, heirlooms }, each { id: iconUrl } for the
+// entries whose icon is known.
+async function fetchCollectionIcons(refs, sections, ns) {
+  const lookups = { mounts: refs.mountIcon, pets: refs.petIcon, toys: refs.toyIcon, heirlooms: refs.heirloomIcon };
+  const ids = collectionIds(sections);
+  const icons = {};
+  for (const kind of COLLECTIONS) {
+    icons[kind] = {};
+    for (let i = 0; i < ids[kind].length; i += ICON_CHUNK) {
+      await Promise.all(
+        ids[kind].slice(i, i + ICON_CHUNK).map(async (id) => {
+          const url = await lookups[kind](ns, id);
+          if (url) icons[kind][id] = url;
+        }),
+      );
+    }
+  }
+  return icons;
 }
