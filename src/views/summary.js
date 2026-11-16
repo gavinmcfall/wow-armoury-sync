@@ -1,9 +1,32 @@
 // One roster entry per character, stored in the index.
 import { mediaAsset } from "./character.js";
 
+// The scene the Armory stands each class in, keyed by playable class id
+// (the same ids on retail and Forever).
+const CLASS_BACKGROUND_SLUGS = {
+  1: "warrior",
+  2: "paladin",
+  3: "hunter",
+  4: "rogue",
+  5: "priest",
+  6: "death_knight",
+  7: "shaman",
+  8: "mage",
+  9: "warlock",
+  10: "monk",
+  11: "druid",
+  12: "demon_hunter",
+  13: "evoker",
+};
+
+export function classBackground(classId) {
+  const slug = CLASS_BACKGROUND_SLUGS[classId];
+  return slug ? `https://render.worldofwarcraft.com/profile-backgrounds/v2/armory_bg_class_${slug}.jpg` : null;
+}
+
 // `spec` overrides the profile's active spec: Forever profiles report none,
 // so the sync derives it from talent points and passes it in. `portrait` is
-// { url, focus } for the full render (see portrait.js), or null.
+// { url, focus, figure } for the full render (see portrait.js), or null.
 export function buildSummary(character, p, media, fetchedAt, spec = null, portrait = null) {
   return {
     key: character.key,
@@ -25,6 +48,7 @@ export function buildSummary(character, p, media, fetchedAt, spec = null, portra
     achievementPoints: p.achievement_points ?? 0,
     inset: mediaAsset(media, "inset") ?? mediaAsset(media, "avatar"),
     portrait,
+    background: classBackground(p.character_class?.id),
     lastSuccessAt: fetchedAt,
   };
 }

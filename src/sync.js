@@ -99,14 +99,14 @@ async function fetchSections(client, base, namespace, endpoints) {
   };
 }
 
-// { url, focus } for the character's render, or null. Framing is a nicety:
-// a failure here never fails the character, and the site falls back to the
-// inset image.
+// { url, focus, figure } for the character's render, or null. Framing is a
+// nicety: a failure here never fails the character, and the site falls back
+// to the inset image.
 async function measurePortrait(refs, url) {
   if (!url) return null;
   try {
-    const focus = await refs.portrait(url);
-    return focus ? { url, focus } : null;
+    const frames = await refs.portrait(url);
+    return frames ? { url, ...frames } : null;
   } catch {
     return null;
   }

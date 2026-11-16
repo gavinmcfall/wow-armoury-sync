@@ -5,8 +5,9 @@
 // at the same height, so a tall race's head is far higher in the image than
 // a short race's. A fixed crop can't frame them all; this measures each one.
 
-// Fractions of the figure's height, tuned against real renders: start a
-// little above the topmost pixel and cover the head and upper body.
+// Fractions of the figure's height, tuned against real renders. The focus
+// starts a little above the topmost pixel and covers the head and upper
+// body; the figure frame adds the same margin above and below the whole body.
 const HEADROOM = 0.03;
 const FOCUS_HEIGHT = 0.54;
 // The horizontal centre comes from the upper torso, which ignores horns,
@@ -16,10 +17,11 @@ const TORSO_TO = 0.35;
 
 const PNG_SIGNATURE = [137, 80, 78, 71, 13, 10, 26, 10];
 
-// Returns { x, top, height } as fractions of the image (x: the figure's
-// horizontal centre; top and height: the focus window), or null when the
-// bytes aren't an 8-bit RGBA PNG or the image is empty.
-export async function figureFocus(bytes) {
+// Returns { focus, figure }, each { x, top, height } as fractions of the
+// image: x is the figure's horizontal centre, top and height the window
+// (focus: head and upper body; figure: the whole body). Null when the bytes
+// aren't an 8-bit RGBA PNG or the image is empty.
+export async function measureFigure(bytes) {
   const png = parsePng(bytes);
   if (!png) return null;
   const { width, height } = png;
@@ -77,12 +79,12 @@ export async function figureFocus(bytes) {
     left = Math.min(left, minX[y]);
     right = Math.max(right, maxX[y] + 1);
   }
-  const centre = left === Infinity ? width / 2 : (left + right) / 2;
+  const x = round((left === Infinity ? width / 2 : (left + right) / 2) / width);
+  const frameTop = round((top - figure * HEADROOM) / height);
 
   return {
-    x: round(centre / width),
-    top: round((top - figure * HEADROOM) / height),
-    height: round((figure * FOCUS_HEIGHT) / height),
+    focus: { x, top: frameTop, height: round((figure * FOCUS_HEIGHT) / height) },
+    figure: { x, top: frameTop, height: round((figure * (1 + 2 * HEADROOM)) / height) },
   };
 }
 

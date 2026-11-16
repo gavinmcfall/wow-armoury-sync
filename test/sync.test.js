@@ -173,7 +173,11 @@ test("the summary carries a portrait measured from the character's render", asyn
 
   const render = FOREVER.media.assets.find((a) => a.key === "main-raw").value;
   assert.deepEqual(requested, [render]);
-  assert.deepEqual(kv.json("index").characters[0].portrait, { url: render, focus: { x: 0.5, top: 0.085, height: 0.27 } });
+  assert.deepEqual(kv.json("index").characters[0].portrait, {
+    url: render,
+    focus: { x: 0.5, top: 0.085, height: 0.27 },
+    figure: { x: 0.5, top: 0.085, height: 0.53 },
+  });
 });
 
 test("a render that can't be fetched leaves the portrait null and the character ok", async () => {

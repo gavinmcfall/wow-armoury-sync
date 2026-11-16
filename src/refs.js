@@ -1,4 +1,4 @@
-import { figureFocus } from "./portrait.js";
+import { measureFigure } from "./portrait.js";
 
 // Reference data that rarely or never changes (item icons, a class's spec
 // list), cached in KV under ref:{namespace}:… so each value is fetched once.
@@ -45,26 +45,29 @@ export function createRefs({ client, kv, maxNewLookups = 2000, fetchImage = (...
         return (res.data?.specializations ?? []).map((s) => s.name);
       });
     },
-    // Where the character stands in its render (see portrait.js). A render
-    // changes when the character's gear does, so the cached focus is kept
-    // under the image's ETag and checked with a conditional request.
+    // Where the character stands in its render: { focus, figure } (see
+    // portrait.js). A render changes when the character's gear does, so the
+    // frames are kept under the image's ETag and checked with a conditional
+    // request. An entry from before the figure frame existed is measured again.
     async portrait(url) {
       const key = `ref:portrait:${new URL(url).pathname}`;
-      const cached = await kv.get(key, "json");
+      const stored = await kv.get(key, "json");
+      const cached = stored?.figure ? stored : null;
       if (!cached && counts.fetched >= maxNewLookups) {
         counts.skipped++;
         return null;
       }
+      const frames = (entry) => ({ focus: entry.focus, figure: entry.figure });
       const res = await fetchImage(url, { headers: cached?.etag ? { "If-None-Match": cached.etag } : {} });
       if (res.status === 304 && cached) {
         counts.hits++;
-        return cached.focus;
+        return frames(cached);
       }
-      if (!res.ok) return cached?.focus ?? null;
+      if (!res.ok) return cached ? frames(cached) : null;
       counts.fetched++;
-      const focus = await figureFocus(new Uint8Array(await res.arrayBuffer()));
-      if (focus) await kv.put(key, JSON.stringify({ etag: res.headers.get("ETag"), focus }));
-      return focus;
+      const measured = await measureFigure(new Uint8Array(await res.arrayBuffer()));
+      if (measured) await kv.put(key, JSON.stringify({ etag: res.headers.get("ETag"), ...measured }));
+      return measured;
     },
     stats() {
       return { ...counts };

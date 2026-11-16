@@ -69,3 +69,15 @@ test("summary carries the portrait it is given, or null", () => {
   assert.deepEqual(buildSummary(c, RETAIL.profile, RETAIL.media, NOW, null, portrait).portrait, portrait);
   assert.equal(buildSummary(c, RETAIL.profile, RETAIL.media, NOW).portrait, null);
 });
+
+test("summary carries Blizzard's background for the character's class", () => {
+  const retail = buildSummary(byKey("retail:us:barthilas:cònsecrator"), RETAIL.profile, RETAIL.media, NOW);
+  assert.equal(retail.background, "https://render.worldofwarcraft.com/profile-backgrounds/v2/armory_bg_class_paladin.jpg");
+  const forever = buildSummary(byKey("forever:us:recurve-ravenholt"), FOREVER.profile, FOREVER.media, NOW);
+  assert.equal(forever.background, "https://render.worldofwarcraft.com/profile-backgrounds/v2/armory_bg_class_hunter.jpg");
+});
+
+test("summary background is null for a class it doesn't know", () => {
+  const profile = { ...RETAIL.profile, character_class: { id: 99, name: "Tinker" } };
+  assert.equal(buildSummary(byKey("retail:us:barthilas:cònsecrator"), profile, RETAIL.media, NOW).background, null);
+});

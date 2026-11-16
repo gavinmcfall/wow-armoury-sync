@@ -30,7 +30,7 @@ A bad night never wipes good data. If Blizzard's API fails for the profile, or f
 | `view:v1:{key}:character` | The Character view for one character: gear, stats, specs, Mythic+, raids, PvP |
 | `ref:{namespace}:item-icon:{itemId}` | An item's icon URL. Icons never change, so each is fetched once and reused. |
 | `ref:{namespace}:class-specs:{classId}` | A class's specialisation names, in Blizzard's order |
-| `ref:portrait:{render path}` | Where the character stands in its render, with the image's ETag. Re-measured only when the render changes. |
+| `ref:portrait:{render path}` | Where the character stands in its render (`focus` and `figure`), with the image's ETag. Re-measured only when the render changes, or when the entry predates `figure`. |
 
 A character's `{key}` is `retail:{region}:{realm}:{name}` or `forever:{region}:{name}-{surname}`.
 
@@ -60,8 +60,10 @@ Each entry in `index.characters` looks like this:
   "inset": "https://render.worldofwarcraft.com/…-inset.jpg",
   "portrait": {
     "url": "https://render.worldofwarcraft.com/…-main-raw.png",
-    "focus": { "x": 0.5019, "top": 0.331, "height": 0.252 }
+    "focus": { "x": 0.5019, "top": 0.331, "height": 0.252 },
+    "figure": { "x": 0.5019, "top": 0.331, "height": 0.4947 }
   },
+  "background": "https://render.worldofwarcraft.com/profile-backgrounds/v2/armory_bg_class_demon_hunter.jpg",
   "lastSuccessAt": "2026-11-16T14:17:00.000Z"
 }
 ```
@@ -69,7 +71,8 @@ Each entry in `index.characters` looks like this:
 - `route` is a ready-made address for the character's page: lowercase, accents kept, not URL-encoded.
 - `realm` is set for retail characters; `ruleset` (the WoW Forever play style, such as `"Normal"`) for Forever characters.
 - `inset` is Blizzard's small (230×116) portrait. Forever characters have none, so it falls back to the 84×84 avatar.
-- `portrait` frames the character in its full 1600×1200 transparent render, for a sharper card image. Blizzard renders every character with the same camera, so a tall race's head sits much higher in the image than a short race's. The sync measures each render: `focus.x` is the figure's horizontal centre, and `focus.top` and `focus.height` mark a window over the head and upper body, all as fractions of the image. To show it, scale the image so `focus.height` fills your frame, shift it up by `focus.top`, and centre it on `focus.x`. `portrait` is `null` when the render couldn't be read; use `inset` then.
+- `portrait` frames the character in its full 1600×1200 transparent render, for a sharper card image. Blizzard renders every character with the same camera, so a tall race's head sits much higher in the image than a short race's. The sync measures each render: `focus.x` is the figure's horizontal centre, and `focus.top` and `focus.height` mark a window over the head and upper body, all as fractions of the image. To show it, scale the image so `focus.height` fills your frame, shift it up by `focus.top`, and centre it on `focus.x`. `figure` is the same kind of window over the whole body, with a small margin above the head and below the feet, for showing the character at full height. `portrait` is `null` when the render couldn't be read; use `inset` then.
+- `background` is the scene Blizzard's Armory stands each class in (2400×1860, dark at the top). It is `null` for a class the sync doesn't know.
 
 `status` is one of:
 
