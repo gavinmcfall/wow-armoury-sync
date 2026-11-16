@@ -8,9 +8,12 @@ import { measureFigure } from "./portrait.js";
 // season's worth of new gear, stays inside the Worker's subrequest limit.
 // A lookup over the cap returns null; it is fetched on a later night.
 
-// The faction tree changes only when Blizzard adds factions in a patch.
-const FACTION_TREE_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
-const FACTION_CHUNK = 20;
+// The faction tree and the achievement categories change only when Blizzard
+// adds to them in a patch.
+const TREE_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+const CHUNK = 20;
+// Achievement categories Blizzard keeps out of the character's view.
+const HIDDEN_ACHIEVEMENT_CATEGORIES = ["Do Not Display"];
 
 // `fetchImage` fetches Blizzard's render images, which need no API token.
 export function createRefs({
@@ -22,6 +25,7 @@ export function createRefs({
 }) {
   const counts = { hits: 0, fetched: 0, skipped: 0 };
   const factionTrees = new Map();
+  const achievementTrees = new Map();
 
   // Reads key from KV; on a miss, and while under the cap, calls load() and
   // caches a non-null result. Strings are stored as-is, anything else as JSON.
@@ -41,24 +45,26 @@ export function createRefs({
     return value;
   }
 
-  // Fetches faction records a level at a time. Returns them in order, or
-  // null when any request fails or the batch would pass the cap.
-  async function fetchFactions(ns, ids) {
-    if (counts.fetched + ids.length > maxNewLookups) {
+  // Fetches a batch of reference records (one request per path). Returns
+  // them in order, or null when any request fails or the batch would pass
+  // the cap.
+  async function fetchRecords(ns, paths) {
+    if (counts.fetched + paths.length > maxNewLookups) {
       counts.skipped++;
       return null;
     }
-    counts.fetched += ids.length;
+    counts.fetched += paths.length;
     // In chunks, to stay under Blizzard's 100 requests per second.
     const records = [];
-    for (let i = 0; i < ids.length; i += FACTION_CHUNK) {
-      const chunk = ids.slice(i, i + FACTION_CHUNK);
-      const results = await Promise.all(chunk.map((id) => client.get(`/data/wow/reputation-faction/${id}`, ns)));
+    for (let i = 0; i < paths.length; i += CHUNK) {
+      const results = await Promise.all(paths.slice(i, i + CHUNK).map((path) => client.get(path, ns)));
       if (results.some((r) => r.status !== 200)) return null;
       records.push(...results.map((r) => r.data));
     }
     return records;
   }
+
+  const fetchFactions = (ns, ids) => fetchRecords(ns, ids.map((id) => `/data/wow/reputation-faction/${id}`));
 
   async function walkFactionTree(ns) {
     const [index] = (await fetchFactions(ns, ["index"])) ?? [];
@@ -84,6 +90,19 @@ export function createRefs({
       level = next;
     }
     return { order, byFaction };
+  }
+
+  async function walkAchievementCategories(ns) {
+    const [index] = (await fetchRecords(ns, ["/data/wow/achievement-category/index"])) ?? [];
+    if (!index) return null;
+    const ids = (index.root_categories ?? []).map((c) => c.id);
+    const records = await fetchRecords(ns, ids.map((id) => `/data/wow/achievement-category/${id}`));
+    if (!records) return null;
+    const roots = records
+      .filter((r) => !r.is_guild_category && !HIDDEN_ACHIEVEMENT_CATEGORIES.includes(r.name))
+      .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
+      .map((r) => ({ id: r.id, name: r.name, total: r.aggregates_by_faction ?? {} }));
+    return { roots };
   }
 
   return {
@@ -134,23 +153,52 @@ export function createRefs({
     factionGroups(ns) {
       // Once per namespace per run: every character asks, and a failed walk
       // must not be repeated for each of them.
-      if (!factionTrees.has(ns)) factionTrees.set(ns, loadFactionGroups(ns));
+      if (!factionTrees.has(ns)) factionTrees.set(ns, loadTree(ns, "faction-groups", walkFactionTree, (c) => ({ order: c.order, byFaction: c.byFaction })));
       return factionTrees.get(ns);
+    },
+    // The top-level achievement categories a character sees: { roots },
+    // each { id, name, total: { alliance, horde } } with the category's
+    // achievement count and points (including subcategories) per faction.
+    // Cached for 30 days, like the faction tree.
+    achievementCategories(ns) {
+      if (!achievementTrees.has(ns)) {
+        achievementTrees.set(ns, loadTree(ns, "achievement-categories", walkAchievementCategories, (c) => ({ roots: c.roots })));
+      }
+      return achievementTrees.get(ns);
+    },
+    // { points, category } for one achievement; category is its own
+    // (possibly sub-) category's name.
+    achievement(ns, id) {
+      return lookup(`ref:${ns}:achievement:${id}`, true, async () => {
+        const res = await client.get(`/data/wow/achievement/${id}`, ns);
+        if (res.status !== 200) return null;
+        return { points: res.data?.points ?? 0, category: res.data?.category?.name ?? null };
+      });
+    },
+    achievementIcon(ns, id) {
+      return lookup(`ref:${ns}:achievement-icon:${id}`, false, async () => {
+        const res = await client.get(`/data/wow/media/achievement/${id}`, ns);
+        if (res.status !== 200) return null;
+        return res.data?.assets?.find((a) => a.key === "icon")?.value ?? null;
+      });
     },
     stats() {
       return { ...counts };
     },
   };
 
-  async function loadFactionGroups(ns) {
-    const key = `ref:${ns}:faction-groups`;
+  // Reads a cached tree from ref:{ns}:{name}, walking it again once it is
+  // 30 days old. A walk that fails or would pass the cap keeps nothing and
+  // returns the previous tree, or null.
+  async function loadTree(ns, name, walk, pick) {
+    const key = `ref:${ns}:${name}`;
     const cached = await kv.get(key, "json");
-    const previous = cached ? { order: cached.order, byFaction: cached.byFaction } : null;
-    if (cached && now() - cached.builtAt < FACTION_TREE_MAX_AGE_MS) {
+    const previous = cached ? pick(cached) : null;
+    if (cached && now() - cached.builtAt < TREE_MAX_AGE_MS) {
       counts.hits++;
       return previous;
     }
-    const walked = await walkFactionTree(ns);
+    const walked = await walk(ns);
     if (!walked) return previous;
     await kv.put(key, JSON.stringify({ builtAt: now(), ...walked }));
     return walked;

@@ -213,3 +213,92 @@ test("factionGroups stops a walk that would pass the lookup cap and keeps nothin
   assert.equal(kv.store.size, 0);
   assert.equal(refs.stats().skipped, 1);
 });
+
+// Three roots: Characters and Dungeons & Raids show, Guild is a guild
+// category and Do Not Display is Blizzard's hidden bucket.
+const ACH_CATEGORIES = {
+  index: { root_categories: [{ id: 15076 }, { id: 168 }, { id: 92 }, { id: 15425 }] },
+  15076: { id: 15076, name: "Guild", is_guild_category: true, display_order: 0, aggregates_by_faction: {} },
+  168: {
+    id: 168,
+    name: "Dungeons & Raids",
+    display_order: 7,
+    aggregates_by_faction: { alliance: { quantity: 1589, points: 16875 }, horde: { quantity: 1589, points: 16875 } },
+  },
+  92: {
+    id: 92,
+    name: "Characters",
+    display_order: 1,
+    aggregates_by_faction: { alliance: { quantity: 40, points: 495 }, horde: { quantity: 40, points: 495 } },
+  },
+  15425: { id: 15425, name: "Do Not Display", display_order: 99, aggregates_by_faction: {} },
+};
+const ACH_ROOTS = {
+  roots: [
+    { id: 92, name: "Characters", total: ACH_CATEGORIES[92].aggregates_by_faction },
+    { id: 168, name: "Dungeons & Raids", total: ACH_CATEGORIES[168].aggregates_by_faction },
+  ],
+};
+const ACH_KEY = "ref:static-us:achievement-categories";
+
+function achievementRoute(path) {
+  if (path === "/data/wow/achievement-category/index") return [200, ACH_CATEGORIES.index];
+  const cat = path.match(/^\/data\/wow\/achievement-category\/(\d+)$/);
+  if (cat) return ACH_CATEGORIES[cat[1]] ? [200, ACH_CATEGORIES[cat[1]]] : [404, undefined];
+  if (path === "/data/wow/achievement/6") return [200, { id: 6, name: "Level 10", points: 10, category: { id: 92, name: "Characters" } }];
+  if (path === "/data/wow/media/achievement/6") return [200, { assets: [{ key: "icon", value: "https://render/icons/236562.jpg" }] }];
+  return [404, undefined];
+}
+
+test("achievementCategories lists the shown top-level categories in display order and caches them", async () => {
+  const kv = fakeKv();
+  const refs = createRefs({ client: client(fakeFetch(achievementRoute)), kv, now: () => T0 });
+
+  assert.deepEqual(await refs.achievementCategories(NS), ACH_ROOTS);
+  assert.deepEqual(kv.json(ACH_KEY), { builtAt: T0, ...ACH_ROOTS });
+  // The index and the four roots.
+  assert.deepEqual(refs.stats(), { hits: 0, fetched: 5, skipped: 0 });
+});
+
+test("achievementCategories uses a cached list younger than 30 days without calling the API", async () => {
+  const kv = fakeKv({ [ACH_KEY]: { builtAt: T0 - 29 * DAY, ...ACH_ROOTS } });
+  const fetchImpl = fakeFetch(achievementRoute);
+  const refs = createRefs({ client: client(fetchImpl), kv, now: () => T0 });
+
+  assert.deepEqual(await refs.achievementCategories(NS), ACH_ROOTS);
+  assert.deepEqual(fetchImpl.calls, []);
+});
+
+test("achievementCategories keeps the old list when a request fails", async () => {
+  const stale = { builtAt: T0 - 40 * DAY, roots: [ACH_ROOTS.roots[0]] };
+  const kv = fakeKv({ [ACH_KEY]: stale });
+  const failing = (path) => (path.endsWith("/168") ? [503, undefined] : achievementRoute(path));
+  const refs = createRefs({ client: client(fakeFetch(failing)), kv, now: () => T0 });
+
+  assert.deepEqual(await refs.achievementCategories(NS), { roots: stale.roots });
+  assert.deepEqual(kv.json(ACH_KEY), stale);
+});
+
+test("achievementCategories is fetched once per namespace per run", async () => {
+  const fetchImpl = fakeFetch(achievementRoute);
+  const refs = createRefs({ client: client(fetchImpl), kv: fakeKv(), now: () => T0 });
+  await Promise.all([refs.achievementCategories(NS), refs.achievementCategories(NS)]);
+  assert.equal(fetchImpl.calls.filter((p) => p === "/data/wow/achievement-category/index").length, 1);
+});
+
+test("achievement returns an achievement's points and category, cached", async () => {
+  const kv = fakeKv();
+  const refs = createRefs({ client: client(fakeFetch(achievementRoute)), kv });
+
+  assert.deepEqual(await refs.achievement(NS, 6), { points: 10, category: "Characters" });
+  assert.deepEqual(kv.json("ref:static-us:achievement:6"), { points: 10, category: "Characters" });
+  assert.equal(await refs.achievement(NS, 7), null);
+});
+
+test("achievementIcon returns and caches the icon url", async () => {
+  const kv = fakeKv();
+  const refs = createRefs({ client: client(fakeFetch(achievementRoute)), kv });
+
+  assert.equal(await refs.achievementIcon(NS, 6), "https://render/icons/236562.jpg");
+  assert.equal(kv.store.get("ref:static-us:achievement-icon:6"), "https://render/icons/236562.jpg");
+});

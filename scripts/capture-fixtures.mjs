@@ -21,6 +21,7 @@ const SECTIONS = {
   raids: "encounters/raids",
   reputations: "reputations",
   professions: "professions",
+  achievements: "achievements",
 };
 
 const CHARACTERS = [
@@ -57,6 +58,15 @@ for (const c of CHARACTERS) {
   // Recipe lists are long and nothing reads them.
   for (const prof of [...(out.professions?.primaries ?? []), ...(out.professions?.secondaries ?? [])]) {
     for (const tier of prof.tiers ?? []) delete tier.known_recipes;
+  }
+  // A retail character has thousands of achievements: keep the 50 newest
+  // completions and two unfinished ones. Criteria and statistics go.
+  if (out.achievements) {
+    const all = out.achievements.achievements ?? [];
+    const done = all.filter((a) => a.completed_timestamp).sort((a, b) => b.completed_timestamp - a.completed_timestamp);
+    const todo = all.filter((a) => !a.completed_timestamp);
+    out.achievements.achievements = [...done.slice(0, 50), ...todo.slice(0, 2)].map(({ criteria, ...a }) => a);
+    delete out.achievements.statistics;
   }
   const json = JSON.stringify(strip(out), null, 1);
   await writeFile(new URL(`../test/fixtures/${c.file}`, import.meta.url), json);

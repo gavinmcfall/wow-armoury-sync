@@ -6,12 +6,14 @@
 //   index                         schemaVersion, updatedAt, one summary per character
 //   view:v1:{key}:character       the Character tab view for one character
 //   view:v1:{key}:reputation      the Reputation tab view
+//   view:v1:{key}:achievements    the Achievements tab view
 //   ref:{namespace}:…             cached reference data (see refs.js)
 //
 // A failed run never wipes good data: if the profile fetch fails, the
 // previous view stays and the previous summary is kept, marked "error".
 import { createRefs } from "./refs.js";
 import { buildCharacterView, foreverActiveSpec } from "./views/character.js";
+import { buildAchievementsView, recentIds } from "./views/achievements.js";
 import { buildReputationView } from "./views/reputation.js";
 import { buildSummary, notListedSummary, primaryProfessions } from "./views/summary.js";
 
@@ -26,6 +28,7 @@ const SECTIONS = {
   raids: "encounters/raids",
   reputations: "reputations",
   professions: "professions",
+  achievements: "achievements",
 };
 const RETAIL_ONLY = { mythic: "mythic-keystone-profile" };
 // Sections the Character view can't do without. A 404 on one means the API
@@ -88,6 +91,15 @@ async function syncCharacter({ client, kv, refs, character, previous, now }) {
       const reputation = buildReputationView({ game: character.game, fetchedAt, reputations: sections.reputations, groups });
       await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:reputation`, JSON.stringify(reputation));
     }
+    if (!failedField("achievements")) {
+      const [categories, details] = await Promise.all([
+        refs.achievementCategories(ns).catch(() => null),
+        fetchAchievementDetails(refs, sections.achievements, ns),
+      ]);
+      const faction = profile.data.faction?.type?.toLowerCase() ?? null;
+      const achievements = buildAchievementsView({ game: character.game, fetchedAt, achievements: sections.achievements, categories, faction, details });
+      await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:achievements`, JSON.stringify(achievements));
+    }
     const professions = failedField("professions") ? (previous?.professions ?? []) : primaryProfessions(sections.professions);
     const spec = character.game === "forever" ? foreverActiveSpec(sections.specializations) : null;
     const portrait = await measurePortrait(refs, view.render);
@@ -136,4 +148,17 @@ async function fetchItemIcons(refs, equipment, ns) {
     }),
   );
   return icons;
+}
+
+// Returns { achievementId: { points, category, icon } } for the newest
+// completions whose details are known.
+async function fetchAchievementDetails(refs, achievements, ns) {
+  const details = {};
+  await Promise.all(
+    recentIds(achievements).map(async (id) => {
+      const [info, icon] = await Promise.all([refs.achievement(ns, id), refs.achievementIcon(ns, id)]);
+      if (info) details[id] = { ...info, icon };
+    }),
+  );
+  return details;
 }

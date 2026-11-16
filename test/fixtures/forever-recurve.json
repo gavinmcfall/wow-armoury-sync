@@ -1990,5 +1990,66 @@
     ]
    }
   ]
+ },
+ "achievements": {
+  "total_quantity": 1,
+  "total_points": 0,
+  "achievements": [
+   {
+    "id": 802,
+    "achievement": {
+     "name": "Explore Westfall",
+     "id": 802
+    },
+    "completed_timestamp": 1794624820000
+   },
+   {
+    "id": 62024,
+    "achievement": {
+     "name": "Journeyman Leatherworker",
+     "id": 62024
+    }
+   },
+   {
+    "id": 62025,
+    "achievement": {
+     "name": "Expert Leatherworker",
+     "id": 62025
+    }
+   }
+  ],
+  "category_progress": [
+   {
+    "category": {
+     "name": "Adventure",
+     "id": 15596
+    },
+    "quantity": 1,
+    "points": 0
+   },
+   {
+    "category": {
+     "name": "Eastern Kingdoms",
+     "id": 14777
+    },
+    "quantity": 1,
+    "points": 0
+   }
+  ],
+  "recent_events": [
+   {
+    "achievement": {
+     "name": "Explore Westfall",
+     "id": 802
+    },
+    "timestamp": 1794624820000
+   }
+  ],
+  "character": {
+   "name": "Recurve",
+   "id": 2838722,
+   "surname": "Ravenholt",
+   "slug": "recurve-ravenholt"
+  }
  }
 }

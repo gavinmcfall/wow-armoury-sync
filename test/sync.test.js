@@ -26,6 +26,7 @@ const ENDPOINTS = {
   "/encounters/raids": "raids",
   "/reputations": "reputations",
   "/professions": "professions",
+  "/achievements": "achievements",
 };
 
 // Serves the fixtures for both characters, item icons and the Paladin class.
@@ -160,8 +161,10 @@ test("returns ref lookup stats alongside the summaries", async () => {
   const kv = fakeKv();
   const result = await run(kv);
   assert.equal(result.summaries.length, 1);
-  // 12 item icons and the faction tree's index, which the fixtures don't serve.
-  assert.equal(result.refs.fetched, 14);
+  // 13 item icons, plus three lookups the fixtures don't serve: the faction
+  // tree's index, the achievement categories' index, and the details of
+  // Recurve's one completed achievement (points and icon count as two).
+  assert.equal(result.refs.fetched, 17);
   assert.equal(result.refs.skipped, 0);
 });
 
@@ -254,3 +257,47 @@ test("the faction tree is walked once per run, not once per character", async ()
   assert.equal(fetchImpl.calls.filter((p) => p === "/data/wow/reputation-faction/index").length, 1);
 });
 
+
+const ACH_KEY = "view:v1:forever:us:recurve-ravenholt:achievements";
+
+test("writes an achievements view for a listed character", async () => {
+  const kv = fakeKv();
+  await run(kv);
+
+  const view = kv.json(ACH_KEY);
+  assert.equal(view.schemaVersion, 1);
+  assert.equal(view.fetchedAt, NOW);
+  assert.deepEqual(view.total, { quantity: 1, points: 0 });
+  assert.deepEqual(view.completed.map((a) => a.name), [FOREVER.achievements.achievements.find((a) => a.completed_timestamp).achievement.name]);
+  // The fixtures serve no category tree.
+  assert.deepEqual(view.categories, []);
+});
+
+test("achievement categories and recent details come from the reference data", async () => {
+  const kv = fakeKv();
+  const done = FOREVER.achievements.achievements.find((a) => a.completed_timestamp);
+  const route = (path) => {
+    if (path === "/data/wow/achievement-category/index") return [200, { root_categories: [{ id: 15596 }] }];
+    if (path === "/data/wow/achievement-category/15596") {
+      return [200, { id: 15596, name: "Adventure", display_order: 1, aggregates_by_faction: { alliance: { quantity: 120, points: 0 } } }];
+    }
+    if (path === `/data/wow/achievement/${done.id}`) return [200, { points: 0, category: { name: "Eastern Kingdoms" } }];
+    if (path === `/data/wow/media/achievement/${done.id}`) return [200, { assets: [{ key: "icon", value: "https://render/icons/a.jpg" }] }];
+    return fixtureRoute(path);
+  };
+  await run(kv, route);
+
+  const view = kv.json(ACH_KEY);
+  assert.deepEqual(view.categories, [{ id: 15596, name: "Adventure", quantity: 1, points: 0, total: { quantity: 120, points: 0 } }]);
+  assert.equal(view.recent[0].category, "Eastern Kingdoms");
+  assert.equal(view.recent[0].icon, "https://render/icons/a.jpg");
+});
+
+test("an achievements server error keeps the previous achievements view", async () => {
+  const oldView = { schemaVersion: 1, fetchedAt: "2026-11-15T14:17:00.000Z", completed: [] };
+  const kv = fakeKv({ [ACH_KEY]: oldView });
+  await run(kv, (path) => (path.endsWith("/achievements") ? [503, undefined] : fixtureRoute(path)));
+
+  assert.deepEqual(kv.json(ACH_KEY), oldView);
+  assert.equal(kv.json("index").characters[0].status, "ok");
+});
