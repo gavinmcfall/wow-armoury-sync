@@ -34,14 +34,20 @@ export const FOREVER = [
   { name: "vengeance", surname: "ravenholt" },
 ];
 
+const capitalise = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
 // One entry per tracked character, with everything the sync needs to address
-// it in the API and in KV.
+// it in the API and in KV. `route` is the character's address for a site to
+// use (unencoded, lowercase); the display names are for characters the API
+// does not list yet, when there is no profile to take the real name from.
 export function trackedCharacters(region = REGION) {
   return [
     ...RETAIL.map((c) => ({
       game: "retail",
       key: `retail:${region}:${c.realm}:${c.name}`,
       path: `${encodeURIComponent(c.realm)}/${encodeURIComponent(c.name)}`,
+      route: ["retail", c.realm, c.name],
+      displayName: capitalise(c.name),
       profileNamespace: `profile-${region}`,
       staticNamespace: `static-${region}`,
     })),
@@ -49,6 +55,9 @@ export function trackedCharacters(region = REGION) {
       game: "forever",
       key: `forever:${region}:${c.name}-${c.surname}`,
       path: encodeURIComponent(`${c.name}-${c.surname}`),
+      route: ["forever", `${c.name}-${c.surname}`],
+      displayName: capitalise(c.name),
+      displaySurname: capitalise(c.surname),
       profileNamespace: `profile-forever-${region}`,
       staticNamespace: `static-forever-${region}`,
     })),
