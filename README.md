@@ -16,47 +16,113 @@ flowchart LR
 
 1. Cloudflare wakes the Worker on a schedule. There's no public URL: any web request gets a 404.
 2. The Worker gets an app token from Battle.net using the client credentials flow, so no player login is involved.
-3. For each character it fetches the profile, then fetches these sections in parallel: equipment, specialisations, professions, reputations, character media and statistics.
-4. It writes everything to KV, plus an index your site can use to list characters.
+3. For each character it fetches the profile, then fetches these sections in parallel: equipment, statistics, specialisations, character media, PvP summary, raid progress and (retail only) Mythic+ profile.
+4. It shapes those responses into **views**: small JSON documents holding exactly what an Armory page shows, already formatted. Your site reads a view and renders it, without knowing anything about Blizzard's response formats.
+5. It writes the views to KV, plus an index your site can use to list characters.
 
-A bad night never wipes good data. If Blizzard's API fails, the character's previous record is kept and marked with the error.
+A bad night never wipes good data. If Blizzard's API fails, the character's previous view is kept and its summary is marked with the error.
 
 ## What gets stored
 
 | KV key | Contents |
 | --- | --- |
-| `index` | `updatedAt` plus one summary per character (see below) |
-| `character:{key}` | The full record: `fetchedAt`, `profile`, `equipment`, `specializations`, `professions`, `reputations`, `media`, `statistics`, `itemIcons` |
-| `icon:{namespace}:{itemId}` | An item's icon URL. Icons never change, so each is fetched once and reused. |
+| `index` | `schemaVersion`, `updatedAt` and one summary per character (see below) |
+| `view:v1:{key}:character` | The Character view for one character: gear, stats, specs, Mythic+, raids, PvP |
+| `ref:{namespace}:item-icon:{itemId}` | An item's icon URL. Icons never change, so each is fetched once and reused. |
+| `ref:{namespace}:class-specs:{classId}` | A class's specialisation names, in Blizzard's order |
 
-A summary in `index` looks like this:
+A character's `{key}` is `retail:{region}:{realm}:{name}` or `forever:{region}:{name}-{surname}`.
+
+### Summaries
+
+Each entry in `index.characters` looks like this:
 
 ```json
 {
-  "key": "forever:us:recurve-ravenholt",
-  "game": "forever",
+  "key": "retail:us:barthilas:cònsecrator",
+  "game": "retail",
   "status": "ok",
-  "name": "Recurve",
-  "realm": null,
-  "level": 23,
-  "race": "High Order Skyborne",
-  "characterClass": "Hunter",
-  "spec": null,
-  "faction": "Alliance",
-  "itemLevel": 11,
-  "lastSuccessAt": "2026-11-16T01:26:10.236Z"
+  "route": ["retail", "barthilas", "cònsecrator"],
+  "name": "Cònsecrator",
+  "surname": null,
+  "realm": "Barthilas",
+  "ruleset": null,
+  "level": 80,
+  "race": "Blood Elf",
+  "characterClass": "Paladin",
+  "spec": "Retribution",
+  "faction": "HORDE",
+  "itemLevel": 81,
+  "title": "Vengeance Incarnate",
+  "guild": "Big Chur",
+  "achievementPoints": 11940,
+  "inset": "https://render.worldofwarcraft.com/…-inset.jpg",
+  "lastSuccessAt": "2026-11-16T14:17:00.000Z"
 }
 ```
+
+- `route` is a ready-made address for the character's page: lowercase, accents kept, not URL-encoded.
+- `realm` is set for retail characters; `ruleset` (the WoW Forever play style, such as `"Normal"`) for Forever characters.
+- `inset` is a portrait image. Forever characters have none, so it falls back to the avatar.
 
 `status` is one of:
 
 | Status | Meaning |
 | --- | --- |
 | `ok` | Synced on the latest run |
-| `not-listed` | Blizzard doesn't list the character (yet). WoW Forever characters only appear from **level 10**, after logging out. The sync tries again each night. |
-| `error` | The API call failed. The previous record and summary are kept, with an `error` message added. |
+| `not-listed` | Blizzard doesn't list the character (yet). WoW Forever characters only appear from **level 10**, after logging out. The sync tries again each night. Only `key`, `game`, `status`, `route`, `name` and `surname` are present. |
+| `error` | The API call failed. The previous view and summary are kept, with an `error` message added. `lastSuccessAt` says how old the data is. |
 
-The record's sections are the raw Battle.net responses. A section the API doesn't return is stored as `null`, and one missing section doesn't stop the rest of the character from being stored. `itemIcons` maps each equipped item's ID to its icon URL.
+### The Character view
+
+A trimmed example:
+
+```json
+{
+  "schemaVersion": 1,
+  "game": "forever",
+  "fetchedAt": "2026-11-16T14:17:00.000Z",
+  "render": "https://render.worldofwarcraft.com/…-main-raw.png",
+  "equipment": [{
+    "slot": "WAIST", "slotName": "Waist", "name": "Blackened Defias Belt",
+    "quality": "RARE", "itemLevel": 22, "icon": "https://render.worldofwarcraft.com/….jpg",
+    "binding": "Binds when picked up", "inventoryType": "Waist", "subclass": null,
+    "armor": "50 Armor",
+    "stats": [{ "text": "+18 Attack Power", "negated": false, "equipBonus": true }],
+    "enchantments": [], "sockets": [], "spells": [],
+    "set": "Defias Leather (1/5)", "weapon": null,
+    "requirement": "Requires Level 17", "description": null, "nameDescription": null
+  }],
+  "stats": [{ "label": "Health", "value": "545" }, { "label": "Critical strike", "value": "4.6%" }],
+  "specs": [{ "name": "Beast Mastery", "active": true, "heroTalent": null, "pvpTalents": [], "spentPoints": 14 }],
+  "mythicPlus": null,
+  "raids": null,
+  "pvp": { "honorLevel": null, "honorableKills": 0, "rank": 0 }
+}
+```
+
+- **`equipment`:** one entry per equipped item, keyed by Blizzard's slot type (`HEAD`, `FINGER_1`, `MAIN_HAND`, and on Forever `RANGED` and `AMMO`). Every text field is Blizzard's own display string. `icon` is `null` when the icon hasn't been fetched yet. `negated` marks a stat that doesn't apply to the character's spec (the Armory greys these out). `equipBonus` marks a secondary stat (the Armory shows these in green).
+- **`stats`:** already formatted. Retail shows health, power, the highest primary stat, stamina, crit, haste, mastery and versatility; Forever shows health, power, the highest primary stat, stamina, crit and armour.
+- **`specs`:** for retail, every specialisation of the class, with the active one marked. Forever reports talent points instead, so the tree with the most points is the active one.
+- **`mythicPlus`:** `{ "rating": number | null }` for retail, `null` for Forever.
+- **`raids`:** progress for the newest expansion the character has raided in, or `null`.
+
+A section the API doesn't return becomes empty (an empty list, or `null`) rather than failing the character.
+
+### Schema versions
+
+`index.schemaVersion` is the version of the views the sync writes. Changes to a view's shape get a new version number in the key (`view:v2:…`). When that happens, the sync writes the old and new versions side by side for a while, so a site can move over at its own pace. Fields are only ever added to the index, never removed or renamed.
+
+### Upgrading from v1.x
+
+v1.x stored Blizzard's raw responses under `character:{key}` and icons under `icon:{namespace}:{id}`. v2 writes neither. After the first v2 run, delete the old keys:
+
+```sh
+npx wrangler kv key list --binding WOW_ARMORY --remote --prefix character: > old-character.json
+npx wrangler kv key list --binding WOW_ARMORY --remote --prefix icon: > old-icon.json
+```
+
+Each file is a list of `{ "name": … }` objects. Turn it into a plain list of key names, then pass that to `npx wrangler kv bulk delete <file> --binding WOW_ARMORY --remote`.
 
 ## Set up your own
 
@@ -142,7 +208,7 @@ npm test          # unit tests with a fake Battle.net API and a fake KV
 npm run dev       # run the Worker locally
 ```
 
-While `npm run dev` is running, trigger the nightly job by opening <http://127.0.0.1:8787/cdn-cgi/local/scheduled>. The Worker logs a line like `{"event":"armory-sync","counts":{"ok":13,"not-listed":8}}`.
+While `npm run dev` is running, trigger the nightly job by opening <http://127.0.0.1:8787/cdn-cgi/local/scheduled>. The Worker logs a line like `{"event":"armory-sync","counts":{"ok":13,"not-listed":8},"refs":{"hits":0,"fetched":160,"skipped":0}}`.
 
 > The KV binding sets `"remote": true`, so local runs read and write your **real** KV namespace. That lets you check the results with `npx wrangler kv key get index --binding WOW_ARMORY --remote`. Remove that line if you'd rather use local, throwaway storage.
 
@@ -160,7 +226,7 @@ If your site also runs on Cloudflare (Workers, or Pages with Functions), bind th
 
 ```js
 const index = await env.WOW_ARMORY.get("index", "json");
-const character = await env.WOW_ARMORY.get(`character:${index.characters[0].key}`, "json");
+const view = await env.WOW_ARMORY.get(`view:v1:${index.characters[0].key}:character`, "json");
 ```
 
 Elsewhere, read KV through the [Cloudflare REST API](https://developers.cloudflare.com/api/resources/kv/subresources/namespaces/subresources/values/methods/get/) with a read-only token.
@@ -171,14 +237,18 @@ Elsewhere, read KV through the [Cloudflare REST API](https://developers.cloudfla
 | --- | --- |
 | `src/index.js` | Worker entry point: the scheduled handler |
 | `src/sync.js` | The sync: fetching, error handling, KV writes |
+| `src/views/character.js` | Builds the Character view from raw API responses |
+| `src/views/summary.js` | Builds the index summaries |
+| `src/refs.js` | The reference-data cache (`ref:` keys) |
 | `src/blizzard.js` | Battle.net API client: app token, retry once on rate limits or server errors |
 | `src/characters.js` | The characters to track |
 | `scripts/forever-probe.mjs` | Checks which endpoints answer for each character |
-| `test/sync.test.js` | Unit tests (Node's built-in test runner) |
+| `scripts/capture-fixtures.mjs` | Refreshes the real API responses the tests use |
+| `test/` | Unit tests (Node's built-in test runner) and their fixtures |
 
 ## Notes
 
-- **Limits:** each character costs about 7 API calls, plus one call per item icon the first time that icon is seen. A few dozen characters fits comfortably within Cloudflare's and Blizzard's limits.
+- **Limits:** each character costs about 8 API calls, plus one call per item icon (and per class, for retail) the first time it's seen. New reference lookups are capped at 2,000 a night; anything over the cap is fetched on a later night. A few dozen characters fits comfortably within Cloudflare's and Blizzard's limits.
 - **Blizzard's terms:** data from the Battle.net API is covered by [Blizzard's Developer API Terms of Use](https://www.blizzard.com/legal/a2989b50-5f16-43b1-abec-2ae17cc09dd6/blizzard-developer-api-terms-of-use).
 - This isn't affiliated with or endorsed by Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment.
 
