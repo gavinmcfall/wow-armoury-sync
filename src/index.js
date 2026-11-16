@@ -1,5 +1,5 @@
-// nerdz-armory-sync: pulls WoW character data from the Battle.net API on a
-// nightly schedule and stores it in KV (WOW_ARMORY) for nerdz.cloud to read.
+// wow-armoury-sync: pulls WoW character data from the Battle.net API on a
+// nightly schedule and stores ready-to-render views in KV (WOW_ARMORY).
 // It serves no public pages.
 import { BlizzardClient } from "./blizzard.js";
 import { REGION, trackedCharacters } from "./characters.js";
@@ -17,9 +17,9 @@ export default {
       region: REGION,
     });
     ctx.waitUntil(
-      syncAll({ client, kv: env.WOW_ARMORY, characters: trackedCharacters(REGION) }).then((summaries) => {
+      syncAll({ client, kv: env.WOW_ARMORY, characters: trackedCharacters(REGION) }).then(({ summaries, refs }) => {
         const counts = summaries.reduce((acc, s) => ({ ...acc, [s.status]: (acc[s.status] ?? 0) + 1 }), {});
-        console.log(JSON.stringify({ event: "armory-sync", cron: controller.cron, counts }));
+        console.log(JSON.stringify({ event: "armory-sync", cron: controller.cron, counts, refs }));
       }),
     );
   },

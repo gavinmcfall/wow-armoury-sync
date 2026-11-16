@@ -1,40 +1,49 @@
 // The nightly sync: for each tracked character, fetch the profile and its
-// sections from the Battle.net API and store them in KV for nerdz.cloud.
+// sections from the Battle.net API, shape them into ready-to-render views,
+// and store them in KV.
 //
-// KV layout:
-//   index                      updatedAt plus one summary per character
-//   character:{key}            the full record for one character
-//   icon:{staticNamespace}:{id} an item's icon URL (icons never change, so
-//                              these are fetched once and kept)
+// KV layout (schema version 1):
+//   index                         schemaVersion, updatedAt, one summary per character
+//   view:v1:{key}:character       the Character tab view for one character
+//   ref:{namespace}:…             cached reference data (see refs.js)
 //
-// A failed run never wipes good data: if the API errors, the previous record
-// and summary stay, marked with status "error".
+// A failed run never wipes good data: if the profile fetch fails, the
+// previous view stays and the previous summary is kept, marked "error".
+import { createRefs } from "./refs.js";
+import { buildCharacterView, foreverActiveSpec } from "./views/character.js";
+import { buildSummary, notListedSummary } from "./views/summary.js";
+
+export const SCHEMA_VERSION = 1;
 
 const SECTIONS = {
   equipment: "equipment",
-  specializations: "specializations",
-  professions: "professions",
-  reputations: "reputations",
-  media: "character-media",
   statistics: "statistics",
+  specializations: "specializations",
+  media: "character-media",
+  pvp: "pvp-summary",
+  raids: "encounters/raids",
 };
+const RETAIL_ONLY = { mythic: "mythic-keystone-profile" };
 
-export async function syncAll({ client, kv, characters, now = () => new Date().toISOString() }) {
+export async function syncAll({ client, kv, characters, now = () => new Date().toISOString(), maxNewLookups }) {
   const previous = (await kv.get("index", "json")) ?? { characters: [] };
   const previousByKey = new Map(previous.characters.map((s) => [s.key, s]));
+  const refs = createRefs({ client, kv, maxNewLookups });
 
   const summaries = [];
   for (const character of characters) {
-    summaries.push(await syncCharacter({ client, kv, character, previous: previousByKey.get(character.key), now }));
+    summaries.push(await syncCharacter({ client, kv, refs, character, previous: previousByKey.get(character.key), now }));
   }
 
-  await kv.put("index", JSON.stringify({ updatedAt: now(), characters: summaries }));
-  return summaries;
+  await kv.put("index", JSON.stringify({ schemaVersion: SCHEMA_VERSION, updatedAt: now(), characters: summaries }));
+  return { summaries, refs: refs.stats() };
 }
 
-async function syncCharacter({ client, kv, character, previous, now }) {
+async function syncCharacter({ client, kv, refs, character, previous, now }) {
   const base = `/profile/wow/character/${character.path}`;
-  const keep = (error) => ({ ...previous, key: character.key, game: character.game, status: "error", error });
+  // The not-listed shape underneath supplies route and display names when the
+  // previous summary lacks them (first run, or one written by v1.x).
+  const keep = (error) => ({ ...notListedSummary(character), ...previous, route: character.route, status: "error", error });
 
   let profile;
   try {
@@ -42,26 +51,33 @@ async function syncCharacter({ client, kv, character, previous, now }) {
   } catch (err) {
     return keep(`profile request failed: ${err.message}`);
   }
-  if (profile.status === 404) return { key: character.key, game: character.game, status: "not-listed" };
+  if (profile.status === 404) return notListedSummary(character);
   if (profile.status !== 200) return keep(`profile HTTP ${profile.status}`);
 
   try {
-    const sections = await fetchSections(client, base, character.profileNamespace);
-    const itemIcons = await fetchItemIcons(client, kv, sections.equipment, character.staticNamespace);
+    const endpoints = character.game === "retail" ? { ...SECTIONS, ...RETAIL_ONLY } : SECTIONS;
+    const sections = await fetchSections(client, base, character.profileNamespace, endpoints);
+    const ns = character.staticNamespace;
+    const classId = profile.data.character_class?.id;
+    const [itemIcons, classSpecs] = await Promise.all([
+      fetchItemIcons(refs, sections.equipment, ns),
+      character.game === "retail" && classId ? refs.classSpecs(ns, classId) : null,
+    ]);
     const fetchedAt = now();
-    const record = { fetchedAt, profile: profile.data, ...sections, itemIcons };
-    await kv.put(`character:${character.key}`, JSON.stringify(record));
-    return summarise(character, profile.data, fetchedAt);
+    const view = buildCharacterView({ game: character.game, fetchedAt, ...sections, itemIcons, classSpecs });
+    await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:character`, JSON.stringify(view));
+    const spec = character.game === "forever" ? foreverActiveSpec(sections.specializations) : null;
+    return buildSummary(character, profile.data, sections.media, fetchedAt, spec);
   } catch (err) {
     return keep(`sync failed: ${err.message}`);
   }
 }
 
 // Fetches every section in parallel. A section the API does not return is
-// stored as null, so one missing section never fails the whole character.
-async function fetchSections(client, base, namespace) {
+// null, so one missing section never fails the whole character.
+async function fetchSections(client, base, namespace, endpoints) {
   const entries = await Promise.all(
-    Object.entries(SECTIONS).map(async ([field, endpoint]) => {
+    Object.entries(endpoints).map(async ([field, endpoint]) => {
       const res = await client.get(`${base}/${endpoint}`, namespace);
       return [field, res.status === 200 ? res.data : null];
     }),
@@ -69,39 +85,15 @@ async function fetchSections(client, base, namespace) {
   return Object.fromEntries(entries);
 }
 
-// Returns { itemId: iconUrl } for the equipped items, using the KV cache and
-// fetching only the icons it has not seen before.
-async function fetchItemIcons(client, kv, equipment, staticNamespace) {
+// Returns { itemId: iconUrl } for the equipped items that have an icon.
+async function fetchItemIcons(refs, equipment, ns) {
   const ids = [...new Set((equipment?.equipped_items ?? []).map((i) => i.media?.id ?? i.item?.id).filter(Boolean))];
   const icons = {};
   await Promise.all(
     ids.map(async (id) => {
-      const cacheKey = `icon:${staticNamespace}:${id}`;
-      let url = await kv.get(cacheKey);
-      if (!url) {
-        const res = await client.get(`/data/wow/media/item/${id}`, staticNamespace);
-        url = res.status === 200 ? res.data?.assets?.find((a) => a.key === "icon")?.value : null;
-        if (url) await kv.put(cacheKey, url);
-      }
+      const url = await refs.itemIcon(ns, id);
       if (url) icons[id] = url;
     }),
   );
   return icons;
-}
-
-function summarise(character, p, fetchedAt) {
-  return {
-    key: character.key,
-    game: character.game,
-    status: "ok",
-    name: p.name,
-    realm: p.realm?.name ?? null,
-    level: p.level,
-    race: p.race?.name ?? null,
-    characterClass: p.character_class?.name ?? null,
-    spec: p.active_spec?.name ?? null,
-    faction: p.faction?.name ?? null,
-    itemLevel: p.equipped_item_level ?? null,
-    lastSuccessAt: fetchedAt,
-  };
 }
