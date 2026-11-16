@@ -2,8 +2,9 @@
 import { mediaAsset } from "./character.js";
 
 // `spec` overrides the profile's active spec: Forever profiles report none,
-// so the sync derives it from talent points and passes it in.
-export function buildSummary(character, p, media, fetchedAt, spec = null) {
+// so the sync derives it from talent points and passes it in. `portrait` is
+// { url, focus } for the full render (see portrait.js), or null.
+export function buildSummary(character, p, media, fetchedAt, spec = null, portrait = null) {
   return {
     key: character.key,
     game: character.game,
@@ -23,6 +24,7 @@ export function buildSummary(character, p, media, fetchedAt, spec = null) {
     guild: p.guild?.name ?? null,
     achievementPoints: p.achievement_points ?? 0,
     inset: mediaAsset(media, "inset") ?? mediaAsset(media, "avatar"),
+    portrait,
     lastSuccessAt: fetchedAt,
   };
 }

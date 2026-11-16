@@ -29,10 +29,10 @@ const RETAIL_ONLY = { mythic: "mythic-keystone-profile" };
 // the previous view.
 const CORE_SECTIONS = ["equipment", "statistics", "specializations", "media"];
 
-export async function syncAll({ client, kv, characters, now = () => new Date().toISOString(), maxNewLookups }) {
+export async function syncAll({ client, kv, characters, now = () => new Date().toISOString(), maxNewLookups, fetchImage }) {
   const previous = (await kv.get("index", "json")) ?? { characters: [] };
   const previousByKey = new Map(previous.characters.map((s) => [s.key, s]));
-  const refs = createRefs({ client, kv, maxNewLookups });
+  const refs = createRefs({ client, kv, maxNewLookups, fetchImage });
 
   const summaries = [];
   for (const character of characters) {
@@ -77,7 +77,8 @@ async function syncCharacter({ client, kv, refs, character, previous, now }) {
     const view = buildCharacterView({ game: character.game, fetchedAt, ...sections, itemIcons, classSpecs });
     await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:character`, JSON.stringify(view));
     const spec = character.game === "forever" ? foreverActiveSpec(sections.specializations) : null;
-    return buildSummary(character, profile.data, sections.media, fetchedAt, spec);
+    const portrait = await measurePortrait(refs, view.render);
+    return buildSummary(character, profile.data, sections.media, fetchedAt, spec, portrait);
   } catch (err) {
     return keep(`sync failed: ${err.message}`);
   }
@@ -96,6 +97,19 @@ async function fetchSections(client, base, namespace, endpoints) {
     sections: Object.fromEntries(results.map((r) => [r.field, r.data])),
     failed: results.filter((r) => r.status !== 200 && r.status !== 404),
   };
+}
+
+// { url, focus } for the character's render, or null. Framing is a nicety:
+// a failure here never fails the character, and the site falls back to the
+// inset image.
+async function measurePortrait(refs, url) {
+  if (!url) return null;
+  try {
+    const focus = await refs.portrait(url);
+    return focus ? { url, focus } : null;
+  } catch {
+    return null;
+  }
 }
 
 // Returns { itemId: iconUrl } for the equipped items that have an icon.

@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { syncAll, SCHEMA_VERSION } from "../src/sync.js";
 import { trackedCharacters } from "../src/characters.js";
 import { fakeKv, fakeFetch, client } from "./helpers.js";
+import { encodePng, figurePixel } from "./png.js";
 
 const load = (f) => JSON.parse(readFileSync(new URL(`./fixtures/${f}`, import.meta.url), "utf8"));
 const FOREVER = load("forever-recurve.json");
@@ -44,8 +45,11 @@ function fixtureRoute(path) {
   return [404, undefined];
 }
 
-const run = (kv, route = fixtureRoute, characters = [RECURVE]) =>
-  syncAll({ client: client(fakeFetch(route)), kv, characters, now: () => NOW });
+// Renders 404 unless a test serves one, so no test reaches the network.
+const noRenders = async () => new Response(null, { status: 404 });
+
+const run = (kv, route = fixtureRoute, characters = [RECURVE], fetchImage = noRenders) =>
+  syncAll({ client: client(fakeFetch(route)), kv, characters, now: () => NOW, fetchImage });
 
 test("writes index v1 and a character view for a listed character", async () => {
   const kv = fakeKv();
@@ -156,4 +160,29 @@ test("returns ref lookup stats alongside the summaries", async () => {
   assert.equal(result.summaries.length, 1);
   assert.equal(result.refs.fetched, 13);
   assert.equal(result.refs.skipped, 0);
+});
+
+test("the summary carries a portrait measured from the character's render", async () => {
+  const kv = fakeKv();
+  const png = await encodePng(100, 200, figurePixel);
+  const requested = [];
+  await run(kv, fixtureRoute, [RECURVE], async (url) => {
+    requested.push(url);
+    return new Response(png, { status: 200, headers: { ETag: '"a"' } });
+  });
+
+  const render = FOREVER.media.assets.find((a) => a.key === "main-raw").value;
+  assert.deepEqual(requested, [render]);
+  assert.deepEqual(kv.json("index").characters[0].portrait, { url: render, focus: { x: 0.5, top: 0.085, height: 0.27 } });
+});
+
+test("a render that can't be fetched leaves the portrait null and the character ok", async () => {
+  const kv = fakeKv();
+  await run(kv, fixtureRoute, [RECURVE], async () => {
+    throw new Error("connection reset");
+  });
+
+  const s = kv.json("index").characters[0];
+  assert.equal(s.status, "ok");
+  assert.equal(s.portrait, null);
 });

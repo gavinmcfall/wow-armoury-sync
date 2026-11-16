@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createRefs } from "../src/refs.js";
 import { fakeKv, fakeFetch, client } from "./helpers.js";
+import { encodePng, figurePixel } from "./png.js";
 
 const NS = "static-us";
 
@@ -66,4 +67,55 @@ test("cached hits do not count against the cap", async () => {
   assert.equal(await refs.itemIcon(NS, 1), "https://cached/1.jpg");
   assert.equal(await refs.itemIcon(NS, 2), "https://render/icons/2.jpg");
   assert.deepEqual(refs.stats(), { hits: 1, fetched: 1, skipped: 0 });
+});
+
+// A render server stand-in: serves `png` with an ETag and honours If-None-Match.
+function renderFetch(png, etag = '"v1"') {
+  const calls = [];
+  const impl = async (url, init = {}) => {
+    calls.push({ url, ifNoneMatch: init.headers?.["If-None-Match"] ?? null });
+    if (init.headers?.["If-None-Match"] === etag) return new Response(null, { status: 304 });
+    return new Response(png, { status: 200, headers: { ETag: etag } });
+  };
+  impl.calls = calls;
+  return impl;
+}
+
+const RENDER = "https://render.worldofwarcraft.com/us/character/barthilas/196/202694596-main-raw.png";
+const FOCUS = { x: 0.5, top: 0.085, height: 0.27 };
+
+test("portrait measures a new render and caches it under its ETag", async () => {
+  const kv = fakeKv();
+  const fetchImage = renderFetch(await encodePng(100, 200, figurePixel));
+  const refs = createRefs({ client: client(fakeFetch(iconRoute)), kv, fetchImage });
+
+  assert.deepEqual(await refs.portrait(RENDER), FOCUS);
+  assert.deepEqual(kv.json("ref:portrait:/us/character/barthilas/196/202694596-main-raw.png"), { etag: '"v1"', focus: FOCUS });
+  assert.deepEqual(refs.stats(), { hits: 0, fetched: 1, skipped: 0 });
+});
+
+test("portrait reuses the cached focus when the render hasn't changed", async () => {
+  const kv = fakeKv({ "ref:portrait:/us/character/barthilas/196/202694596-main-raw.png": { etag: '"v1"', focus: FOCUS } });
+  const fetchImage = renderFetch(new Uint8Array(), '"v1"');
+  const refs = createRefs({ client: client(fakeFetch(iconRoute)), kv, fetchImage });
+
+  assert.deepEqual(await refs.portrait(RENDER), FOCUS);
+  assert.equal(fetchImage.calls[0].ifNoneMatch, '"v1"');
+  assert.deepEqual(refs.stats(), { hits: 1, fetched: 0, skipped: 0 });
+});
+
+test("portrait measures again when the render has changed", async () => {
+  const kv = fakeKv({ "ref:portrait:/us/character/barthilas/196/202694596-main-raw.png": { etag: '"old"', focus: { x: 0.1, top: 0.1, height: 0.1 } } });
+  const fetchImage = renderFetch(await encodePng(100, 200, figurePixel), '"v2"');
+  const refs = createRefs({ client: client(fakeFetch(iconRoute)), kv, fetchImage });
+
+  assert.deepEqual(await refs.portrait(RENDER), FOCUS);
+  assert.equal(kv.json("ref:portrait:/us/character/barthilas/196/202694596-main-raw.png").etag, '"v2"');
+});
+
+test("portrait falls back to the cached focus when the render server fails", async () => {
+  const kv = fakeKv({ "ref:portrait:/us/character/barthilas/196/202694596-main-raw.png": { etag: '"v1"', focus: FOCUS } });
+  const refs = createRefs({ client: client(fakeFetch(iconRoute)), kv, fetchImage: async () => new Response(null, { status: 503 }) });
+
+  assert.deepEqual(await refs.portrait(RENDER), FOCUS);
 });

@@ -1,11 +1,15 @@
+import { figureFocus } from "./portrait.js";
+
 // Reference data that rarely or never changes (item icons, a class's spec
 // list), cached in KV under ref:{namespace}:… so each value is fetched once.
+// Portrait framing is cached too, under ref:portrait:{render path}.
 //
 // New lookups per run are capped: a first run with a large roster, or a
 // season's worth of new gear, stays inside the Worker's subrequest limit.
 // A lookup over the cap returns null; it is fetched on a later night.
 
-export function createRefs({ client, kv, maxNewLookups = 2000 }) {
+// `fetchImage` fetches Blizzard's render images, which need no API token.
+export function createRefs({ client, kv, maxNewLookups = 2000, fetchImage = (...args) => fetch(...args) }) {
   const counts = { hits: 0, fetched: 0, skipped: 0 };
 
   // Reads key from KV; on a miss, and while under the cap, calls load() and
@@ -40,6 +44,27 @@ export function createRefs({ client, kv, maxNewLookups = 2000 }) {
         if (res.status !== 200) return null;
         return (res.data?.specializations ?? []).map((s) => s.name);
       });
+    },
+    // Where the character stands in its render (see portrait.js). A render
+    // changes when the character's gear does, so the cached focus is kept
+    // under the image's ETag and checked with a conditional request.
+    async portrait(url) {
+      const key = `ref:portrait:${new URL(url).pathname}`;
+      const cached = await kv.get(key, "json");
+      if (!cached && counts.fetched >= maxNewLookups) {
+        counts.skipped++;
+        return null;
+      }
+      const res = await fetchImage(url, { headers: cached?.etag ? { "If-None-Match": cached.etag } : {} });
+      if (res.status === 304 && cached) {
+        counts.hits++;
+        return cached.focus;
+      }
+      if (!res.ok) return cached?.focus ?? null;
+      counts.fetched++;
+      const focus = await figureFocus(new Uint8Array(await res.arrayBuffer()));
+      if (focus) await kv.put(key, JSON.stringify({ etag: res.headers.get("ETag"), focus }));
+      return focus;
     },
     stats() {
       return { ...counts };

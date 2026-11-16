@@ -30,6 +30,7 @@ A bad night never wipes good data. If Blizzard's API fails for the profile, or f
 | `view:v1:{key}:character` | The Character view for one character: gear, stats, specs, Mythic+, raids, PvP |
 | `ref:{namespace}:item-icon:{itemId}` | An item's icon URL. Icons never change, so each is fetched once and reused. |
 | `ref:{namespace}:class-specs:{classId}` | A class's specialisation names, in Blizzard's order |
+| `ref:portrait:{render path}` | Where the character stands in its render, with the image's ETag. Re-measured only when the render changes. |
 
 A character's `{key}` is `retail:{region}:{realm}:{name}` or `forever:{region}:{name}-{surname}`.
 
@@ -57,13 +58,18 @@ Each entry in `index.characters` looks like this:
   "guild": "Big Chur",
   "achievementPoints": 11940,
   "inset": "https://render.worldofwarcraft.com/…-inset.jpg",
+  "portrait": {
+    "url": "https://render.worldofwarcraft.com/…-main-raw.png",
+    "focus": { "x": 0.5019, "top": 0.331, "height": 0.252 }
+  },
   "lastSuccessAt": "2026-11-16T14:17:00.000Z"
 }
 ```
 
 - `route` is a ready-made address for the character's page: lowercase, accents kept, not URL-encoded.
 - `realm` is set for retail characters; `ruleset` (the WoW Forever play style, such as `"Normal"`) for Forever characters.
-- `inset` is a portrait image. Forever characters have none, so it falls back to the avatar.
+- `inset` is Blizzard's small (230×116) portrait. Forever characters have none, so it falls back to the 84×84 avatar.
+- `portrait` frames the character in its full 1600×1200 transparent render, for a sharper card image. Blizzard renders every character with the same camera, so a tall race's head sits much higher in the image than a short race's. The sync measures each render: `focus.x` is the figure's horizontal centre, and `focus.top` and `focus.height` mark a window over the head and upper body, all as fractions of the image. To show it, scale the image so `focus.height` fills your frame, shift it up by `focus.top`, and centre it on `focus.x`. `portrait` is `null` when the render couldn't be read; use `inset` then.
 
 `status` is one of:
 
@@ -240,6 +246,7 @@ Elsewhere, read KV through the [Cloudflare REST API](https://developers.cloudfla
 | `src/views/character.js` | Builds the Character view from raw API responses |
 | `src/views/summary.js` | Builds the index summaries |
 | `src/refs.js` | The reference-data cache (`ref:` keys) |
+| `src/portrait.js` | Finds where the character stands in its render, for portrait framing |
 | `src/blizzard.js` | Battle.net API client: app token, retry once on rate limits or server errors |
 | `src/characters.js` | The characters to track |
 | `scripts/forever-probe.mjs` | Checks which endpoints answer for each character |
@@ -248,7 +255,7 @@ Elsewhere, read KV through the [Cloudflare REST API](https://developers.cloudfla
 
 ## Notes
 
-- **Limits:** each character costs about 8 API calls, plus one call per item icon (and per class, for retail) the first time it's seen. New reference lookups are capped at 2,000 a night; anything over the cap is fetched on a later night. A few dozen characters fits comfortably within Cloudflare's and Blizzard's limits.
+- **Limits:** each character costs about 8 API calls and one request for its render, plus one call per item icon (and per class, for retail) the first time it's seen. Measuring a render takes roughly 50 ms of CPU, and only happens when the render has changed; that needs the Workers Paid plan's CPU allowance, not the free plan's 10 ms. New reference lookups are capped at 2,000 a night; anything over the cap is fetched on a later night. A few dozen characters fits comfortably within Cloudflare's and Blizzard's limits.
 - **Blizzard's terms:** data from the Battle.net API is covered by [Blizzard's Developer API Terms of Use](https://www.blizzard.com/legal/a2989b50-5f16-43b1-abec-2ae17cc09dd6/blizzard-developer-api-terms-of-use).
 - This isn't affiliated with or endorsed by Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment.
 

@@ -62,3 +62,10 @@ test("trackedCharacters routes", () => {
     assert.equal(c.route.length, c.game === "retail" ? 3 : 2);
   }
 });
+
+test("summary carries the portrait it is given, or null", () => {
+  const portrait = { url: "https://render/main-raw.png", focus: { x: 0.5, top: 0.3, height: 0.25 } };
+  const c = byKey("retail:us:barthilas:cònsecrator");
+  assert.deepEqual(buildSummary(c, RETAIL.profile, RETAIL.media, NOW, null, portrait).portrait, portrait);
+  assert.equal(buildSummary(c, RETAIL.profile, RETAIL.media, NOW).portrait, null);
+});
