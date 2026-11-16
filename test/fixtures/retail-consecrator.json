@@ -4655,6 +4655,314 @@
    }
   ]
  },
+ "dungeons": {
+  "expansions": [
+   {
+    "expansion": {
+     "name": "Current Season",
+     "id": 505
+    },
+    "instances": [
+     {
+      "instance": {
+       "name": "Pit of Saron",
+       "id": 278
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "NORMAL",
+         "name": "Normal"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 1,
+         "total_count": 1,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Scourgelord Tyrannus",
+            "id": 610
+           },
+           "completed_count": 13,
+           "last_kill_timestamp": 1284372844000
+          }
+         ]
+        }
+       },
+       {
+        "difficulty": {
+         "type": "HEROIC",
+         "name": "Heroic"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 1,
+         "total_count": 1,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Scourgelord Tyrannus",
+            "id": 610
+           },
+           "completed_count": 7,
+           "last_kill_timestamp": 1270179524000
+          }
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "instance": {
+       "name": "Skyreach",
+       "id": 476
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "NORMAL",
+         "name": "Normal"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 1,
+         "total_count": 1,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "High Sage Viryx",
+            "id": 968
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1417335710000
+          }
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "instance": {
+       "name": "Seat of the Triumvirate",
+       "id": 945
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "HEROIC",
+         "name": "Heroic"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 1,
+         "total_count": 1,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "L'ura",
+            "id": 1982
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1532249354000
+          }
+         ]
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "expansion": {
+     "name": "Shadowlands",
+     "id": 499
+    },
+    "instances": [
+     {
+      "instance": {
+       "name": "Spires of Ascension",
+       "id": 1186
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "NORMAL",
+         "name": "Normal"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 1,
+         "total_count": 1,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Devos, Paragon of Doubt",
+            "id": 2412
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1667455067000
+          }
+         ]
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "expansion": {
+     "name": "Battle for Azeroth",
+     "id": 396
+    },
+    "instances": [
+     {
+      "instance": {
+       "name": "Tol Dagor",
+       "id": 1002
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "NORMAL",
+         "name": "Normal"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 1,
+         "total_count": 1,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Overseer Korgus",
+            "id": 2096
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1602363820000
+          }
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "instance": {
+       "name": "The MOTHERLODE!!",
+       "id": 1012
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "NORMAL",
+         "name": "Normal"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 1,
+         "total_count": 1,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Mogul Razdunk",
+            "id": 2116
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1604460932000
+          }
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "instance": {
+       "name": "Waycrest Manor",
+       "id": 1021
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "NORMAL",
+         "name": "Normal"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 1,
+         "total_count": 1,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Gorak Tul",
+            "id": 2129
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1602370558000
+          }
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "instance": {
+       "name": "Operation: Mechagon",
+       "id": 1178
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "HEROIC",
+         "name": "Heroic"
+        },
+        "status": {
+         "type": "IN_PROGRESS",
+         "name": "In Progress"
+        },
+        "progress": {
+         "completed_count": 1,
+         "total_count": 2,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "King Mechagon",
+            "id": 2331
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1604472567000
+          }
+         ]
+        }
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ },
  "reputations": {
   "character": {
    "name": "Cònsecrator",

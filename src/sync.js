@@ -8,6 +8,7 @@
 //   view:v1:{key}:reputation      the Reputation tab view
 //   view:v1:{key}:achievements    the Achievements tab view
 //   view:v1:{key}:collections     the Collections tab view
+//   view:v1:{key}:pve             the Dungeons & Raids tab view
 //   ref:{namespace}:…             cached reference data (see refs.js)
 //
 // A failed run never wipes good data: if the profile fetch fails, the
@@ -16,6 +17,7 @@ import { createRefs } from "./refs.js";
 import { buildCharacterView, foreverActiveSpec } from "./views/character.js";
 import { buildCollectionsView, collectionIds } from "./views/collections.js";
 import { buildAchievementsView, recentIds } from "./views/achievements.js";
+import { buildPveView } from "./views/pve.js";
 import { buildReputationView } from "./views/reputation.js";
 import { buildSummary, notListedSummary, primaryProfessions } from "./views/summary.js";
 
@@ -28,6 +30,7 @@ const SECTIONS = {
   media: "character-media",
   pvp: "pvp-summary",
   raids: "encounters/raids",
+  dungeons: "encounters/dungeons",
   reputations: "reputations",
   professions: "professions",
   achievements: "achievements",
@@ -42,6 +45,7 @@ const RETAIL_ONLY = { mythic: "mythic-keystone-profile" };
 // the previous view.
 const CORE_SECTIONS = ["equipment", "statistics", "specializations", "media"];
 const COLLECTIONS = ["mounts", "pets", "toys", "heirlooms"];
+const PVE = ["mythic", "raids", "dungeons"];
 // Icon lookups run this many at a time, to stay under Blizzard's 100
 // requests per second.
 const ICON_CHUNK = 20;
@@ -115,6 +119,10 @@ async function syncCharacter({ client, kv, refs, character, previous, now }) {
       const icons = await fetchCollectionIcons(refs, sections, ns);
       const collections = buildCollectionsView({ game: character.game, fetchedAt, ...pick(sections, COLLECTIONS), icons });
       await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:collections`, JSON.stringify(collections));
+    }
+    if (!PVE.some(failedField)) {
+      const pve = buildPveView({ game: character.game, fetchedAt, ...pick(sections, PVE) });
+      await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:pve`, JSON.stringify(pve));
     }
     const professions = failedField("professions") ? (previous?.professions ?? []) : primaryProfessions(sections.professions);
     const spec = character.game === "forever" ? foreverActiveSpec(sections.specializations) : null;

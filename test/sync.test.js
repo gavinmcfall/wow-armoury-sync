@@ -24,6 +24,7 @@ const ENDPOINTS = {
   "/pvp-summary": "pvp",
   "/mythic-keystone-profile": "mythic",
   "/encounters/raids": "raids",
+  "/encounters/dungeons": "dungeons",
   "/reputations": "reputations",
   "/professions": "professions",
   "/achievements": "achievements",
@@ -348,3 +349,39 @@ test("a server error on any collection keeps the previous collections view", asy
   assert.deepEqual(kv.json(COL_KEY), oldView);
   assert.equal(kv.json("index").characters[0].status, "ok");
 });
+
+const PVE_KEY = "view:v1:forever:us:recurve-ravenholt:pve";
+
+test("writes a Dungeons & Raids view for a listed character", async () => {
+  const kv = fakeKv();
+  await run(kv);
+
+  const view = kv.json(PVE_KEY);
+  assert.equal(view.schemaVersion, 1);
+  assert.equal(view.fetchedAt, NOW);
+  // Forever has no Mythic+, and Recurve has no kills yet.
+  assert.equal(view.mythicPlus, null);
+  assert.deepEqual(view.raids, []);
+  assert.deepEqual(view.dungeons, []);
+});
+
+test("a retail Dungeons & Raids view groups dungeons with the current season first", async () => {
+  const kv = fakeKv();
+  await run(kv, fixtureRoute, [CONSECRATOR]);
+
+  const view = kv.json("view:v1:retail:us:barthilas:cònsecrator:pve");
+  assert.deepEqual(view.mythicPlus, { rating: null });
+  assert.deepEqual(view.dungeons.map((g) => g.name), ["Current Season", "Shadowlands", "Battle for Azeroth"]);
+  assert.equal(view.raids[0].name, "Legion");
+});
+
+for (const endpoint of ["/encounters/raids", "/encounters/dungeons"]) {
+  test(`a server error on ${endpoint} keeps the previous Dungeons & Raids view`, async () => {
+    const oldView = { schemaVersion: 1, fetchedAt: "2026-11-15T14:17:00.000Z", mythicPlus: null, raids: [], dungeons: [] };
+    const kv = fakeKv({ [PVE_KEY]: oldView });
+    await run(kv, (path) => (path.endsWith(endpoint) ? [503, undefined] : fixtureRoute(path)));
+
+    assert.deepEqual(kv.json(PVE_KEY), oldView);
+    assert.equal(kv.json("index").characters[0].status, "ok");
+  });
+}

@@ -19,6 +19,7 @@ const SECTIONS = {
   pvp: "pvp-summary",
   mythic: "mythic-keystone-profile",
   raids: "encounters/raids",
+  dungeons: "encounters/dungeons",
   reputations: "reputations",
   professions: "professions",
   achievements: "achievements",
@@ -55,9 +56,11 @@ for (const c of CHARACTERS) {
     const res = await client.get(`${base}/${endpoint}`, c.ns);
     out[field] = res.status === 200 ? res.data : null;
   }
-  // Keep the three newest expansions: the view only uses the newest.
-  if (out.raids?.expansions) {
-    out.raids.expansions = [...out.raids.expansions].sort((a, b) => b.expansion.id - a.expansion.id).slice(0, 3);
+  // Keep the three newest expansions of raids and dungeons.
+  for (const kind of ["raids", "dungeons"]) {
+    if (out[kind]?.expansions) {
+      out[kind].expansions = [...out[kind].expansions].sort((a, b) => b.expansion.id - a.expansion.id).slice(0, 3);
+    }
   }
   // Recipe lists are long and nothing reads them.
   for (const prof of [...(out.professions?.primaries ?? []), ...(out.professions?.secondaries ?? [])]) {
