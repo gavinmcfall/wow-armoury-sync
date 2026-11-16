@@ -20,7 +20,7 @@ flowchart LR
 4. It shapes those responses into **views**: small JSON documents holding exactly what an Armory page shows, already formatted. Your site reads a view and renders it, without knowing anything about Blizzard's response formats.
 5. It writes the views to KV, plus an index your site can use to list characters.
 
-A bad night never wipes good data. If Blizzard's API fails, the character's previous view is kept and its summary is marked with the error.
+A bad night never wipes good data. If Blizzard's API fails for the profile, or for the equipment, statistics, specialisations or character media, the character's previous view is kept and its summary is marked with the error. That includes a profile 404 for a character that has synced before.
 
 ## What gets stored
 
@@ -107,7 +107,7 @@ A trimmed example:
 - **`mythicPlus`:** `{ "rating": number | null }` for retail, `null` for Forever.
 - **`raids`:** progress for the newest expansion the character has raided in, or `null`.
 
-A section the API doesn't return becomes empty (an empty list, or `null`) rather than failing the character.
+A section the API answers with 404 (it has nothing for this character) becomes empty: an empty list, or `null`. A server error on one of the optional sections (PvP, raids, Mythic+) does the same; a server error on any other section keeps the previous view, as described above.
 
 ### Schema versions
 

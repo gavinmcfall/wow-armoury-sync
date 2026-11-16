@@ -24,6 +24,10 @@ const SECTIONS = {
   raids: "encounters/raids",
 };
 const RETAIL_ONLY = { mythic: "mythic-keystone-profile" };
+// Sections the Character view can't do without. A 404 on one means the API
+// has nothing for this character (stored as empty); any other failure keeps
+// the previous view.
+const CORE_SECTIONS = ["equipment", "statistics", "specializations", "media"];
 
 export async function syncAll({ client, kv, characters, now = () => new Date().toISOString(), maxNewLookups }) {
   const previous = (await kv.get("index", "json")) ?? { characters: [] };
@@ -51,12 +55,18 @@ async function syncCharacter({ client, kv, refs, character, previous, now }) {
   } catch (err) {
     return keep(`profile request failed: ${err.message}`);
   }
-  if (profile.status === 404) return notListedSummary(character);
+  // A 404 for a character that has synced before is more likely a passing
+  // API fault (or a rename) than the character vanishing: keep its data.
+  if (profile.status === 404) return previous?.lastSuccessAt ? keep("profile HTTP 404") : notListedSummary(character);
   if (profile.status !== 200) return keep(`profile HTTP ${profile.status}`);
 
   try {
     const endpoints = character.game === "retail" ? { ...SECTIONS, ...RETAIL_ONLY } : SECTIONS;
-    const sections = await fetchSections(client, base, character.profileNamespace, endpoints);
+    const { sections, failed } = await fetchSections(client, base, character.profileNamespace, endpoints);
+    // A server error on a section the page is built around would write an
+    // empty doll over good data; keep the previous view instead.
+    const coreFailure = failed.find((f) => CORE_SECTIONS.includes(f.field));
+    if (coreFailure) return keep(`${coreFailure.endpoint} HTTP ${coreFailure.status}`);
     const ns = character.staticNamespace;
     const classId = profile.data.character_class?.id;
     const [itemIcons, classSpecs] = await Promise.all([
@@ -74,15 +84,18 @@ async function syncCharacter({ client, kv, refs, character, previous, now }) {
 }
 
 // Fetches every section in parallel. A section the API does not return is
-// null, so one missing section never fails the whole character.
+// null; `failed` lists the ones that answered with anything but 200 or 404.
 async function fetchSections(client, base, namespace, endpoints) {
-  const entries = await Promise.all(
+  const results = await Promise.all(
     Object.entries(endpoints).map(async ([field, endpoint]) => {
       const res = await client.get(`${base}/${endpoint}`, namespace);
-      return [field, res.status === 200 ? res.data : null];
+      return { field, endpoint, status: res.status, data: res.status === 200 ? res.data : null };
     }),
   );
-  return Object.fromEntries(entries);
+  return {
+    sections: Object.fromEntries(results.map((r) => [r.field, r.data])),
+    failed: results.filter((r) => r.status !== 200 && r.status !== 404),
+  };
 }
 
 // Returns { itemId: iconUrl } for the equipped items that have an icon.

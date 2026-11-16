@@ -115,6 +115,34 @@ test("a failed section does not stop the view", async () => {
   assert.equal(kv.json("index").characters[0].status, "ok");
 });
 
+test("a core section server error keeps the previous view and marks the summary error", async () => {
+  const oldView = { schemaVersion: 1, fetchedAt: "2026-11-15T14:17:00.000Z", equipment: [{ slot: "HEAD" }] };
+  const oldSummary = { key: RECURVE.key, game: "forever", status: "ok", name: "Recurve", lastSuccessAt: "2026-11-15T14:17:00.000Z" };
+  const kv = fakeKv({ [VIEW_KEY]: oldView, index: { schemaVersion: 1, updatedAt: "x", characters: [oldSummary] } });
+
+  await run(kv, (path) => (path.endsWith("/equipment") ? [503, undefined] : fixtureRoute(path)));
+
+  assert.deepEqual(kv.json(VIEW_KEY), oldView);
+  const s = kv.json("index").characters[0];
+  assert.equal(s.status, "error");
+  assert.equal(s.error, "equipment HTTP 503");
+  assert.equal(s.lastSuccessAt, "2026-11-15T14:17:00.000Z");
+});
+
+test("a profile 404 for a character that was synced before keeps its data", async () => {
+  const oldView = { schemaVersion: 1, fetchedAt: "2026-11-15T14:17:00.000Z", equipment: [] };
+  const oldSummary = { key: RECURVE.key, game: "forever", status: "ok", name: "Recurve", level: 23, lastSuccessAt: "2026-11-15T14:17:00.000Z" };
+  const kv = fakeKv({ [VIEW_KEY]: oldView, index: { schemaVersion: 1, updatedAt: "x", characters: [oldSummary] } });
+
+  await run(kv, () => [404, undefined]);
+
+  assert.deepEqual(kv.json(VIEW_KEY), oldView);
+  const s = kv.json("index").characters[0];
+  assert.equal(s.status, "error");
+  assert.equal(s.error, "profile HTTP 404");
+  assert.equal(s.level, 23);
+});
+
 test("writes no legacy keys", async () => {
   const kv = fakeKv();
   await run(kv, fixtureRoute, [RECURVE, CONSECRATOR]);
