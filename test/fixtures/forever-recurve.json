@@ -1,0 +1,1775 @@
+{
+ "profile": {
+  "id": 2838722,
+  "name": "Recurve",
+  "gender": {
+   "type": "MALE",
+   "name": "Male"
+  },
+  "faction": {
+   "type": "ALLIANCE",
+   "name": "Alliance"
+  },
+  "race": {
+   "name": "High Order Skyborne",
+   "id": 95
+  },
+  "character_class": {
+   "name": "Hunter",
+   "id": 3
+  },
+  "level": 23,
+  "experience": 6062,
+  "achievement_points": 0,
+  "achievements": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/achievements?namespace=profile-forever-us"
+  },
+  "titles": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/titles?namespace=profile-forever-us"
+  },
+  "pvp_summary": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/pvp-summary?namespace=profile-forever-us"
+  },
+  "encounters": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/encounters?namespace=profile-forever-us"
+  },
+  "media": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/character-media?namespace=profile-forever-us"
+  },
+  "hunter_pets": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/hunter-pets?namespace=profile-forever-us"
+  },
+  "last_login_timestamp": 1794725545000,
+  "average_item_level": 11,
+  "equipped_item_level": 11,
+  "specializations": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/specializations?namespace=profile-forever-us"
+  },
+  "statistics": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/statistics?namespace=profile-forever-us"
+  },
+  "mythic_keystone_profile": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/mythic-keystone-profile?namespace=profile-forever-us"
+  },
+  "equipment": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/equipment?namespace=profile-forever-us"
+  },
+  "appearance": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/appearance?namespace=profile-forever-us"
+  },
+  "collections": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/collections?namespace=profile-forever-us"
+  },
+  "reputations": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/reputations?namespace=profile-forever-us"
+  },
+  "quests": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/quests?namespace=profile-forever-us"
+  },
+  "achievements_statistics": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/achievements/statistics?namespace=profile-forever-us"
+  },
+  "professions": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/recurve-ravenholt/professions?namespace=profile-forever-us"
+  },
+  "is_remix": false,
+  "surname": "Ravenholt",
+  "ruleset": {
+   "name": "Normal",
+   "id": 2
+  },
+  "name_search": "Recurve Ravenholt"
+ },
+ "equipment": {
+  "character": {
+   "name": "Recurve",
+   "id": 2838722,
+   "surname": "Ravenholt",
+   "slug": "recurve-ravenholt"
+  },
+  "equipped_items": [
+   {
+    "item": {
+     "id": 271668
+    },
+    "slot": {
+     "type": "SHIRT",
+     "name": "Shirt"
+    },
+    "quantity": 1,
+    "context": 75,
+    "quality": {
+     "type": "COMMON",
+     "name": "Common"
+    },
+    "name": "Thendal Survivalist's Shirt",
+    "media": {
+     "id": 271668
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Miscellaneous",
+     "id": 0
+    },
+    "inventory_type": {
+     "type": "BODY",
+     "name": "Shirt"
+    },
+    "sell_price": {
+     "value": 1,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "0",
+      "silver": "0",
+      "copper": "1"
+     }
+    },
+    "level": {
+     "value": 1,
+     "display_string": "Item Level 1"
+    },
+    "is_subclass_hidden": true
+   },
+   {
+    "item": {
+     "id": 3288
+    },
+    "enchantments": [
+     {
+      "display_string": "Enchanted: Stamina +3",
+      "source_item": {
+       "name": "Enchant Chest - Lesser Stamina",
+       "id": 273466
+      },
+      "enchantment_id": 242,
+      "enchantment_slot": {
+       "id": 0,
+       "type": "PERMANENT"
+      }
+     }
+    ],
+    "slot": {
+     "type": "CHEST",
+     "name": "Chest"
+    },
+    "quantity": 1,
+    "quality": {
+     "type": "UNCOMMON",
+     "name": "Uncommon"
+    },
+    "name": "Tribal Vest",
+    "media": {
+     "id": 3288
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Leather",
+     "id": 2
+    },
+    "inventory_type": {
+     "type": "CHEST",
+     "name": "Chest"
+    },
+    "binding": {
+     "type": "ON_EQUIP",
+     "name": "Binds when equipped"
+    },
+    "armor": {
+     "value": 65,
+     "display": {
+      "display_string": "65 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "AGILITY",
+       "name": "Agility"
+      },
+      "value": 2,
+      "display": {
+       "display_string": "+2 Agility",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "STAMINA",
+       "name": "Stamina"
+      },
+      "value": 1,
+      "display": {
+       "display_string": "+1 Stamina",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 250,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "0",
+      "silver": "2",
+      "copper": "50"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 8,
+      "display_string": "Requires Level 8"
+     }
+    },
+    "level": {
+     "value": 13,
+     "display_string": "Item Level 13"
+    },
+    "durability": {
+     "value": 28,
+     "display_string": "Durability 28 / 60"
+    }
+   },
+   {
+    "item": {
+     "id": 10403
+    },
+    "slot": {
+     "type": "WAIST",
+     "name": "Waist"
+    },
+    "quantity": 1,
+    "context": 1,
+    "quality": {
+     "type": "RARE",
+     "name": "Rare"
+    },
+    "name": "Blackened Defias Belt",
+    "media": {
+     "id": 10403
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Leather",
+     "id": 2
+    },
+    "inventory_type": {
+     "type": "WAIST",
+     "name": "Waist"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "armor": {
+     "value": 50,
+     "display": {
+      "display_string": "50 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "ATTACK_POWER",
+       "name": "Attack Power"
+      },
+      "value": 18,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+18 Attack Power",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 569,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "0",
+      "silver": "5",
+      "copper": "69"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 17,
+      "display_string": "Requires Level 17"
+     }
+    },
+    "set": {
+     "item_set": {
+      "name": "Defias Leather",
+      "id": 161
+     },
+     "items": [
+      {
+       "item": {
+        "name": "Blackened Defias Armor",
+        "id": 10399
+       }
+      },
+      {
+       "item": {
+        "name": "Blackened Defias Belt",
+        "id": 10403
+       },
+       "is_equipped": true
+      },
+      {
+       "item": {
+        "name": "Blackened Defias Boots",
+        "id": 10402
+       }
+      },
+      {
+       "item": {
+        "name": "Blackened Defias Gloves",
+        "id": 10401
+       }
+      },
+      {
+       "item": {
+        "name": "Blackened Defias Leggings",
+        "id": 10400
+       }
+      }
+     ],
+     "effects": [
+      {
+       "display_string": "(2) Set: +5 Arcane Resistance.",
+       "required_count": 2
+      },
+      {
+       "display_string": "(3) Set: +15 Attack Power against Humanoids.",
+       "required_count": 3
+      },
+      {
+       "display_string": "(4) Set: Grants your melee attacks a 5% chance when striking from behind to hit a vital point, causing the target to Bleed for 70 to 85 Physical damage over 5 sec.",
+       "required_count": 4
+      },
+      {
+       "display_string": "(5) Set: Increased Daggers +1.",
+       "required_count": 5
+      }
+     ],
+     "display_string": "Defias Leather (1/5)"
+    },
+    "level": {
+     "value": 22,
+     "display_string": "Item Level 22"
+    },
+    "durability": {
+     "value": 17,
+     "display_string": "Durability 17 / 30"
+    }
+   },
+   {
+    "item": {
+     "id": 1934
+    },
+    "slot": {
+     "type": "LEGS",
+     "name": "Legs"
+    },
+    "quantity": 1,
+    "context": 1,
+    "quality": {
+     "type": "RARE",
+     "name": "Rare"
+    },
+    "name": "Stonemason Trousers",
+    "media": {
+     "id": 1934
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Leather",
+     "id": 2
+    },
+    "inventory_type": {
+     "type": "LEGS",
+     "name": "Legs"
+    },
+    "binding": {
+     "type": "ON_EQUIP",
+     "name": "Binds when equipped"
+    },
+    "armor": {
+     "value": 75,
+     "display": {
+      "display_string": "75 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "AGILITY",
+       "name": "Agility"
+      },
+      "value": 7,
+      "display": {
+       "display_string": "+7 Agility",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "SPIRIT",
+       "name": "Spirit"
+      },
+      "value": 7,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+7 Spirit",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 853,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "0",
+      "silver": "8",
+      "copper": "53"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 15,
+      "display_string": "Requires Level 15"
+     }
+    },
+    "level": {
+     "value": 20,
+     "display_string": "Item Level 20"
+    },
+    "durability": {
+     "value": 33,
+     "display_string": "Durability 33 / 65"
+    }
+   },
+   {
+    "item": {
+     "id": 270013
+    },
+    "enchantments": [
+     {
+      "display_string": "Enchanted: Stamina +3",
+      "source_item": {
+       "name": "Enchant Boots - Minor Stamina",
+       "id": 273478
+      },
+      "enchantment_id": 66,
+      "enchantment_slot": {
+       "id": 0,
+       "type": "PERMANENT"
+      }
+     }
+    ],
+    "slot": {
+     "type": "FEET",
+     "name": "Feet"
+    },
+    "quantity": 1,
+    "context": 11,
+    "quality": {
+     "type": "UNCOMMON",
+     "name": "Uncommon"
+    },
+    "name": "Miner's Workboots",
+    "media": {
+     "id": 270013
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Leather",
+     "id": 2
+    },
+    "inventory_type": {
+     "type": "FEET",
+     "name": "Feet"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "armor": {
+     "value": 53,
+     "display": {
+      "display_string": "53 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "SPIRIT",
+       "name": "Spirit"
+      },
+      "value": 5,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+5 Spirit",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 547,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "0",
+      "silver": "5",
+      "copper": "47"
+     }
+    },
+    "level": {
+     "value": 20,
+     "display_string": "Item Level 20"
+    },
+    "durability": {
+     "value": 21,
+     "display_string": "Durability 21 / 35"
+    }
+   },
+   {
+    "item": {
+     "id": 270015
+    },
+    "enchantments": [
+     {
+      "display_string": "Enchanted: Agility +3",
+      "source_item": {
+       "name": "Enchant Bracer - Minor Agility",
+       "id": 273470
+      },
+      "enchantment_id": 247,
+      "enchantment_slot": {
+       "id": 0,
+       "type": "PERMANENT"
+      }
+     }
+    ],
+    "slot": {
+     "type": "WRIST",
+     "name": "Wrist"
+    },
+    "quantity": 1,
+    "context": 11,
+    "quality": {
+     "type": "UNCOMMON",
+     "name": "Uncommon"
+    },
+    "name": "Bravo's Armbands",
+    "media": {
+     "id": 270015
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Leather",
+     "id": 2
+    },
+    "inventory_type": {
+     "type": "WRIST",
+     "name": "Wrist"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "armor": {
+     "value": 35,
+     "display": {
+      "display_string": "35 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "AGILITY",
+       "name": "Agility"
+      },
+      "value": 3,
+      "display": {
+       "display_string": "+3 Agility",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "STRENGTH",
+       "name": "Strength"
+      },
+      "value": 3,
+      "display": {
+       "display_string": "+3 Strength",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 462,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "0",
+      "silver": "4",
+      "copper": "62"
+     }
+    },
+    "level": {
+     "value": 22,
+     "display_string": "Item Level 22"
+    },
+    "durability": {
+     "value": 15,
+     "display_string": "Durability 15 / 25"
+    }
+   },
+   {
+    "item": {
+     "id": 270231
+    },
+    "slot": {
+     "type": "HANDS",
+     "name": "Hands"
+    },
+    "quantity": 1,
+    "context": 1,
+    "quality": {
+     "type": "RARE",
+     "name": "Rare"
+    },
+    "name": "Flamefist Grips",
+    "media": {
+     "id": 270231
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Leather",
+     "id": 2
+    },
+    "inventory_type": {
+     "type": "HAND",
+     "name": "Hands"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "armor": {
+     "value": 51,
+     "display": {
+      "display_string": "51 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "AGILITY",
+       "name": "Agility"
+      },
+      "value": 5,
+      "display": {
+       "display_string": "+5 Agility",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "SPIRIT",
+       "name": "Spirit"
+      },
+      "value": 5,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+5 Spirit",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 338,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "0",
+      "silver": "3",
+      "copper": "38"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 13,
+      "display_string": "Requires Level 13"
+     }
+    },
+    "level": {
+     "value": 18,
+     "display_string": "Item Level 18"
+    },
+    "durability": {
+     "value": 16,
+     "display_string": "Durability 16 / 25"
+    }
+   },
+   {
+    "item": {
+     "id": 264908
+    },
+    "slot": {
+     "type": "FINGER_1",
+     "name": "Ring 1"
+    },
+    "quantity": 1,
+    "context": 11,
+    "quality": {
+     "type": "COMMON",
+     "name": "Common"
+    },
+    "name": "Ancient Heirloom",
+    "media": {
+     "id": 264908
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Miscellaneous",
+     "id": 0
+    },
+    "inventory_type": {
+     "type": "FINGER",
+     "name": "Finger"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "description": "Deep dents and scratches mar the dull surface of the intricate Kaldorei patterns. Faded but legible script on the inside of the band reads 'With love always, KG'.",
+    "level": {
+     "value": 1,
+     "display_string": "Item Level 1"
+    },
+    "is_subclass_hidden": true
+   },
+   {
+    "item": {
+     "id": 271097
+    },
+    "enchantments": [
+     {
+      "display_string": "Enchanted: Armor +10",
+      "source_item": {
+       "name": "Enchant Cloak - Minor Protection",
+       "id": 273468
+      },
+      "enchantment_id": 783,
+      "enchantment_slot": {
+       "id": 0,
+       "type": "PERMANENT"
+      }
+     }
+    ],
+    "slot": {
+     "type": "BACK",
+     "name": "Back"
+    },
+    "quantity": 1,
+    "context": 1,
+    "quality": {
+     "type": "RARE",
+     "name": "Rare"
+    },
+    "name": "Spiritwraith Drape",
+    "media": {
+     "id": 271097
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Cloth",
+     "id": 1
+    },
+    "inventory_type": {
+     "type": "CLOAK",
+     "name": "Back"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "armor": {
+     "value": 17,
+     "display": {
+      "display_string": "17 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "AGILITY",
+       "name": "Agility"
+      },
+      "value": 3,
+      "display": {
+       "display_string": "+3 Agility",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "SPIRIT",
+       "name": "Spirit"
+      },
+      "value": 4,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+4 Spirit",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 474,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "0",
+      "silver": "4",
+      "copper": "74"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 13,
+      "display_string": "Requires Level 13"
+     }
+    },
+    "level": {
+     "value": 18,
+     "display_string": "Item Level 18"
+    },
+    "is_subclass_hidden": true
+   },
+   {
+    "item": {
+     "id": 5192
+    },
+    "enchantments": [
+     {
+      "display_string": "Enchanted: Weapon Damage +1",
+      "source_item": {
+       "name": "Enchant Weapon - Minor Striking",
+       "id": 273473
+      },
+      "enchantment_id": 250,
+      "enchantment_slot": {
+       "id": 0,
+       "type": "PERMANENT"
+      }
+     }
+    ],
+    "slot": {
+     "type": "MAIN_HAND",
+     "name": "Main Hand"
+    },
+    "quantity": 1,
+    "context": 1,
+    "quality": {
+     "type": "RARE",
+     "name": "Rare"
+    },
+    "name": "Thief's Blade",
+    "media": {
+     "id": 5192
+    },
+    "item_class": {
+     "name": "Weapon",
+     "id": 2
+    },
+    "item_subclass": {
+     "name": "Sword",
+     "id": 7
+    },
+    "inventory_type": {
+     "type": "WEAPON",
+     "name": "One-Hand"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "unique_equipped": "Unique-Equipped",
+    "weapon": {
+     "damage": {
+      "min_value": 17,
+      "max_value": 32,
+      "display_string": "17 - 32 Damage",
+      "damage_class": {
+       "type": "PHYSICAL",
+       "name": "Physical"
+      }
+     },
+     "attack_speed": {
+      "value": 1700,
+      "display_string": "Speed 1.70"
+     },
+     "dps": {
+      "value": 14.411764,
+      "display_string": "(14.4 damage per second)"
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "AGILITY",
+       "name": "Agility"
+      },
+      "value": 4,
+      "display": {
+       "display_string": "+4 Agility",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "spells": [
+     {
+      "spell": {
+       "name": "Improved Pick Pocket and Distract 01",
+       "id": 1291987
+      },
+      "description": "Equip: Increases the chance your Pick Pocket and Distract abilities are successful by 1%"
+     }
+    ],
+    "sell_price": {
+     "value": 2258,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "0",
+      "silver": "22",
+      "copper": "58"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 17,
+      "display_string": "Requires Level 17"
+     }
+    },
+    "level": {
+     "value": 22,
+     "display_string": "Item Level 22"
+    },
+    "durability": {
+     "value": 35,
+     "display_string": "Durability 35 / 70"
+    }
+   },
+   {
+    "item": {
+     "id": 1951
+    },
+    "enchantments": [
+     {
+      "display_string": "Enchanted: Weapon Damage +1",
+      "source_item": {
+       "name": "Enchant Weapon - Minor Striking",
+       "id": 273473
+      },
+      "enchantment_id": 250,
+      "enchantment_slot": {
+       "id": 0,
+       "type": "PERMANENT"
+      }
+     }
+    ],
+    "slot": {
+     "type": "OFF_HAND",
+     "name": "Off Hand"
+    },
+    "quantity": 1,
+    "context": 1,
+    "quality": {
+     "type": "RARE",
+     "name": "Rare"
+    },
+    "name": "Blackwater Cutlass",
+    "media": {
+     "id": 1951
+    },
+    "item_class": {
+     "name": "Weapon",
+     "id": 2
+    },
+    "item_subclass": {
+     "name": "Sword",
+     "id": 7
+    },
+    "inventory_type": {
+     "type": "WEAPON",
+     "name": "One-Hand"
+    },
+    "binding": {
+     "type": "ON_EQUIP",
+     "name": "Binds when equipped"
+    },
+    "weapon": {
+     "damage": {
+      "min_value": 17,
+      "max_value": 32,
+      "display_string": "17 - 32 Damage",
+      "damage_class": {
+       "type": "PHYSICAL",
+       "name": "Physical"
+      }
+     },
+     "attack_speed": {
+      "value": 1900,
+      "display_string": "Speed 1.90"
+     },
+     "dps": {
+      "value": 12.894736,
+      "display_string": "(12.9 damage per second)"
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "AGILITY",
+       "name": "Agility"
+      },
+      "value": 4,
+      "display": {
+       "display_string": "+4 Agility",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 1484,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "0",
+      "silver": "14",
+      "copper": "84"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 14,
+      "display_string": "Requires Level 14"
+     }
+    },
+    "level": {
+     "value": 19,
+     "display_string": "Item Level 19"
+    },
+    "durability": {
+     "value": 38,
+     "display_string": "Durability 38 / 65"
+    }
+   },
+   {
+    "item": {
+     "id": 217315
+    },
+    "slot": {
+     "type": "RANGED",
+     "name": "Ranged"
+    },
+    "quantity": 1,
+    "context": 11,
+    "quality": {
+     "type": "UNCOMMON",
+     "name": "Uncommon"
+    },
+    "name": "Precision Bow",
+    "media": {
+     "id": 217315
+    },
+    "item_class": {
+     "name": "Weapon",
+     "id": 2
+    },
+    "item_subclass": {
+     "name": "Bow",
+     "id": 2
+    },
+    "inventory_type": {
+     "type": "RANGED",
+     "name": "Ranged"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "weapon": {
+     "damage": {
+      "min_value": 20,
+      "max_value": 37,
+      "display_string": "20 - 37 Damage",
+      "damage_class": {
+       "type": "PHYSICAL",
+       "name": "Physical"
+      }
+     },
+     "attack_speed": {
+      "value": 2600,
+      "display_string": "Speed 2.60"
+     },
+     "dps": {
+      "value": 10.961538,
+      "display_string": "(11.0 damage per second)"
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "HIT_RATING",
+       "name": "Hit"
+      },
+      "value": 3,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+3 Hit",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 2461,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "0",
+      "silver": "24",
+      "copper": "61"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 23,
+      "display_string": "Requires Level 23"
+     }
+    },
+    "level": {
+     "value": 27,
+     "display_string": "Item Level 27"
+    },
+    "durability": {
+     "value": 60,
+     "display_string": "Durability 60 / 60"
+    }
+   },
+   {
+    "item": {
+     "id": 3464
+    },
+    "slot": {
+     "type": "AMMO",
+     "name": "Ammo"
+    },
+    "quality": {
+     "type": "UNCOMMON",
+     "name": "Uncommon"
+    },
+    "name": "Feathered Arrow",
+    "media": {
+     "id": 3464
+    },
+    "item_class": {
+     "name": "Projectile",
+     "id": 6
+    },
+    "item_subclass": {
+     "name": "Arrow",
+     "id": 2
+    },
+    "inventory_type": {
+     "type": "AMMO",
+     "name": "Ammo"
+    },
+    "weapon": {
+     "damage": {
+      "min_value": 9,
+      "max_value": 10,
+      "display_string": "Adds 9.5 damage per second",
+      "damage_class": {
+       "type": "PHYSICAL",
+       "name": "Physical"
+      }
+     }
+    },
+    "sell_price": {
+     "value": 8,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "0",
+      "silver": "0",
+      "copper": "8"
+     }
+    },
+    "level": {
+     "value": 35,
+     "display_string": "Item Level 35"
+    }
+   }
+  ],
+  "equipped_item_sets": [
+   {
+    "item_set": {
+     "name": "Defias Leather",
+     "id": 161
+    },
+    "items": [
+     {
+      "item": {
+       "name": "Blackened Defias Armor",
+       "id": 10399
+      }
+     },
+     {
+      "item": {
+       "name": "Blackened Defias Belt",
+       "id": 10403
+      },
+      "is_equipped": true
+     },
+     {
+      "item": {
+       "name": "Blackened Defias Boots",
+       "id": 10402
+      }
+     },
+     {
+      "item": {
+       "name": "Blackened Defias Gloves",
+       "id": 10401
+      }
+     },
+     {
+      "item": {
+       "name": "Blackened Defias Leggings",
+       "id": 10400
+      }
+     }
+    ],
+    "effects": [
+     {
+      "display_string": "(2) Set: +5 Arcane Resistance.",
+      "required_count": 2
+     },
+     {
+      "display_string": "(3) Set: +15 Attack Power against Humanoids.",
+      "required_count": 3
+     },
+     {
+      "display_string": "(4) Set: Grants your melee attacks a 5% chance when striking from behind to hit a vital point, causing the target to Bleed for 70 to 85 Physical damage over 5 sec.",
+      "required_count": 4
+     },
+     {
+      "display_string": "(5) Set: Increased Daggers +1.",
+      "required_count": 5
+     }
+    ],
+    "display_string": "Defias Leather (1/5)"
+   }
+  ]
+ },
+ "statistics": {
+  "health": 545,
+  "power": 801,
+  "power_type": {
+   "name": "Mana",
+   "id": 0
+  },
+  "speed": {
+   "rating_bonus": 0,
+   "value": 0,
+   "rating_normalized": 0
+  },
+  "strength": {
+   "base": 27,
+   "effective": 30
+  },
+  "agility": {
+   "base": 55,
+   "effective": 86
+  },
+  "intellect": {
+   "base": 36,
+   "effective": 36
+  },
+  "stamina": {
+   "base": 40,
+   "effective": 47
+  },
+  "melee_crit": {
+   "rating_bonus": 0,
+   "value": 4.6448,
+   "rating_normalized": 0
+  },
+  "melee_haste": {
+   "rating_bonus": 0,
+   "value": 1.9999981,
+   "rating_normalized": 0
+  },
+  "mastery": {
+   "rating_bonus": 0,
+   "value": 0,
+   "rating_normalized": 0
+  },
+  "bonus_armor": 10,
+  "lifesteal": {
+   "rating_bonus": 0,
+   "value": 0,
+   "rating_normalized": 0
+  },
+  "versatility": 0,
+  "versatility_damage_done_bonus": 0,
+  "versatility_healing_done_bonus": 0,
+  "versatility_damage_taken_bonus": 0,
+  "avoidance": {
+   "rating_bonus": 0,
+   "value": 0,
+   "rating_normalized": 0
+  },
+  "attack_power": 160,
+  "main_hand_damage_min": 37.428574,
+  "main_hand_damage_max": 52.428574,
+  "main_hand_speed": 1.667,
+  "main_hand_dps": 26.951754,
+  "off_hand_damage_min": 19.857143,
+  "off_hand_damage_max": 27.357143,
+  "off_hand_speed": 1.863,
+  "off_hand_dps": 12.671575,
+  "spell_power": 0,
+  "spell_penetration": 0,
+  "spell_crit": {
+   "rating_bonus": 0,
+   "value": 4.9248,
+   "rating_normalized": 0
+  },
+  "mana_regen": 64,
+  "mana_regen_combat": 0,
+  "armor": {
+   "base": 10,
+   "effective": 528
+  },
+  "dodge": {
+   "rating_bonus": 0,
+   "value": 9.329599,
+   "rating_normalized": 0
+  },
+  "parry": {
+   "rating_bonus": 0,
+   "value": 4.56,
+   "rating_normalized": 0
+  },
+  "block": {
+   "rating_bonus": 0,
+   "value": 0,
+   "rating_normalized": 0
+  },
+  "ranged_crit": {
+   "rating_bonus": 0,
+   "value": 4.7648,
+   "rating_normalized": 0
+  },
+  "ranged_haste": {
+   "rating_bonus": 0,
+   "value": 12,
+   "rating_normalized": 0
+  },
+  "spell_haste": {
+   "rating_bonus": 0,
+   "value": 1.9999981,
+   "rating_normalized": 0
+  },
+  "character": {
+   "name": "Recurve",
+   "id": 2838722,
+   "surname": "Ravenholt",
+   "slug": "recurve-ravenholt"
+  },
+  "spirit": {
+   "base": 32,
+   "effective": 53
+  },
+  "defense": {
+   "base": 104,
+   "effective": 104
+  },
+  "fire_resistance": {
+   "base": 0,
+   "effective": 0
+  },
+  "shadow_resistance": {
+   "base": 0,
+   "effective": 0
+  },
+  "nature_resistance": {
+   "base": 0,
+   "effective": 0
+  },
+  "arcane_resistance": {
+   "base": 0,
+   "effective": 0
+  },
+  "frost_resistance": {
+   "base": 0,
+   "effective": 0
+  },
+  "movement_speed": 100,
+  "ranged_attack_power": 216,
+  "ranged_damage_min": 84.11429,
+  "ranged_damage_max": 102.11429,
+  "expertise": 0,
+  "off_hand_expertise": 0,
+  "armor_penetration": 0,
+  "spell_healing": 0,
+  "melee_hit": {
+   "rating_bonus": 0.3,
+   "value": 0.3,
+   "rating_normalized": 3
+  },
+  "off_hand_hit": {
+   "rating_bonus": 0.3,
+   "value": 0.3,
+   "rating_normalized": 3
+  },
+  "ranged_hit": {
+   "rating_bonus": 0.3,
+   "value": 0.3,
+   "rating_normalized": 3
+  },
+  "spell_hit": {
+   "rating_bonus": 0.3,
+   "value": 0.3,
+   "rating_normalized": 3
+  }
+ },
+ "specializations": {
+  "character": {
+   "name": "Recurve",
+   "id": 2838722,
+   "surname": "Ravenholt",
+   "slug": "recurve-ravenholt"
+  },
+  "specialization_groups": [
+   {
+    "is_active": true,
+    "specializations": [
+     {
+      "specialization": {
+       "name": "Beast Mastery",
+       "id": 50
+      },
+      "talents": [
+       {
+        "talent": {
+         "name": "Deadly Aspects",
+         "id": 134422
+        },
+        "spell_tooltip": {
+         "spell": {
+          "name": "Deadly Aspects",
+          "id": 19552
+         },
+         "description": "While Aspect of the Hawk is active, Auto Shot has a 10% chance of increasing ranged attack speed by 30% for 12 sec. While Aspect of the Beast is active, all melee auto attacks have a 10% chance of increasing melee attack speed by 30% for 12 sec.",
+         "cast_time": "Passive"
+        },
+        "talent_rank": 5
+       },
+       {
+        "talent": {
+         "name": "Endurance Training",
+         "id": 134438
+        },
+        "spell_tooltip": {
+         "spell": {
+          "name": "Endurance Training",
+          "id": 19583
+         },
+         "description": "Increases the Health and Armor of your pets by 3%.",
+         "cast_time": "Passive"
+        },
+        "talent_rank": 1
+       },
+       {
+        "talent": {
+         "name": "Focused Fire",
+         "id": 134437
+        },
+        "spell_tooltip": {
+         "spell": {
+          "name": "Focused Fire",
+          "id": 1223755
+         },
+         "description": "Increases all damage you and your pet deal by 2% while your pet is active.",
+         "cast_time": "Passive"
+        },
+        "talent_rank": 2
+       },
+       {
+        "talent": {
+         "name": "Improved Revive Pet",
+         "id": 134434
+        },
+        "spell_tooltip": {
+         "spell": {
+          "name": "Improved Revive Pet",
+          "id": 24443
+         },
+         "description": "Revive Pet's casting time is reduced by 6 sec, mana cost is reduced by 40%, and increases the health your pet returns with by an additional 30%.",
+         "cast_time": "Passive"
+        },
+        "talent_rank": 2
+       },
+       {
+        "talent": {
+         "name": "Pathfinding",
+         "id": 134435
+        },
+        "spell_tooltip": {
+         "spell": {
+          "name": "Pathfinding",
+          "id": 19559
+         },
+         "description": "Increases the speed bonus of your Aspect of the Cheetah and Aspect of the Pack by 6%.",
+         "cast_time": "Passive"
+        },
+        "talent_rank": 2
+       },
+       {
+        "talent": {
+         "name": "Bestial Swiftness",
+         "id": 134432
+        },
+        "spell_tooltip": {
+         "spell": {
+          "name": "Bestial Swiftness",
+          "id": 19596
+         },
+         "description": "Increases the movement speed of your pets by 30%.",
+         "cast_time": "Passive"
+        },
+        "talent_rank": 1
+       },
+       {
+        "talent": {
+         "name": "Unleashed Fury",
+         "id": 134431
+        },
+        "spell_tooltip": {
+         "spell": {
+          "name": "Unleashed Fury",
+          "id": 19616
+         },
+         "description": "Increases the damage done by your pets and hawks by 3%.",
+         "cast_time": "Passive"
+        },
+        "talent_rank": 1
+       }
+      ],
+      "specialization_name": "Beast Mastery",
+      "spent_points": 14
+     }
+    ]
+   }
+  ]
+ },
+ "media": {
+  "character": {
+   "name": "Recurve",
+   "id": 2838722,
+   "surname": "Ravenholt",
+   "slug": "recurve-ravenholt"
+  },
+  "assets": [
+   {
+    "key": "main-raw",
+    "value": "https://render.worldofwarcraft.com/forever-us/character/194/2838722-main-raw.png"
+   },
+   {
+    "key": "main-sd-raw",
+    "value": "https://render.worldofwarcraft.com/forever-us/character/194/2838722-main-sd-raw.png"
+   },
+   {
+    "key": "avatar",
+    "value": "https://render.worldofwarcraft.com/forever-us/character/194/2838722-avatar.jpg"
+   },
+   {
+    "key": "avatar-sd",
+    "value": "https://render.worldofwarcraft.com/forever-us/character/194/2838722-avatar-sd.jpg"
+   }
+  ]
+ },
+ "pvp": {
+  "honorable_kills": 0,
+  "character": {
+   "name": "Recurve",
+   "id": 2838722,
+   "surname": "Ravenholt",
+   "slug": "recurve-ravenholt"
+  },
+  "pvp_rank": 0
+ },
+ "mythic": {
+  "current_period": {
+   "period": {
+    "id": 1089
+   }
+  },
+  "character": {
+   "name": "Recurve",
+   "id": 2838722,
+   "surname": "Ravenholt",
+   "slug": "recurve-ravenholt"
+  }
+ },
+ "raids": {
+  "character": {
+   "name": "Recurve",
+   "id": 2838722,
+   "surname": "Ravenholt",
+   "slug": "recurve-ravenholt"
+  }
+ }
+}

@@ -1,0 +1,4658 @@
+{
+ "profile": {
+  "id": 202694596,
+  "name": "Cònsecrator",
+  "gender": {
+   "type": "FEMALE",
+   "name": "Female"
+  },
+  "faction": {
+   "type": "HORDE",
+   "name": "Horde"
+  },
+  "race": {
+   "name": "Blood Elf",
+   "id": 10
+  },
+  "character_class": {
+   "name": "Paladin",
+   "id": 2
+  },
+  "active_spec": {
+   "name": "Retribution",
+   "id": 70
+  },
+  "realm": {
+   "name": "Barthilas",
+   "id": 3723,
+   "slug": "barthilas"
+  },
+  "guild": {
+   "name": "Big Chur",
+   "id": 82548023,
+   "realm": {
+    "name": "Barthilas",
+    "id": 3723,
+    "slug": "barthilas"
+   },
+   "faction": {
+    "type": "HORDE",
+    "name": "Horde"
+   }
+  },
+  "level": 80,
+  "experience": 0,
+  "achievement_points": 11940,
+  "achievements": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/achievements?namespace=profile-us"
+  },
+  "titles": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/titles?namespace=profile-us"
+  },
+  "pvp_summary": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/pvp-summary?namespace=profile-us"
+  },
+  "encounters": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/encounters?namespace=profile-us"
+  },
+  "media": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/character-media?namespace=profile-us"
+  },
+  "last_login_timestamp": 1771357987000,
+  "average_item_level": 81,
+  "equipped_item_level": 81,
+  "specializations": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/specializations?namespace=profile-us"
+  },
+  "statistics": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/statistics?namespace=profile-us"
+  },
+  "mythic_keystone_profile": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/mythic-keystone-profile?namespace=profile-us"
+  },
+  "equipment": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/equipment?namespace=profile-us"
+  },
+  "appearance": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/appearance?namespace=profile-us"
+  },
+  "collections": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/collections?namespace=profile-us"
+  },
+  "active_title": {
+   "name": "Vengeance Incarnate",
+   "id": 342,
+   "display_string": "{name}, Vengeance Incarnate"
+  },
+  "reputations": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/reputations?namespace=profile-us"
+  },
+  "quests": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/quests?namespace=profile-us"
+  },
+  "achievements_statistics": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/achievements/statistics?namespace=profile-us"
+  },
+  "professions": {
+   "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/professions?namespace=profile-us"
+  },
+  "covenant_progress": {
+   "chosen_covenant": {
+    "name": "Kyrian",
+    "id": 1
+   },
+   "renown_level": 80,
+   "soulbinds": {
+    "href": "https://us.api.blizzard.com/profile/wow/character/barthilas/c%C3%B2nsecrator/soulbinds?namespace=profile-us"
+   }
+  },
+  "is_remix": false,
+  "name_search": "Cònsecrator"
+ },
+ "equipment": {
+  "character": {
+   "name": "Cònsecrator",
+   "id": 202694596,
+   "realm": {
+    "name": "Barthilas",
+    "id": 3723,
+    "slug": "barthilas"
+   }
+  },
+  "equipped_items": [
+   {
+    "item": {
+     "id": 221242
+    },
+    "slot": {
+     "type": "HEAD",
+     "name": "Head"
+    },
+    "quantity": 1,
+    "context": 29,
+    "bonus_list": [
+     10297,
+     6652,
+     10877,
+     1606,
+     10254
+    ],
+    "quality": {
+     "type": "RARE",
+     "name": "Rare"
+    },
+    "name": "Forgeborn Helm",
+    "modified_appearance_id": 219194,
+    "media": {
+     "id": 221242
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Plate",
+     "id": 4
+    },
+    "inventory_type": {
+     "type": "HEAD",
+     "name": "Head"
+    },
+    "binding": {
+     "type": "TO_ACCOUNT",
+     "name": "Binds to Warband"
+    },
+    "armor": {
+     "value": 45,
+     "display": {
+      "display_string": "45 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "STRENGTH",
+       "name": "Strength"
+      },
+      "value": 18,
+      "display": {
+       "display_string": "+18 Strength",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "INTELLECT",
+       "name": "Intellect"
+      },
+      "value": 18,
+      "is_negated": true,
+      "display": {
+       "display_string": "+18 Intellect",
+       "color": {
+        "r": 128,
+        "g": 128,
+        "b": 128,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "STAMINA",
+       "name": "Stamina"
+      },
+      "value": 27,
+      "display": {
+       "display_string": "+27 Stamina",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "HASTE_RATING",
+       "name": "Haste"
+      },
+      "value": 21,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+21 Haste",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "VERSATILITY",
+       "name": "Versatility"
+      },
+      "value": 15,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+15 Versatility",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 258329,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "25",
+      "silver": "83",
+      "copper": "29"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 80,
+      "display_string": "Requires Level 80"
+     }
+    },
+    "level": {
+     "value": 80,
+     "display_string": "Item Level 80"
+    },
+    "durability": {
+     "value": 77,
+     "display_string": "Durability 77 / 85"
+    }
+   },
+   {
+    "item": {
+     "id": 226140
+    },
+    "slot": {
+     "type": "NECK",
+     "name": "Neck"
+    },
+    "quantity": 1,
+    "context": 25,
+    "bonus_list": [
+     11128
+    ],
+    "timewalker_level": 76,
+    "quality": {
+     "type": "UNCOMMON",
+     "name": "Uncommon"
+    },
+    "name": "The Flame's Remembrance",
+    "media": {
+     "id": 226140
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Miscellaneous",
+     "id": 0
+    },
+    "inventory_type": {
+     "type": "NECK",
+     "name": "Neck"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "STAMINA",
+       "name": "Stamina"
+      },
+      "value": 15,
+      "display": {
+       "display_string": "+15 Stamina",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "CRIT_RATING",
+       "name": "Critical Strike"
+      },
+      "value": 27,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+27 Critical Strike",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "VERSATILITY",
+       "name": "Versatility"
+      },
+      "value": 22,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+22 Versatility",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 116622,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "11",
+      "silver": "66",
+      "copper": "22"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 76,
+      "display_string": "Requires Level 76"
+     }
+    },
+    "level": {
+     "value": 78,
+     "display_string": "Item Level 78"
+    },
+    "is_subclass_hidden": true
+   },
+   {
+    "item": {
+     "id": 231395
+    },
+    "slot": {
+     "type": "SHOULDER",
+     "name": "Shoulders"
+    },
+    "quantity": 1,
+    "context": 4,
+    "bonus_list": [
+     10378,
+     6652,
+     10281,
+     12092,
+     10383,
+     1472,
+     10255
+    ],
+    "quality": {
+     "type": "EPIC",
+     "name": "Epic"
+    },
+    "name": "Earthslag Shoulders",
+    "modified_appearance_id": 229499,
+    "media": {
+     "id": 231395
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Plate",
+     "id": 4
+    },
+    "inventory_type": {
+     "type": "SHOULDER",
+     "name": "Shoulder"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "armor": {
+     "value": 42,
+     "display": {
+      "display_string": "42 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "STRENGTH",
+       "name": "Strength"
+      },
+      "value": 14,
+      "display": {
+       "display_string": "+14 Strength",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "INTELLECT",
+       "name": "Intellect"
+      },
+      "value": 14,
+      "is_negated": true,
+      "display": {
+       "display_string": "+14 Intellect",
+       "color": {
+        "r": 128,
+        "g": 128,
+        "b": 128,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "STAMINA",
+       "name": "Stamina"
+      },
+      "value": 23,
+      "display": {
+       "display_string": "+23 Stamina",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "HASTE_RATING",
+       "name": "Haste"
+      },
+      "value": 10,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+10 Haste",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "MASTERY_RATING",
+       "name": "Mastery"
+      },
+      "value": 17,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+17 Mastery",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 377932,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "37",
+      "silver": "79",
+      "copper": "32"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 80,
+      "display_string": "Requires Level 80"
+     }
+    },
+    "level": {
+     "value": 83,
+     "display_string": "Item Level 83"
+    },
+    "durability": {
+     "value": 89,
+     "display_string": "Durability 89 / 100"
+    },
+    "name_description": {
+     "display_string": "Timewarped Raid Finder",
+     "color": {
+      "r": 0,
+      "g": 255,
+      "b": 0,
+      "a": 1
+     }
+    }
+   },
+   {
+    "item": {
+     "id": 224617
+    },
+    "slot": {
+     "type": "CHEST",
+     "name": "Chest"
+    },
+    "quantity": 1,
+    "context": 25,
+    "bonus_list": [
+     10289,
+     6652,
+     1697,
+     10844,
+     1485
+    ],
+    "quality": {
+     "type": "UNCOMMON",
+     "name": "Uncommon"
+    },
+    "name": "Earthforged Haubergeon of the Feverflare",
+    "modified_appearance_id": 220484,
+    "media": {
+     "id": 224617
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Plate",
+     "id": 4
+    },
+    "inventory_type": {
+     "type": "CHEST",
+     "name": "Chest"
+    },
+    "binding": {
+     "type": "ON_EQUIP",
+     "name": "Binds when equipped"
+    },
+    "armor": {
+     "value": 59,
+     "display": {
+      "display_string": "59 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "STRENGTH",
+       "name": "Strength"
+      },
+      "value": 18,
+      "display": {
+       "display_string": "+18 Strength",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "INTELLECT",
+       "name": "Intellect"
+      },
+      "value": 18,
+      "is_negated": true,
+      "display": {
+       "display_string": "+18 Intellect",
+       "color": {
+        "r": 128,
+        "g": 128,
+        "b": 128,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "STAMINA",
+       "name": "Stamina"
+      },
+      "value": 26,
+      "display": {
+       "display_string": "+26 Stamina",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "HASTE_RATING",
+       "name": "Haste"
+      },
+      "value": 25,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+25 Haste",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "MASTERY_RATING",
+       "name": "Mastery"
+      },
+      "value": 10,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+10 Mastery",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 295101,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "29",
+      "silver": "51",
+      "copper": "1"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 80,
+      "display_string": "Requires Level 80"
+     }
+    },
+    "level": {
+     "value": 79,
+     "display_string": "Item Level 79"
+    },
+    "durability": {
+     "value": 104,
+     "display_string": "Durability 104 / 115"
+    }
+   },
+   {
+    "item": {
+     "id": 227653
+    },
+    "slot": {
+     "type": "WAIST",
+     "name": "Waist"
+    },
+    "quantity": 1,
+    "context": 3,
+    "bonus_list": [
+     10279,
+     10376,
+     10876,
+     10383,
+     10018,
+     10255
+    ],
+    "quality": {
+     "type": "EPIC",
+     "name": "Epic"
+    },
+    "name": "Malevolent Gladiator's Girdle of Prowess",
+    "modified_appearance_id": 224031,
+    "media": {
+     "id": 227653
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Plate",
+     "id": 4
+    },
+    "inventory_type": {
+     "type": "WAIST",
+     "name": "Waist"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "armor": {
+     "value": 34,
+     "display": {
+      "display_string": "34 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "STRENGTH",
+       "name": "Strength"
+      },
+      "value": 14,
+      "display": {
+       "display_string": "+14 Strength",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "INTELLECT",
+       "name": "Intellect"
+      },
+      "value": 14,
+      "is_negated": true,
+      "display": {
+       "display_string": "+14 Intellect",
+       "color": {
+        "r": 128,
+        "g": 128,
+        "b": 128,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "STAMINA",
+       "name": "Stamina"
+      },
+      "value": 23,
+      "display": {
+       "display_string": "+23 Stamina",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "CRIT_RATING",
+       "name": "Critical Strike"
+      },
+      "value": 12,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+12 Critical Strike",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "MASTERY_RATING",
+       "name": "Mastery"
+      },
+      "value": 15,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+15 Mastery",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 253731,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "25",
+      "silver": "37",
+      "copper": "31"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 80,
+      "display_string": "Requires Level 80"
+     }
+    },
+    "level": {
+     "value": 83,
+     "display_string": "Item Level 83"
+    },
+    "durability": {
+     "value": 50,
+     "display_string": "Durability 50 / 55"
+    },
+    "name_description": {
+     "display_string": "Season 12",
+     "color": {
+      "r": 0,
+      "g": 255,
+      "b": 0,
+      "a": 1
+     }
+    }
+   },
+   {
+    "item": {
+     "id": 150390
+    },
+    "slot": {
+     "type": "LEGS",
+     "name": "Legs"
+    },
+    "quantity": 1,
+    "context": 3,
+    "bonus_list": [
+     10279,
+     10376,
+     10383,
+     10028,
+     10255
+    ],
+    "quality": {
+     "type": "EPIC",
+     "name": "Epic"
+    },
+    "name": "Strangely Glyphed Legplates",
+    "modified_appearance_id": 88880,
+    "media": {
+     "id": 150390
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Plate",
+     "id": 4
+    },
+    "inventory_type": {
+     "type": "LEGS",
+     "name": "Legs"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "armor": {
+     "value": 53,
+     "display": {
+      "display_string": "53 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "STRENGTH",
+       "name": "Strength"
+      },
+      "value": 18,
+      "display": {
+       "display_string": "+18 Strength",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "INTELLECT",
+       "name": "Intellect"
+      },
+      "value": 18,
+      "is_negated": true,
+      "display": {
+       "display_string": "+18 Intellect",
+       "color": {
+        "r": 128,
+        "g": 128,
+        "b": 128,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "STAMINA",
+       "name": "Stamina"
+      },
+      "value": 30,
+      "display": {
+       "display_string": "+30 Stamina",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "HASTE_RATING",
+       "name": "Haste"
+      },
+      "value": 22,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+22 Haste",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "VERSATILITY",
+       "name": "Versatility"
+      },
+      "value": 15,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+15 Versatility",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 506630,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "50",
+      "silver": "66",
+      "copper": "30"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 80,
+      "display_string": "Requires Level 80"
+     }
+    },
+    "level": {
+     "value": 83,
+     "display_string": "Item Level 83"
+    },
+    "durability": {
+     "value": 108,
+     "display_string": "Durability 108 / 120"
+    }
+   },
+   {
+    "item": {
+     "id": 224618
+    },
+    "slot": {
+     "type": "FEET",
+     "name": "Feet"
+    },
+    "quantity": 1,
+    "context": 25,
+    "bonus_list": [
+     10289,
+     6652,
+     1704,
+     10844,
+     1485
+    ],
+    "quality": {
+     "type": "UNCOMMON",
+     "name": "Uncommon"
+    },
+    "name": "Earthforged Sabatons of the Aurora",
+    "modified_appearance_id": 220485,
+    "media": {
+     "id": 224618
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Plate",
+     "id": 4
+    },
+    "inventory_type": {
+     "type": "FEET",
+     "name": "Feet"
+    },
+    "binding": {
+     "type": "ON_EQUIP",
+     "name": "Binds when equipped"
+    },
+    "armor": {
+     "value": 37,
+     "display": {
+      "display_string": "37 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "STRENGTH",
+       "name": "Strength"
+      },
+      "value": 13,
+      "display": {
+       "display_string": "+13 Strength",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "INTELLECT",
+       "name": "Intellect"
+      },
+      "value": 13,
+      "is_negated": true,
+      "display": {
+       "display_string": "+13 Intellect",
+       "color": {
+        "r": 128,
+        "g": 128,
+        "b": 128,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "STAMINA",
+       "name": "Stamina"
+      },
+      "value": 20,
+      "display": {
+       "display_string": "+20 Stamina",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "HASTE_RATING",
+       "name": "Haste"
+      },
+      "value": 19,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+19 Haste",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "VERSATILITY",
+       "name": "Versatility"
+      },
+      "value": 7,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+7 Versatility",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 221688,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "22",
+      "silver": "16",
+      "copper": "88"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 80,
+      "display_string": "Requires Level 80"
+     }
+    },
+    "level": {
+     "value": 79,
+     "display_string": "Item Level 79"
+    },
+    "durability": {
+     "value": 50,
+     "display_string": "Durability 50 / 55"
+    }
+   },
+   {
+    "item": {
+     "id": 231407
+    },
+    "slot": {
+     "type": "WRIST",
+     "name": "Wrist"
+    },
+    "quantity": 1,
+    "context": 3,
+    "bonus_list": [
+     6652,
+     10877,
+     10376,
+     10272,
+     12093,
+     10383,
+     1488,
+     10255
+    ],
+    "quality": {
+     "type": "EPIC",
+     "name": "Epic"
+    },
+    "name": "Emberplate Armguards",
+    "media": {
+     "id": 231407
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Plate",
+     "id": 4
+    },
+    "inventory_type": {
+     "type": "WRIST",
+     "name": "Wrist"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "armor": {
+     "value": 31,
+     "display": {
+      "display_string": "31 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "STRENGTH",
+       "name": "Strength"
+      },
+      "value": 11,
+      "display": {
+       "display_string": "+11 Strength",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "INTELLECT",
+       "name": "Intellect"
+      },
+      "value": 11,
+      "is_negated": true,
+      "display": {
+       "display_string": "+11 Intellect",
+       "color": {
+        "r": 128,
+        "g": 128,
+        "b": 128,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "STAMINA",
+       "name": "Stamina"
+      },
+      "value": 21,
+      "display": {
+       "display_string": "+21 Stamina",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "VERSATILITY",
+       "name": "Versatility"
+      },
+      "value": 12,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+12 Versatility",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "MASTERY_RATING",
+       "name": "Mastery"
+      },
+      "value": 9,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+9 Mastery",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 249372,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "24",
+      "silver": "93",
+      "copper": "72"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 80,
+      "display_string": "Requires Level 80"
+     }
+    },
+    "level": {
+     "value": 86,
+     "display_string": "Item Level 86"
+    },
+    "durability": {
+     "value": 50,
+     "display_string": "Durability 50 / 55"
+    },
+    "name_description": {
+     "display_string": "Timewarped",
+     "color": {
+      "r": 0,
+      "g": 255,
+      "b": 0,
+      "a": 1
+     }
+    }
+   },
+   {
+    "item": {
+     "id": 231400
+    },
+    "slot": {
+     "type": "HANDS",
+     "name": "Hands"
+    },
+    "quantity": 1,
+    "context": 3,
+    "bonus_list": [
+     6652,
+     10376,
+     10272,
+     12093,
+     10383,
+     1488,
+     10255
+    ],
+    "quality": {
+     "type": "EPIC",
+     "name": "Epic"
+    },
+    "name": "Fists of Phalanx",
+    "media": {
+     "id": 231400
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Plate",
+     "id": 4
+    },
+    "inventory_type": {
+     "type": "HAND",
+     "name": "Hands"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "armor": {
+     "value": 34,
+     "display": {
+      "display_string": "34 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "STRENGTH",
+       "name": "Strength"
+      },
+      "value": 14,
+      "display": {
+       "display_string": "+14 Strength",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "INTELLECT",
+       "name": "Intellect"
+      },
+      "value": 14,
+      "is_negated": true,
+      "display": {
+       "display_string": "+14 Intellect",
+       "color": {
+        "r": 128,
+        "g": 128,
+        "b": 128,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "STAMINA",
+       "name": "Stamina"
+      },
+      "value": 28,
+      "display": {
+       "display_string": "+28 Stamina",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "CRIT_RATING",
+       "name": "Critical Strike"
+      },
+      "value": 16,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+16 Critical Strike",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "VERSATILITY",
+       "name": "Versatility"
+      },
+      "value": 12,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+12 Versatility",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 242990,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "24",
+      "silver": "29",
+      "copper": "90"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 80,
+      "display_string": "Requires Level 80"
+     }
+    },
+    "level": {
+     "value": 86,
+     "display_string": "Item Level 86"
+    },
+    "durability": {
+     "value": 50,
+     "display_string": "Durability 50 / 55"
+    },
+    "name_description": {
+     "display_string": "Timewarped",
+     "color": {
+      "r": 0,
+      "g": 255,
+      "b": 0,
+      "a": 1
+     }
+    }
+   },
+   {
+    "item": {
+     "id": 231447
+    },
+    "slot": {
+     "type": "FINGER_1",
+     "name": "Ring 1"
+    },
+    "quantity": 1,
+    "context": 67,
+    "bonus_list": [
+     11215,
+     6652,
+     10394,
+     10392,
+     10281,
+     12092,
+     10383,
+     1472,
+     10255
+    ],
+    "quality": {
+     "type": "EPIC",
+     "name": "Epic"
+    },
+    "name": "Bloodclot Band",
+    "modified_appearance_id": 0,
+    "media": {
+     "id": 231447
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Miscellaneous",
+     "id": 0
+    },
+    "inventory_type": {
+     "type": "FINGER",
+     "name": "Finger"
+    },
+    "binding": {
+     "type": "TO_ACCOUNT",
+     "name": "Binds to Warband"
+    },
+    "unique_equipped": "Unique-Equipped",
+    "stats": [
+     {
+      "type": {
+       "type": "STAMINA",
+       "name": "Stamina"
+      },
+      "value": 17,
+      "display": {
+       "display_string": "+17 Stamina",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "CRIT_RATING",
+       "name": "Critical Strike"
+      },
+      "value": 35,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+35 Critical Strike",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "HASTE_RATING",
+       "name": "Haste"
+      },
+      "value": 18,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+18 Haste",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 36127,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "3",
+      "silver": "61",
+      "copper": "27"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 80,
+      "display_string": "Requires Level 80"
+     }
+    },
+    "level": {
+     "value": 83,
+     "display_string": "Item Level 83"
+    },
+    "is_subclass_hidden": true,
+    "name_description": {
+     "display_string": "Timewarped Raid Finder",
+     "color": {
+      "r": 0,
+      "g": 255,
+      "b": 0,
+      "a": 1
+     }
+    }
+   },
+   {
+    "item": {
+     "id": 18302
+    },
+    "sockets": [
+     {
+      "socket_type": {
+       "type": "PRISMATIC",
+       "name": "Prismatic Socket"
+      }
+     }
+    ],
+    "slot": {
+     "type": "FINGER_2",
+     "name": "Ring 2"
+    },
+    "quantity": 1,
+    "context": 54,
+    "bonus_list": [
+     6652,
+     8811,
+     10286,
+     7756,
+     10394,
+     10878,
+     12090,
+     10012
+    ],
+    "quality": {
+     "type": "RARE",
+     "name": "Rare"
+    },
+    "name": "Band of Vigor",
+    "modified_appearance_id": 0,
+    "media": {
+     "id": 18302
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Miscellaneous",
+     "id": 0
+    },
+    "inventory_type": {
+     "type": "FINGER",
+     "name": "Finger"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "unique_equipped": "Unique-Equipped",
+    "stats": [
+     {
+      "type": {
+       "type": "STAMINA",
+       "name": "Stamina"
+      },
+      "value": 15,
+      "display": {
+       "display_string": "+15 Stamina",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "CRIT_RATING",
+       "name": "Critical Strike"
+      },
+      "value": 21,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+21 Critical Strike",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "HASTE_RATING",
+       "name": "Haste"
+      },
+      "value": 28,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+28 Haste",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 7530,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "0",
+      "silver": "75",
+      "copper": "30"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 80,
+      "display_string": "Requires Level 80"
+     }
+    },
+    "level": {
+     "value": 80,
+     "display_string": "Item Level 80"
+    },
+    "is_subclass_hidden": true,
+    "name_description": {
+     "display_string": "Timewarped",
+     "color": {
+      "r": 0,
+      "g": 255,
+      "b": 0,
+      "a": 1
+     }
+    }
+   },
+   {
+    "item": {
+     "id": 222671
+    },
+    "slot": {
+     "type": "TRINKET_1",
+     "name": "Trinket 1"
+    },
+    "quantity": 1,
+    "quality": {
+     "type": "EPIC",
+     "name": "Epic"
+    },
+    "name": "Darkmoon Deck: Vivacity",
+    "media": {
+     "id": 222671
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Miscellaneous",
+     "id": 0
+    },
+    "inventory_type": {
+     "type": "TRINKET",
+     "name": "Trinket"
+    },
+    "binding": {
+     "type": "ON_EQUIP",
+     "name": "Binds when equipped"
+    },
+    "unique_equipped": "Unique-Equipped",
+    "stats": [
+     {
+      "type": {
+       "type": "STRENGTH",
+       "name": "Strength"
+      },
+      "value": 17,
+      "display": {
+       "display_string": "+17 Strength",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "AGILITY",
+       "name": "Agility"
+      },
+      "value": 17,
+      "is_negated": true,
+      "display": {
+       "display_string": "+17 Agility",
+       "color": {
+        "r": 128,
+        "g": 128,
+        "b": 128,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "INTELLECT",
+       "name": "Intellect"
+      },
+      "value": 17,
+      "is_negated": true,
+      "display": {
+       "display_string": "+17 Intellect",
+       "color": {
+        "r": 128,
+        "g": 128,
+        "b": 128,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "spells": [
+     {
+      "spell": {
+       "name": "Vivacity",
+       "id": 463611
+      },
+      "description": "Equip: Your damaging spells and abilities have the chance to grant Vivaciousness, increasing secondary stats by 32 and Speed or Avoidance by 8 based on the school it was activated from."
+     }
+    ],
+    "sell_price": {
+     "value": 870237,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "87",
+      "silver": "2",
+      "copper": "37"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 80,
+      "display_string": "Requires Level 80"
+     }
+    },
+    "level": {
+     "value": 80,
+     "display_string": "Item Level 80"
+    },
+    "is_subclass_hidden": true
+   },
+   {
+    "item": {
+     "id": 219672
+    },
+    "slot": {
+     "type": "TRINKET_2",
+     "name": "Trinket 2"
+    },
+    "quantity": 1,
+    "quality": {
+     "type": "EPIC",
+     "name": "Epic"
+    },
+    "name": "Darkmoon Deck: Radiance",
+    "media": {
+     "id": 219672
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Miscellaneous",
+     "id": 0
+    },
+    "inventory_type": {
+     "type": "TRINKET",
+     "name": "Trinket"
+    },
+    "binding": {
+     "type": "ON_EQUIP",
+     "name": "Binds when equipped"
+    },
+    "unique_equipped": "Unique-Equipped",
+    "stats": [
+     {
+      "type": {
+       "type": "STRENGTH",
+       "name": "Strength"
+      },
+      "value": 17,
+      "display": {
+       "display_string": "+17 Strength",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "AGILITY",
+       "name": "Agility"
+      },
+      "value": 17,
+      "is_negated": true,
+      "display": {
+       "display_string": "+17 Agility",
+       "color": {
+        "r": 128,
+        "g": 128,
+        "b": 128,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "INTELLECT",
+       "name": "Intellect"
+      },
+      "value": 17,
+      "is_negated": true,
+      "display": {
+       "display_string": "+17 Intellect",
+       "color": {
+        "r": 128,
+        "g": 128,
+        "b": 128,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "spells": [
+     {
+      "spell": {
+       "name": "Radiant Focus",
+       "id": 463108
+      },
+      "description": "Equip: Your damaging spells and abilities have the chance to ignite your target with Radiant Focus for 15 sec. \r\n\r\nAfter dealing up to 18,842 damage to the target, the focused energies ignite you with Radiance, granting between 11 to 21 of your highest secondary stat based on damage dealt for 15 sec. \r\n"
+     }
+    ],
+    "sell_price": {
+     "value": 845469,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "84",
+      "silver": "54",
+      "copper": "69"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 80,
+      "display_string": "Requires Level 80"
+     }
+    },
+    "level": {
+     "value": 80,
+     "display_string": "Item Level 80"
+    },
+    "is_subclass_hidden": true
+   },
+   {
+    "item": {
+     "id": 231468
+    },
+    "slot": {
+     "type": "BACK",
+     "name": "Back"
+    },
+    "quantity": 1,
+    "context": 3,
+    "bonus_list": [
+     6652,
+     10376,
+     10272,
+     12093,
+     10383,
+     1488,
+     10255
+    ],
+    "quality": {
+     "type": "EPIC",
+     "name": "Epic"
+    },
+    "name": "Flamekeeper's Fire Blanket",
+    "media": {
+     "id": 231468
+    },
+    "item_class": {
+     "name": "Armor",
+     "id": 4
+    },
+    "item_subclass": {
+     "name": "Cloth",
+     "id": 1
+    },
+    "inventory_type": {
+     "type": "CLOAK",
+     "name": "Back"
+    },
+    "binding": {
+     "type": "ON_ACQUIRE",
+     "name": "Binds when picked up"
+    },
+    "armor": {
+     "value": 11,
+     "display": {
+      "display_string": "11 Armor",
+      "color": {
+       "r": 255,
+       "g": 255,
+       "b": 255,
+       "a": 1
+      }
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "STRENGTH",
+       "name": "Strength"
+      },
+      "value": 11,
+      "display": {
+       "display_string": "+11 Strength",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "AGILITY",
+       "name": "Agility"
+      },
+      "value": 11,
+      "is_negated": true,
+      "display": {
+       "display_string": "+11 Agility",
+       "color": {
+        "r": 128,
+        "g": 128,
+        "b": 128,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "INTELLECT",
+       "name": "Intellect"
+      },
+      "value": 11,
+      "is_negated": true,
+      "display": {
+       "display_string": "+11 Intellect",
+       "color": {
+        "r": 128,
+        "g": 128,
+        "b": 128,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "STAMINA",
+       "name": "Stamina"
+      },
+      "value": 21,
+      "display": {
+       "display_string": "+21 Stamina",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "CRIT_RATING",
+       "name": "Critical Strike"
+      },
+      "value": 13,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+13 Critical Strike",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "HASTE_RATING",
+       "name": "Haste"
+      },
+      "value": 8,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+8 Haste",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 382241,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "38",
+      "silver": "22",
+      "copper": "41"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 80,
+      "display_string": "Requires Level 80"
+     }
+    },
+    "level": {
+     "value": 86,
+     "display_string": "Item Level 86"
+    },
+    "is_subclass_hidden": true,
+    "name_description": {
+     "display_string": "Timewarped",
+     "color": {
+      "r": 0,
+      "g": 255,
+      "b": 0,
+      "a": 1
+     }
+    }
+   },
+   {
+    "item": {
+     "id": 224633
+    },
+    "slot": {
+     "type": "MAIN_HAND",
+     "name": "Main Hand"
+    },
+    "quantity": 1,
+    "context": 27,
+    "bonus_list": [
+     10287,
+     6652,
+     1683,
+     10844,
+     1491
+    ],
+    "quality": {
+     "type": "RARE",
+     "name": "Rare"
+    },
+    "name": "Arathi Greataxe of the Peerless",
+    "modified_appearance_id": 220500,
+    "media": {
+     "id": 224633
+    },
+    "item_class": {
+     "name": "Weapon",
+     "id": 2
+    },
+    "item_subclass": {
+     "name": "Axe",
+     "id": 1
+    },
+    "inventory_type": {
+     "type": "TWOHWEAPON",
+     "name": "Two-Hand"
+    },
+    "binding": {
+     "type": "ON_EQUIP",
+     "name": "Binds when equipped"
+    },
+    "weapon": {
+     "damage": {
+      "min_value": 31,
+      "max_value": 65,
+      "display_string": "31 - 65 Damage",
+      "damage_class": {
+       "type": "PHYSICAL",
+       "name": "Physical"
+      }
+     },
+     "attack_speed": {
+      "value": 3600,
+      "display_string": "Speed 3.60"
+     },
+     "dps": {
+      "value": 13.333333,
+      "display_string": "(13.3 damage per second)"
+     }
+    },
+    "stats": [
+     {
+      "type": {
+       "type": "STRENGTH",
+       "name": "Strength"
+      },
+      "value": 18,
+      "display": {
+       "display_string": "+18 Strength",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "STAMINA",
+       "name": "Stamina"
+      },
+      "value": 27,
+      "display": {
+       "display_string": "+27 Stamina",
+       "color": {
+        "r": 255,
+        "g": 255,
+        "b": 255,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "CRIT_RATING",
+       "name": "Critical Strike"
+      },
+      "value": 25,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+25 Critical Strike",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     },
+     {
+      "type": {
+       "type": "MASTERY_RATING",
+       "name": "Mastery"
+      },
+      "value": 10,
+      "is_equip_bonus": true,
+      "display": {
+       "display_string": "+10 Mastery",
+       "color": {
+        "r": 0,
+        "g": 255,
+        "b": 0,
+        "a": 1
+       }
+      }
+     }
+    ],
+    "sell_price": {
+     "value": 635371,
+     "display_strings": {
+      "header": "Sell Price:",
+      "gold": "63",
+      "silver": "53",
+      "copper": "71"
+     }
+    },
+    "requirements": {
+     "level": {
+      "value": 80,
+      "display_string": "Requires Level 80"
+     }
+    },
+    "level": {
+     "value": 80,
+     "display_string": "Item Level 80"
+    },
+    "durability": {
+     "value": 90,
+     "display_string": "Durability 90 / 100"
+    }
+   }
+  ]
+ },
+ "statistics": {
+  "health": 52360,
+  "power": 50000,
+  "power_type": {
+   "name": "Mana",
+   "id": 0
+  },
+  "speed": {
+   "rating_bonus": 0,
+   "rating_normalized": 0
+  },
+  "strength": {
+   "base": 156,
+   "effective": 355
+  },
+  "agility": {
+   "base": 57,
+   "effective": 57
+  },
+  "intellect": {
+   "base": 161,
+   "effective": 161
+  },
+  "stamina": {
+   "base": 2325,
+   "effective": 2618
+  },
+  "melee_crit": {
+   "rating_bonus": 12.255042,
+   "value": 18.255041,
+   "rating_normalized": 149
+  },
+  "melee_haste": {
+   "rating_bonus": 12.984063,
+   "value": 12.984062,
+   "rating_normalized": 151
+  },
+  "mastery": {
+   "rating_bonus": 6.7731724,
+   "value": 17.573172,
+   "rating_normalized": 61
+  },
+  "bonus_armor": 0,
+  "lifesteal": {
+   "rating_bonus": 0,
+   "value": 0,
+   "rating_normalized": 0
+  },
+  "versatility": 83,
+  "versatility_damage_done_bonus": 5.8152804,
+  "versatility_healing_done_bonus": 5.8152804,
+  "versatility_damage_taken_bonus": 2.9076402,
+  "avoidance": {
+   "rating_bonus": 0,
+   "rating_normalized": 0
+  },
+  "attack_power": 355,
+  "main_hand_damage_min": 1032.7571,
+  "main_hand_damage_max": 1176.6659,
+  "main_hand_speed": 3.186,
+  "main_hand_dps": 346.7393,
+  "off_hand_damage_min": 252.5458,
+  "off_hand_damage_max": 252.5458,
+  "off_hand_speed": 1.77,
+  "off_hand_dps": 142.68124,
+  "spell_power": 418,
+  "spell_penetration": 0,
+  "spell_crit": {
+   "rating_bonus": 12.255042,
+   "value": 18.255041,
+   "rating_normalized": 149
+  },
+  "mana_regen": 2560,
+  "mana_regen_combat": 2560,
+  "armor": {
+   "base": 0,
+   "effective": 346
+  },
+  "dodge": {
+   "rating_bonus": 0,
+   "value": 3,
+   "rating_normalized": 0
+  },
+  "parry": {
+   "rating_bonus": 0,
+   "value": 9.849694,
+   "rating_normalized": 0
+  },
+  "block": {
+   "rating_bonus": 0,
+   "value": 10,
+   "rating_normalized": 0
+  },
+  "ranged_crit": {
+   "rating_bonus": 12.255042,
+   "value": 18.255041,
+   "rating_normalized": 149
+  },
+  "ranged_haste": {
+   "rating_bonus": 12.984063,
+   "value": 12.984062,
+   "rating_normalized": 151
+  },
+  "spell_haste": {
+   "rating_bonus": 12.984063,
+   "value": 12.984062,
+   "rating_normalized": 151
+  },
+  "character": {
+   "name": "Cònsecrator",
+   "id": 202694596,
+   "realm": {
+    "name": "Barthilas",
+    "id": 3723,
+    "slug": "barthilas"
+   }
+  }
+ },
+ "specializations": {
+  "specializations": [
+   {
+    "specialization": {
+     "name": "Retribution",
+     "id": 70
+    },
+    "pvp_talent_slots": [
+     {
+      "selected": {
+       "talent": {
+        "name": "Blessing of Sanctuary",
+        "id": 752
+       },
+       "spell_tooltip": {
+        "spell": {
+         "name": "Blessing of Sanctuary",
+         "id": 210256
+        },
+        "description": "Instantly removes all stun, silence, fear and horror effects from the friendly target and reduces the duration of future such effects by 60% for 5 sec.",
+        "cast_time": "Instant",
+        "range": "40 yd range",
+        "cooldown": "1 min cooldown"
+       }
+      },
+      "slot_number": 2
+     },
+     {
+      "selected": {
+       "talent": {
+        "name": "Ultimate Retribution",
+        "id": 753
+       },
+       "spell_tooltip": {
+        "spell": {
+         "name": "Ultimate Retribution",
+         "id": 355614
+        },
+        "description": "Mark an enemy player for retribution after they kill an ally within your active Aura. If the marked enemy is slain within 12 sec, cast Redemption on the fallen ally.",
+        "cast_time": "Passive"
+       }
+      },
+      "slot_number": 3
+     },
+     {
+      "selected": {
+       "talent": {
+        "name": "Hallowed Ground",
+        "id": 5535
+       },
+       "spell_tooltip": {
+        "spell": {
+         "name": "Hallowed Ground",
+         "id": 216868
+        },
+        "description": "Your Consecration clears and suppresses all snare effects on allies within its area of effect.",
+        "cast_time": "Passive"
+       }
+      },
+      "slot_number": 4
+     }
+    ],
+    "loadouts": [
+     {
+      "is_active": true,
+      "talent_loadout_code": "CYEAVg1HmQqr1Dwlv86ljju8vCAAAAAMyGzMAAAAAAAYmyAAw2gZBAAYDAzysNzMbNzMtNzsNDAYDAAAAAAAAA",
+      "selected_class_talents": [
+       {
+        "id": 99837,
+        "rank": 1
+       },
+       {
+        "id": 81597,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Lay on Hands",
+          "id": 107588
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Lay on Hands",
+           "id": 633
+          },
+          "description": "Heals a friendly target for an amount equal to 100% your maximum health.\r\n\r\nCannot be used on a target with Forbearance. Causes Forbearance for 30 sec.",
+          "cast_time": "Instant",
+          "range": "40 yd range",
+          "cooldown": "10 min cooldown"
+         }
+        }
+       },
+       {
+        "id": 81600,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Auras of the Resolute",
+          "id": 107592
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Auras of the Resolute",
+           "id": 385633
+          },
+          "description": "Learn Concentration Aura, Devotion Aura, and Crusader Aura:\r\n\r\nConcentration Aura:\r\nInterrupt and Silence effects on party and raid members within 40 yds are 30% shorter. \r\n\r\n Devotion Aura:\r\nParty and raid members within 40 yds are bolstered by their devotion, reducing damage taken by 3%.\r\n\r\n Crusader Aura:\r\nIncreases mounted speed by 20% for all party and raid members within 40 yds.",
+          "cast_time": "Passive"
+         }
+        },
+        "default_points": 1
+       },
+       {
+        "id": 81510,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Hammer of Wrath",
+          "id": 138267
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Hammer of Wrath",
+           "id": 1241288
+          },
+          "description": "During Avenging Wrath, Judgment is empowered into Hammer of Wrath.\r\n\r\nHammer of Wrath\r\nHurls a divine hammer that strikes an enemy for 807 Holy damage.\r\n\r\nGenerates 1 Holy Power.",
+          "cast_time": "Passive"
+         }
+        },
+        "default_points": 1
+       },
+       {
+        "id": 81507,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Cleanse Toxins",
+          "id": 107481
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Cleanse Toxins",
+           "id": 213644
+          },
+          "description": "Cleanses a friendly target, removing all Poison and Disease effects.",
+          "cast_time": "Instant",
+          "power_cost": "5,000 Mana",
+          "range": "40 yd range",
+          "cooldown": "8 sec cooldown"
+         }
+        }
+       },
+       {
+        "id": 81598,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Blinding Light",
+          "id": 107589
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Blinding Light",
+           "id": 115750
+          },
+          "description": "Emits dazzling light in all directions, blinding enemies within 10 yds, causing them to wander disoriented for 6 sec. Damage may cancel the effect.",
+          "cast_time": "Instant",
+          "power_cost": "600 Mana",
+          "cooldown": "1.5 min cooldown"
+         }
+        }
+       },
+       {
+        "id": 93189,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Healing Hands",
+          "id": 120493
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Healing Hands",
+           "id": 326734
+          },
+          "description": "The cooldown of Lay on Hands is reduced up to 60%, based on the target's missing health.\r\n\r\nWord of Glory's healing is increased by up to 100% on yourself, based on your missing health.",
+          "cast_time": "Passive"
+         }
+        }
+       },
+       {
+        "id": 81632,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Divine Steed",
+          "id": 107630
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Divine Steed",
+           "id": 190784
+          },
+          "description": "Leap atop your Charger for 8 sec, increasing movement speed by 100%. Usable while indoors or in combat.",
+          "cast_time": "Instant",
+          "cooldown": "0.75 sec cooldown"
+         }
+        }
+       },
+       {
+        "id": 81603,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Greater Judgment",
+          "id": 107595
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Greater Judgment",
+           "id": 231663
+          },
+          "description": "Judgment causes the target to take 20% increased damage from your next Holy Power ability.\r\n\r\nMultiple applications may overlap.",
+          "cast_time": "Passive"
+         }
+        },
+        "default_points": 1
+       },
+       {
+        "id": 81605,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Cavalier",
+          "id": 107597
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Cavalier",
+           "id": 230332
+          },
+          "description": "Divine Steed now has 2 charges.",
+          "cast_time": "Passive"
+         }
+        }
+       },
+       {
+        "id": 81631,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Blessing of Freedom",
+          "id": 133058
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Blessing of Freedom",
+           "id": 1044
+          },
+          "description": "Blesses a party or raid member, granting immunity to movement impairing effects for 8 sec.",
+          "cast_time": "Instant",
+          "power_cost": "700 Mana",
+          "range": "40 yd range",
+          "cooldown": "1.5 sec cooldown"
+         }
+        }
+       }
+      ],
+      "selected_spec_talents": [
+       {
+        "id": 81526,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Blade of Justice",
+          "id": 107503
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Blade of Justice",
+           "id": 184575
+          },
+          "description": "Pierce an enemy with a blade of light, dealing 780 Holy damage.\r\n\r\nGenerates 1 Holy Power.",
+          "cast_time": "Instant",
+          "range": "12 yd range"
+         }
+        }
+       },
+       {
+        "id": 81527,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Divine Storm",
+          "id": 107504
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Divine Storm",
+           "id": 53385
+          },
+          "description": "Unleashes a whirl of divine energy, dealing 1,237 Holy damage to all nearby enemies. \r\n\r\nDeals reduced damage beyond 5 targets.",
+          "cast_time": "Instant",
+          "power_cost": "3 Holy Power"
+         }
+        }
+       },
+       {
+        "id": 92689,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Expurgation",
+          "id": 119837
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Expurgation",
+           "id": 383344
+          },
+          "description": "Your Blade of Justice causes the target to burn for 442 Radiant damage over 9 sec. When reapplied, any remaining damage is added to the new effect.",
+          "cast_time": "Passive"
+         }
+        }
+       },
+       {
+        "id": 81521,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Light of Justice",
+          "id": 119835
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Light of Justice",
+           "id": 404436
+          },
+          "description": "Reduces the cooldown of Blade of Justice by 2 sec.",
+          "cast_time": "Passive"
+         }
+        }
+       },
+       {
+        "id": 81532,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Final Verdict",
+          "id": 107509
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Final Verdict",
+           "id": 383328
+          },
+          "description": "Unleashes a powerful weapon strike that deals 1,995 Holy damage to an enemy target,\r\n\r\nFinal Verdict has a 15% chance to reset the cooldown of Judgement.",
+          "cast_time": "Instant",
+          "power_cost": "3 Holy Power",
+          "range": "12 yd range"
+         }
+        }
+       },
+       {
+        "id": 92838,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Improved Blade of Justice",
+          "id": 120030
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Improved Blade of Justice",
+           "id": 403745
+          },
+          "description": "Blade of Justice now has 2 charges.",
+          "cast_time": "Passive"
+         }
+        }
+       }
+      ],
+      "selected_hero_talents": [
+       {
+        "id": 95180,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Light's Guidance",
+          "id": 122825
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Light's Guidance",
+           "id": 427445
+          },
+          "description": "Wake of Ashes is replaced with Hammer of Light for 20 sec after it is cast.\r\n\r\n Hammer of Light:\r\nHammer down your enemy with the power of the Light, dealing 7,715 Holy damage and 4,338 Holy damage up to 7 nearby enemies. \r\n\r\nAdditionally, calls down Empyrean Hammers from the sky to strike 3 nearby enemies for 201 Holy damage each.\r\n\r\nCosts 5 Holy Power.\r\n",
+          "cast_time": "Passive"
+         }
+        },
+        "default_points": 1
+       },
+       {
+        "id": 95183,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Zealous Vindication",
+          "id": 122828
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Zealous Vindication",
+           "id": 431463
+          },
+          "description": "Hammer of Light instantly calls down 2 Empyrean Hammers on your target when it is cast.",
+          "cast_time": "Passive"
+         }
+        }
+       },
+       {
+        "id": 95187,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Shake the Heavens",
+          "id": 122835
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Shake the Heavens",
+           "id": 431533
+          },
+          "description": "After casting Hammer of Light, you call down an Empyrean Hammer on a nearby target every 2 sec, for 10 sec.",
+          "cast_time": "Passive"
+         }
+        }
+       },
+       {
+        "id": 95177,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Wrathful Descent",
+          "id": 122822
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Wrathful Descent",
+           "id": 431551
+          },
+          "description": "When Empyrean Hammer critically strikes, 50% of its damage is dealt to nearby enemies.\r\n\r\nEnemies hit by this effect deal 5% reduced damage to you for 8 sec.",
+          "cast_time": "Passive"
+         }
+        }
+       },
+       {
+        "id": 95179,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Sacrosanct Crusade",
+          "id": 122824
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Sacrosanct Crusade",
+           "id": 431730
+          },
+          "description": "Wake of Ashes surrounds you with a Holy barrier for 10% of your maximum health.\r\n\r\nHammer of Light heals you for 5% of your maximum health, increased by 1% for each additional target hit. Any overhealing done with this effect gets converted into a Holy barrier instead.",
+          "cast_time": "Passive"
+         }
+        }
+       },
+       {
+        "id": 95178,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Higher Calling",
+          "id": 122823
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Higher Calling",
+           "id": 431687
+          },
+          "description": "Crusader Strike, Hammer of Wrath and Blade of Justice extend the duration of Shake the Heavens by 1 sec.",
+          "cast_time": "Passive"
+         }
+        }
+       },
+       {
+        "id": 95181,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Unrelenting Charger",
+          "id": 122870
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Unrelenting Charger",
+           "id": 432990
+          },
+          "description": "Divine Steed lasts 2 sec longer and increases your movement speed by an additional 30% for the first 3 sec.",
+          "cast_time": "Passive"
+         }
+        }
+       },
+       {
+        "id": 95185,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Sanctification",
+          "id": 122831
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Sanctification",
+           "id": 432977
+          },
+          "description": "Casting Judgment increases the damage of Empyrean Hammer by 5% for 12 sec.\r\n\r\nMultiple applications may overlap.",
+          "cast_time": "Passive"
+         }
+        }
+       },
+       {
+        "id": 95184,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Hammerfall",
+          "id": 122830
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Hammerfall",
+           "id": 432463
+          },
+          "description": "Final Verdict and Divine Storm calls down an Empyrean Hammer on a nearby enemy.\r\n\r\nWhile Shake the Heavens is active, this effect calls down an additional Empyrean Hammer.",
+          "cast_time": "Passive"
+         }
+        }
+       },
+       {
+        "id": 95186,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Undisputed Ruling",
+          "id": 122834
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Undisputed Ruling",
+           "id": 432626
+          },
+          "description": "Hammer of Light applies Judgment to its targets, and increases your Haste by 15% for 10 sec.",
+          "cast_time": "Passive"
+         }
+        }
+       },
+       {
+        "id": 95182,
+        "rank": 1,
+        "tooltip": {
+         "talent": {
+          "name": "Light's Deliverance",
+          "id": 122827
+         },
+         "spell_tooltip": {
+          "spell": {
+           "name": "Light's Deliverance",
+           "id": 425518
+          },
+          "description": "You gain a stack of Light's Deliverance when you call down an Empyrean Hammer.\r\n\r\nWhile Wake of Ashes and Hammer of Light are unavailable, you consume 50 stacks of Light's Deliverance, empowering yourself to cast Hammer of Light an additional time for free.",
+          "cast_time": "Passive"
+         }
+        }
+       }
+      ],
+      "selected_class_talent_tree": {
+       "name": "Paladin"
+      },
+      "selected_spec_talent_tree": {
+       "name": "Retribution"
+      },
+      "selected_hero_talent_tree": {
+       "name": "Templar",
+       "id": 48
+      }
+     }
+    ]
+   }
+  ],
+  "active_specialization": {
+   "name": "Retribution",
+   "id": 70
+  },
+  "character": {
+   "name": "Cònsecrator",
+   "id": 202694596,
+   "realm": {
+    "name": "Barthilas",
+    "id": 3723,
+    "slug": "barthilas"
+   }
+  },
+  "active_hero_talent_tree": {
+   "name": "Templar",
+   "id": 48
+  }
+ },
+ "media": {
+  "character": {
+   "name": "Cònsecrator",
+   "id": 202694596,
+   "realm": {
+    "name": "Barthilas",
+    "id": 3723,
+    "slug": "barthilas"
+   }
+  },
+  "assets": [
+   {
+    "key": "avatar",
+    "value": "https://render.worldofwarcraft.com/us/character/barthilas/196/202694596-avatar.jpg"
+   },
+   {
+    "key": "inset",
+    "value": "https://render.worldofwarcraft.com/us/character/barthilas/196/202694596-inset.jpg"
+   },
+   {
+    "key": "main-raw",
+    "value": "https://render.worldofwarcraft.com/us/character/barthilas/196/202694596-main-raw.png"
+   }
+  ]
+ },
+ "pvp": {
+  "honor_level": 2,
+  "pvp_map_statistics": [
+   {
+    "world_map": {
+     "name": "Alterac Valley",
+     "id": 30
+    },
+    "match_statistics": {
+     "played": 6,
+     "won": 3,
+     "lost": 3
+    }
+   },
+   {
+    "world_map": {
+     "name": "Classic Warsong Gulch",
+     "id": 489
+    },
+    "match_statistics": {
+     "played": 3,
+     "won": 1,
+     "lost": 2
+    }
+   },
+   {
+    "world_map": {
+     "name": "Eye of the Storm",
+     "id": 566
+    },
+    "match_statistics": {
+     "played": 1,
+     "won": 0,
+     "lost": 1
+    }
+   },
+   {
+    "world_map": {
+     "name": "Strand of the Ancients",
+     "id": 607
+    },
+    "match_statistics": {
+     "played": 3,
+     "won": 1,
+     "lost": 2
+    }
+   },
+   {
+    "world_map": {
+     "name": "Korrak's Revenge",
+     "id": 2197
+    },
+    "match_statistics": {
+     "played": 1,
+     "won": 0,
+     "lost": 1
+    }
+   }
+  ],
+  "honorable_kills": 5103,
+  "character": {
+   "name": "Cònsecrator",
+   "id": 202694596,
+   "realm": {
+    "name": "Barthilas",
+    "id": 3723,
+    "slug": "barthilas"
+   }
+  }
+ },
+ "mythic": {
+  "current_period": {
+   "period": {
+    "id": 1051
+   }
+  },
+  "character": {
+   "name": "Cònsecrator",
+   "id": 202694596,
+   "realm": {
+    "name": "Barthilas",
+    "id": 3723,
+    "slug": "barthilas"
+   }
+  }
+ },
+ "raids": {
+  "character": {
+   "name": "Cònsecrator",
+   "id": 202694596,
+   "realm": {
+    "name": "Barthilas",
+    "id": 3723,
+    "slug": "barthilas"
+   }
+  },
+  "expansions": [
+   {
+    "expansion": {
+     "name": "Legion",
+     "id": 395
+    },
+    "instances": [
+     {
+      "instance": {
+       "name": "The Emerald Nightmare",
+       "id": 768
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "LFR",
+         "name": "Raid Finder"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 7,
+         "total_count": 7,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Nythendra",
+            "id": 1703
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1476945764000
+          },
+          {
+           "encounter": {
+            "name": "Il'gynoth, Heart of Corruption",
+            "id": 1738
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1476946877000
+          },
+          {
+           "encounter": {
+            "name": "Elerethe Renferal",
+            "id": 1744
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1476947525000
+          },
+          {
+           "encounter": {
+            "name": "Ursoc",
+            "id": 1667
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1476948941000
+          },
+          {
+           "encounter": {
+            "name": "Dragons of Nightmare",
+            "id": 1704
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1476949532000
+          },
+          {
+           "encounter": {
+            "name": "Cenarius",
+            "id": 1750
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1476950006000
+          },
+          {
+           "encounter": {
+            "name": "Xavius",
+            "id": 1726
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1523775140000
+          }
+         ]
+        }
+       },
+       {
+        "difficulty": {
+         "type": "NORMAL",
+         "name": "Normal"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 7,
+         "total_count": 7,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Nythendra",
+            "id": 1703
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1477560681000
+          },
+          {
+           "encounter": {
+            "name": "Il'gynoth, Heart of Corruption",
+            "id": 1738
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1477565669000
+          },
+          {
+           "encounter": {
+            "name": "Elerethe Renferal",
+            "id": 1744
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1477563387000
+          },
+          {
+           "encounter": {
+            "name": "Ursoc",
+            "id": 1667
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1477562393000
+          },
+          {
+           "encounter": {
+            "name": "Dragons of Nightmare",
+            "id": 1704
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1477564353000
+          },
+          {
+           "encounter": {
+            "name": "Cenarius",
+            "id": 1750
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1477566581000
+          },
+          {
+           "encounter": {
+            "name": "Xavius",
+            "id": 1726
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1477568241000
+          }
+         ]
+        }
+       },
+       {
+        "difficulty": {
+         "type": "HEROIC",
+         "name": "Heroic"
+        },
+        "status": {
+         "type": "IN_PROGRESS",
+         "name": "In Progress"
+        },
+        "progress": {
+         "completed_count": 1,
+         "total_count": 7,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Nythendra",
+            "id": 1703
+           },
+           "completed_count": 3,
+           "last_kill_timestamp": 1478770469000
+          }
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "instance": {
+       "name": "Trial of Valor",
+       "id": 861
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "LFR",
+         "name": "Raid Finder"
+        },
+        "status": {
+         "type": "IN_PROGRESS",
+         "name": "In Progress"
+        },
+        "progress": {
+         "completed_count": 2,
+         "total_count": 3,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Guarm",
+            "id": 1830
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1533717764000
+          },
+          {
+           "encounter": {
+            "name": "Helya",
+            "id": 1829
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1533718014000
+          }
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "instance": {
+       "name": "The Nighthold",
+       "id": 786
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "HEROIC",
+         "name": "Heroic"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 10,
+         "total_count": 10,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Skorpyron",
+            "id": 1706
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1730621457000
+          },
+          {
+           "encounter": {
+            "name": "Chronomatic Anomaly",
+            "id": 1725
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1730621559000
+          },
+          {
+           "encounter": {
+            "name": "Trilliax",
+            "id": 1731
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1730621722000
+          },
+          {
+           "encounter": {
+            "name": "Spellblade Aluriel",
+            "id": 1751
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1730621842000
+          },
+          {
+           "encounter": {
+            "name": "Tichondrius",
+            "id": 1762
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1730622093000
+          },
+          {
+           "encounter": {
+            "name": "Krosus",
+            "id": 1713
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1730622196000
+          },
+          {
+           "encounter": {
+            "name": "High Botanist Tel'arn",
+            "id": 1761
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1730621904000
+          },
+          {
+           "encounter": {
+            "name": "Star Augur Etraeus",
+            "id": 1732
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1730621993000
+          },
+          {
+           "encounter": {
+            "name": "Grand Magistrix Elisande",
+            "id": 1743
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1730622504000
+          },
+          {
+           "encounter": {
+            "name": "Gul'dan",
+            "id": 1737
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1730622689000
+          }
+         ]
+        }
+       },
+       {
+        "difficulty": {
+         "type": "MYTHIC",
+         "name": "Mythic"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 10,
+         "total_count": 10,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Skorpyron",
+            "id": 1706
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1730622999000
+          },
+          {
+           "encounter": {
+            "name": "Chronomatic Anomaly",
+            "id": 1725
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1730623176000
+          },
+          {
+           "encounter": {
+            "name": "Trilliax",
+            "id": 1731
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1730623242000
+          },
+          {
+           "encounter": {
+            "name": "Spellblade Aluriel",
+            "id": 1751
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1730623376000
+          },
+          {
+           "encounter": {
+            "name": "Tichondrius",
+            "id": 1762
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1730623660000
+          },
+          {
+           "encounter": {
+            "name": "Krosus",
+            "id": 1713
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1730623791000
+          },
+          {
+           "encounter": {
+            "name": "High Botanist Tel'arn",
+            "id": 1761
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1730623465000
+          },
+          {
+           "encounter": {
+            "name": "Star Augur Etraeus",
+            "id": 1732
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1730623568000
+          },
+          {
+           "encounter": {
+            "name": "Grand Magistrix Elisande",
+            "id": 1743
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1730624073000
+          },
+          {
+           "encounter": {
+            "name": "Gul'dan",
+            "id": 1737
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1730624195000
+          }
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "instance": {
+       "name": "Tomb of Sargeras",
+       "id": 875
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "LFR",
+         "name": "Raid Finder"
+        },
+        "status": {
+         "type": "IN_PROGRESS",
+         "name": "In Progress"
+        },
+        "progress": {
+         "completed_count": 6,
+         "total_count": 9,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Goroth",
+            "id": 1862
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1534035828000
+          },
+          {
+           "encounter": {
+            "name": "Demonic Inquisition",
+            "id": 1867
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1534037598000
+          },
+          {
+           "encounter": {
+            "name": "Harjatan",
+            "id": 1856
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1534036057000
+          },
+          {
+           "encounter": {
+            "name": "Sisters of the Moon",
+            "id": 1903
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1534038091000
+          },
+          {
+           "encounter": {
+            "name": "Mistress Sassz'ine",
+            "id": 1861
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1534036436000
+          },
+          {
+           "encounter": {
+            "name": "The Desolate Host",
+            "id": 1896
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1534038522000
+          }
+         ]
+        }
+       },
+       {
+        "difficulty": {
+         "type": "HEROIC",
+         "name": "Heroic"
+        },
+        "status": {
+         "type": "IN_PROGRESS",
+         "name": "In Progress"
+        },
+        "progress": {
+         "completed_count": 5,
+         "total_count": 9,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Goroth",
+            "id": 1862
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1566554219000
+          },
+          {
+           "encounter": {
+            "name": "Demonic Inquisition",
+            "id": 1867
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1566554624000
+          },
+          {
+           "encounter": {
+            "name": "Harjatan",
+            "id": 1856
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1566554950000
+          },
+          {
+           "encounter": {
+            "name": "Sisters of the Moon",
+            "id": 1903
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1566555895000
+          },
+          {
+           "encounter": {
+            "name": "Mistress Sassz'ine",
+            "id": 1861
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1566555553000
+          }
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "instance": {
+       "name": "Antorus, the Burning Throne",
+       "id": 946
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "LFR",
+         "name": "Raid Finder"
+        },
+        "status": {
+         "type": "IN_PROGRESS",
+         "name": "In Progress"
+        },
+        "progress": {
+         "completed_count": 2,
+         "total_count": 11,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Aggramar",
+            "id": 1984
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1533716340000
+          },
+          {
+           "encounter": {
+            "name": "Argus the Unmaker",
+            "id": 2031
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1533716996000
+          }
+         ]
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "expansion": {
+     "name": "Warlords of Draenor",
+     "id": 124
+    },
+    "instances": [
+     {
+      "instance": {
+       "name": "Hellfire Citadel",
+       "id": 669
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "MYTHIC",
+         "name": "Mythic"
+        },
+        "status": {
+         "type": "IN_PROGRESS",
+         "name": "In Progress"
+        },
+        "progress": {
+         "completed_count": 12,
+         "total_count": 13,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Hellfire Assault",
+            "id": 1426
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1572917644000
+          },
+          {
+           "encounter": {
+            "name": "Iron Reaver",
+            "id": 1425
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1572917728000
+          },
+          {
+           "encounter": {
+            "name": "Hellfire High Council",
+            "id": 1432
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1572918837000
+          },
+          {
+           "encounter": {
+            "name": "Kilrogg Deadeye",
+            "id": 1396
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1572919024000
+          },
+          {
+           "encounter": {
+            "name": "Gorefiend",
+            "id": 1372
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1572919414000
+          },
+          {
+           "encounter": {
+            "name": "Shadow-Lord Iskar",
+            "id": 1433
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1572920046000
+          },
+          {
+           "encounter": {
+            "name": "Socrethar the Eternal",
+            "id": 1427
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1572919633000
+          },
+          {
+           "encounter": {
+            "name": "Fel Lord Zakuun",
+            "id": 1391
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1572920385000
+          },
+          {
+           "encounter": {
+            "name": "Xhul'horac",
+            "id": 1447
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1572920238000
+          },
+          {
+           "encounter": {
+            "name": "Tyrant Velhari",
+            "id": 1394
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1572919881000
+          },
+          {
+           "encounter": {
+            "name": "Mannoroth",
+            "id": 1395
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1572920517000
+          },
+          {
+           "encounter": {
+            "name": "Archimonde",
+            "id": 1438
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1572920648000
+          }
+         ]
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "expansion": {
+     "name": "Mists of Pandaria",
+     "id": 74
+    },
+    "instances": [
+     {
+      "instance": {
+       "name": "Mogu'shan Vaults",
+       "id": 317
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "LFR",
+         "name": "Raid Finder"
+        },
+        "status": {
+         "type": "IN_PROGRESS",
+         "name": "In Progress"
+        },
+        "progress": {
+         "completed_count": 3,
+         "total_count": 6,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "The Stone Guard",
+            "id": 679
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1392712344000
+          },
+          {
+           "encounter": {
+            "name": "Feng the Accursed",
+            "id": 689
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1392712759000
+          },
+          {
+           "encounter": {
+            "name": "Gara'jal the Spiritbinder",
+            "id": 682
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1392713193000
+          }
+         ]
+        }
+       },
+       {
+        "difficulty": {
+         "type": "LEGACY_10_MAN",
+         "name": "10 Player"
+        },
+        "status": {
+         "type": "IN_PROGRESS",
+         "name": "In Progress"
+        },
+        "progress": {
+         "completed_count": 4,
+         "total_count": 6,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "The Stone Guard",
+            "id": 679
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1471862232000
+          },
+          {
+           "encounter": {
+            "name": "Feng the Accursed",
+            "id": 689
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1471862405000
+          },
+          {
+           "encounter": {
+            "name": "Gara'jal the Spiritbinder",
+            "id": 682
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1471862608000
+          },
+          {
+           "encounter": {
+            "name": "The Spirit Kings",
+            "id": 687
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1471862967000
+          }
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "instance": {
+       "name": "Terrace of Endless Spring",
+       "id": 320
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "LFR",
+         "name": "Raid Finder"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 4,
+         "total_count": 4,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Protectors of the Endless",
+            "id": 683
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1392796320000
+          },
+          {
+           "encounter": {
+            "name": "Tsulong",
+            "id": 742
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1392796882000
+          },
+          {
+           "encounter": {
+            "name": "Lei Shi",
+            "id": 729
+           },
+           "completed_count": 4,
+           "last_kill_timestamp": 1394876511000
+          },
+          {
+           "encounter": {
+            "name": "Sha of Fear",
+            "id": 709
+           },
+           "completed_count": 4,
+           "last_kill_timestamp": 1394876958000
+          }
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "instance": {
+       "name": "Throne of Thunder",
+       "id": 362
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "LFR",
+         "name": "Raid Finder"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 12,
+         "total_count": 12,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Jin'rokh the Breaker",
+            "id": 827
+           },
+           "completed_count": 8,
+           "last_kill_timestamp": 1393922080000
+          },
+          {
+           "encounter": {
+            "name": "Horridon",
+            "id": 819
+           },
+           "completed_count": 6,
+           "last_kill_timestamp": 1393923241000
+          },
+          {
+           "encounter": {
+            "name": "Council of Elders",
+            "id": 816
+           },
+           "completed_count": 4,
+           "last_kill_timestamp": 1393054126000
+          },
+          {
+           "encounter": {
+            "name": "Tortos",
+            "id": 825
+           },
+           "completed_count": 4,
+           "last_kill_timestamp": 1393313210000
+          },
+          {
+           "encounter": {
+            "name": "Megaera",
+            "id": 821
+           },
+           "completed_count": 4,
+           "last_kill_timestamp": 1393314117000
+          },
+          {
+           "encounter": {
+            "name": "Ji-Kun",
+            "id": 828
+           },
+           "completed_count": 4,
+           "last_kill_timestamp": 1393315039000
+          },
+          {
+           "encounter": {
+            "name": "Durumu the Forgotten",
+            "id": 818
+           },
+           "completed_count": 6,
+           "last_kill_timestamp": 1393917932000
+          },
+          {
+           "encounter": {
+            "name": "Primordius",
+            "id": 820
+           },
+           "completed_count": 6,
+           "last_kill_timestamp": 1393311013000
+          },
+          {
+           "encounter": {
+            "name": "Dark Animus",
+            "id": 824
+           },
+           "completed_count": 6,
+           "last_kill_timestamp": 1393311551000
+          },
+          {
+           "encounter": {
+            "name": "Iron Qon",
+            "id": 817
+           },
+           "completed_count": 4,
+           "last_kill_timestamp": 1393920071000
+          },
+          {
+           "encounter": {
+            "name": "Twin Empyreans",
+            "id": 829
+           },
+           "completed_count": 4,
+           "last_kill_timestamp": 1393920547000
+          },
+          {
+           "encounter": {
+            "name": "Lei Shen",
+            "id": 832
+           },
+           "completed_count": 4,
+           "last_kill_timestamp": 1393921231000
+          }
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "instance": {
+       "name": "Siege of Orgrimmar",
+       "id": 369
+      },
+      "modes": [
+       {
+        "difficulty": {
+         "type": "LFR",
+         "name": "Raid Finder"
+        },
+        "status": {
+         "type": "IN_PROGRESS",
+         "name": "In Progress"
+        },
+        "progress": {
+         "completed_count": 7,
+         "total_count": 14,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Immerseus",
+            "id": 852
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1415783234000
+          },
+          {
+           "encounter": {
+            "name": "Galakras",
+            "id": 868
+           },
+           "completed_count": 6,
+           "last_kill_timestamp": 1394351750000
+          },
+          {
+           "encounter": {
+            "name": "Iron Juggernaut",
+            "id": 864
+           },
+           "completed_count": 6,
+           "last_kill_timestamp": 1394352599000
+          },
+          {
+           "encounter": {
+            "name": "Kor'kron Dark Shaman",
+            "id": 856
+           },
+           "completed_count": 6,
+           "last_kill_timestamp": 1394353884000
+          },
+          {
+           "encounter": {
+            "name": "General Nazgrim",
+            "id": 850
+           },
+           "completed_count": 4,
+           "last_kill_timestamp": 1394357644000
+          },
+          {
+           "encounter": {
+            "name": "Spoils of Pandaria",
+            "id": 870
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1394349808000
+          },
+          {
+           "encounter": {
+            "name": "Thok the Bloodthirsty",
+            "id": 851
+           },
+           "completed_count": 2,
+           "last_kill_timestamp": 1394350653000
+          }
+         ]
+        }
+       },
+       {
+        "difficulty": {
+         "type": "LEGACY_10_MAN",
+         "name": "10 Player"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 14,
+         "total_count": 14,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Immerseus",
+            "id": 852
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521963847000
+          },
+          {
+           "encounter": {
+            "name": "The Fallen Protectors",
+            "id": 849
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521964074000
+          },
+          {
+           "encounter": {
+            "name": "Norushen",
+            "id": 866
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521964645000
+          },
+          {
+           "encounter": {
+            "name": "Sha of Pride",
+            "id": 867
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521964791000
+          },
+          {
+           "encounter": {
+            "name": "Galakras",
+            "id": 868
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521965321000
+          },
+          {
+           "encounter": {
+            "name": "Iron Juggernaut",
+            "id": 864
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521965443000
+          },
+          {
+           "encounter": {
+            "name": "Kor'kron Dark Shaman",
+            "id": 856
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521965628000
+          },
+          {
+           "encounter": {
+            "name": "General Nazgrim",
+            "id": 850
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521965934000
+          },
+          {
+           "encounter": {
+            "name": "Malkorok",
+            "id": 846
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521966194000
+          },
+          {
+           "encounter": {
+            "name": "Spoils of Pandaria",
+            "id": 870
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521966917000
+          },
+          {
+           "encounter": {
+            "name": "Thok the Bloodthirsty",
+            "id": 851
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521967053000
+          },
+          {
+           "encounter": {
+            "name": "Siegecrafter Blackfuse",
+            "id": 865
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521967336000
+          },
+          {
+           "encounter": {
+            "name": "Paragons of the Klaxxi",
+            "id": 853
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521967656000
+          },
+          {
+           "encounter": {
+            "name": "Garrosh Hellscream",
+            "id": 869
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521968040000
+          }
+         ]
+        }
+       },
+       {
+        "difficulty": {
+         "type": "NORMAL",
+         "name": "Normal"
+        },
+        "status": {
+         "type": "IN_PROGRESS",
+         "name": "In Progress"
+        },
+        "progress": {
+         "completed_count": 4,
+         "total_count": 14,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Immerseus",
+            "id": 852
+           },
+           "completed_count": 5,
+           "last_kill_timestamp": 1471860526000
+          },
+          {
+           "encounter": {
+            "name": "The Fallen Protectors",
+            "id": 849
+           },
+           "completed_count": 4,
+           "last_kill_timestamp": 1394701448000
+          },
+          {
+           "encounter": {
+            "name": "Norushen",
+            "id": 866
+           },
+           "completed_count": 3,
+           "last_kill_timestamp": 1394704229000
+          },
+          {
+           "encounter": {
+            "name": "Sha of Pride",
+            "id": 867
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1392890155000
+          }
+         ]
+        }
+       },
+       {
+        "difficulty": {
+         "type": "HEROIC",
+         "name": "Heroic"
+        },
+        "status": {
+         "type": "COMPLETE",
+         "name": "Complete"
+        },
+        "progress": {
+         "completed_count": 14,
+         "total_count": 14,
+         "encounters": [
+          {
+           "encounter": {
+            "name": "Immerseus",
+            "id": 852
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521963847000
+          },
+          {
+           "encounter": {
+            "name": "The Fallen Protectors",
+            "id": 849
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521964074000
+          },
+          {
+           "encounter": {
+            "name": "Norushen",
+            "id": 866
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521964645000
+          },
+          {
+           "encounter": {
+            "name": "Sha of Pride",
+            "id": 867
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521964791000
+          },
+          {
+           "encounter": {
+            "name": "Galakras",
+            "id": 868
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521965321000
+          },
+          {
+           "encounter": {
+            "name": "Iron Juggernaut",
+            "id": 864
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521965443000
+          },
+          {
+           "encounter": {
+            "name": "Kor'kron Dark Shaman",
+            "id": 856
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521965628000
+          },
+          {
+           "encounter": {
+            "name": "General Nazgrim",
+            "id": 850
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521965934000
+          },
+          {
+           "encounter": {
+            "name": "Malkorok",
+            "id": 846
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521966194000
+          },
+          {
+           "encounter": {
+            "name": "Spoils of Pandaria",
+            "id": 870
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521966917000
+          },
+          {
+           "encounter": {
+            "name": "Thok the Bloodthirsty",
+            "id": 851
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521967053000
+          },
+          {
+           "encounter": {
+            "name": "Siegecrafter Blackfuse",
+            "id": 865
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521967336000
+          },
+          {
+           "encounter": {
+            "name": "Paragons of the Klaxxi",
+            "id": 853
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521967656000
+          },
+          {
+           "encounter": {
+            "name": "Garrosh Hellscream",
+            "id": 869
+           },
+           "completed_count": 1,
+           "last_kill_timestamp": 1521968040000
+          }
+         ]
+        }
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}
