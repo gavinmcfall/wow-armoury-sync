@@ -166,11 +166,11 @@ test("returns ref lookup stats alongside the summaries", async () => {
   const kv = fakeKv();
   const result = await run(kv);
   assert.equal(result.summaries.length, 1);
-  // 13 item icons, plus three lookups the fixtures don't serve: the faction
-  // tree's index, the achievement categories' index, and the details of
-  // Recurve's one completed achievement (points and icon count as two), and
-  // an icon for each of 2 mounts, 5 pet species and 2 toys.
-  assert.equal(result.refs.fetched, 26);
+  // 13 item icons, plus lookups the fixtures don't serve: the faction
+  // tree's index, the achievement categories' index, the details of
+  // Recurve's one completed achievement (one lookup), and an icon for each
+  // of 2 mounts, 5 pet species and 2 toys.
+  assert.equal(result.refs.fetched, 25);
   assert.equal(result.refs.skipped, 0);
 });
 
@@ -297,6 +297,15 @@ test("achievement categories and recent details come from the reference data", a
   assert.deepEqual(view.categories, [{ id: 15596, name: "Adventure", quantity: 1, points: 0, total: { quantity: 120, points: 0 } }]);
   assert.equal(view.recent[0].category, "Eastern Kingdoms");
   assert.equal(view.recent[0].icon, "https://render/icons/a.jpg");
+});
+
+test("the achievements view carries details for every completed achievement it knows", async () => {
+  const done = FOREVER.achievements.achievements.filter((a) => a.completed_timestamp);
+  const details = Object.fromEntries(done.map((a) => [a.id, { points: 0, category: "Quests", icon: null }]));
+  const kv = fakeKv({ "ref:static-forever-us:achievement-details": details });
+  await run(kv);
+
+  assert.deepEqual(kv.json(ACH_KEY).details, details);
 });
 
 test("an achievements server error keeps the previous achievements view", async () => {
@@ -428,4 +437,52 @@ test("a server error on the PvP summary or a bracket keeps the previous PvP view
     assert.deepEqual(kv.json(PVP_KEY), oldView);
     assert.equal(kv.json("index").characters[0].status, "ok");
   }
+});
+
+const CONS_PVE = "view:v1:retail:us:barthilas:cònsecrator:pve";
+const CONS_BASE = "/profile/wow/character/barthilas/cònsecrator";
+const SEASON_RUN = {
+  completed_timestamp: Date.UTC(2026, 10, 3),
+  duration: 1_800_000,
+  keystone_level: 12,
+  dungeon: { name: "Murder Row", id: 1 },
+  is_completed_within_time: true,
+  map_rating: { rating: 301.4 },
+};
+
+// Cònsecrator with a Mythic+ profile that lists the given seasons; season
+// 18 is current.
+const withSeasons = (seasons, seasonRoute = () => [200, { best_runs: [SEASON_RUN] }]) => (path) => {
+  if (path === "/data/wow/mythic-keystone/season/index") return [200, { current_season: { id: 18 } }];
+  if (path === `${CONS_BASE}/mythic-keystone-profile`) {
+    return [200, { current_mythic_rating: { rating: 301.4, color: { r: 30, g: 255, b: 0 } }, seasons: seasons.map((id) => ({ id })) }];
+  }
+  if (path === `${CONS_BASE}/mythic-keystone-profile/season/18`) return seasonRoute();
+  return fixtureRoute(path);
+};
+
+test("this season's best runs come from the season the Mythic+ profile lists", async () => {
+  const kv = fakeKv();
+  await run(kv, withSeasons([17, 18]), [CONSECRATOR]);
+
+  const season = kv.json(CONS_PVE).mythicSeason;
+  assert.equal(season.color, "#1eff00");
+  assert.deepEqual(season.runs.map((r) => `${r.dungeon} +${r.level}`), ["Murder Row +12"]);
+});
+
+test("a character with no run this season gets no season request", async () => {
+  const kv = fakeKv();
+  const fetchImpl = fakeFetch(withSeasons([17]));
+  await syncAll({ client: client(fetchImpl), kv, characters: [CONSECRATOR], now: () => NOW, fetchImage: noRenders });
+
+  assert.ok(!fetchImpl.calls.some((p) => p.includes("/mythic-keystone-profile/season/")));
+  assert.deepEqual(kv.json(CONS_PVE).mythicSeason, { color: null, runs: [] });
+});
+
+test("a server error on this season's runs keeps the previous Dungeons & Raids view", async () => {
+  const oldView = { schemaVersion: 1, fetchedAt: "2026-11-15T14:17:00.000Z", mythicPlus: null, raids: [], dungeons: [] };
+  const kv = fakeKv({ [CONS_PVE]: oldView });
+  await run(kv, withSeasons([18], () => [503, undefined]), [CONSECRATOR]);
+
+  assert.deepEqual(kv.json(CONS_PVE), oldView);
 });

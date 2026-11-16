@@ -102,3 +102,15 @@ test("a missing achievements response gives an empty view", () => {
   assert.deepEqual(view.recent, []);
   assert.deepEqual(view.categories.map((c) => c.quantity), [0, 0]);
 });
+
+test("details holds points, category and icon for every completed achievement whose details are known", () => {
+  assert.deepEqual(build().details, {
+    545: { points: 5, category: "Characters", icon: null },
+    6: { points: 10, category: "Characters", icon: "https://render/icons/6.jpg" },
+  });
+});
+
+test("details leaves out achievements that are not completed", () => {
+  const view = build({ details: { ...DETAILS, 8: { points: 10, category: "Characters", icon: null } } });
+  assert.equal(view.details[8], undefined);
+});

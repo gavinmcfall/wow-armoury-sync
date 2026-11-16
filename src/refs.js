@@ -26,10 +26,27 @@ export function createRefs({
   const counts = { hits: 0, fetched: 0, skipped: 0 };
   const factionTrees = new Map();
   const achievementTrees = new Map();
+  const detailMaps = new Map();
+  const mythicSeasons = new Map();
+
+  // Lookups already made this run, by key. Characters share most reference
+  // data (retail collections are account-wide), and every KV read is a
+  // subrequest, so each key is read or fetched at most once per run.
+  const seen = new Map();
 
   // Reads key from KV; on a miss, and while under the cap, calls load() and
   // caches a non-null result. Strings are stored as-is, anything else as JSON.
-  async function lookup(key, asJson, load) {
+  function lookup(key, asJson, load) {
+    if (seen.has(key)) {
+      counts.hits++;
+      return seen.get(key);
+    }
+    const result = readOrLoad(key, asJson, load);
+    seen.set(key, result);
+    return result;
+  }
+
+  async function readOrLoad(key, asJson, load) {
     const cached = await kv.get(key, asJson ? "json" : undefined);
     if (cached !== null) {
       counts.hits++;
@@ -179,21 +196,31 @@ export function createRefs({
       }
       return achievementTrees.get(ns);
     },
-    // { points, category } for one achievement; category is its own
-    // (possibly sub-) category's name.
-    achievement(ns, id) {
-      return lookup(`ref:${ns}:achievement:${id}`, true, async () => {
-        const res = await client.get(`/data/wow/achievement/${id}`, ns);
-        if (res.status !== 200) return null;
-        return { points: res.data?.points ?? 0, category: res.data?.category?.name ?? null };
-      });
+    // { id: { points, category, icon } } for the achievements asked for,
+    // where known; category is the achievement's own (possibly sub-)
+    // category name. A character completes well over a thousand, so the
+    // details live in one map per namespace (ref:{ns}:achievement-details),
+    // read once a run and written when it grows. Missing ones are fetched in
+    // the order given (newest first, from the sync), each one lookup of two
+    // requests, until the cap.
+    achievementDetails(ns, ids) {
+      const base = detailMaps.get(ns) ?? readAchievementDetails(ns);
+      const result = base.then((map) => addAchievementDetails(ns, map, ids));
+      // Chained, so callers never fetch or write the map at once; a failed
+      // call leaves the map as it was for the next.
+      detailMaps.set(ns, result.catch(() => base));
+      return result;
     },
-    achievementIcon(ns, id) {
-      return lookup(`ref:${ns}:achievement-icon:${id}`, false, async () => {
-        const res = await client.get(`/data/wow/media/achievement/${id}`, ns);
-        if (res.status !== 200) return null;
-        return res.data?.assets?.find((a) => a.key === "icon")?.value ?? null;
-      });
+    // The current Mythic+ season's id, or null: one request per namespace
+    // per run (ns is a dynamic namespace).
+    currentMythicSeason(ns) {
+      if (!mythicSeasons.has(ns)) {
+        mythicSeasons.set(
+          ns,
+          client.get("/data/wow/mythic-keystone/season/index", ns).then((res) => (res.status === 200 ? (res.data?.current_season?.id ?? null) : null)),
+        );
+      }
+      return mythicSeasons.get(ns);
     },
     petIcon(ns, speciesId) {
       return lookup(`ref:${ns}:pet-icon:${speciesId}`, false, async () => {
@@ -223,6 +250,47 @@ export function createRefs({
       return { ...counts };
     },
   };
+
+  async function readAchievementDetails(ns) {
+    const cached = await kv.get(`ref:${ns}:achievement-details`, "json");
+    if (cached) counts.hits++;
+    return cached ?? {};
+  }
+
+  // Adds the missing ids to the map, in order, while under the cap, and
+  // stores the map if it grew. Returns the whole map.
+  async function addAchievementDetails(ns, map, ids) {
+    const missing = [...new Set(ids)].filter((id) => !(id in map));
+    let grew = false;
+    for (let i = 0; i < missing.length; i += CHUNK) {
+      const chunk = missing.slice(i, i + CHUNK);
+      const batch = chunk.slice(0, Math.max(0, maxNewLookups - counts.fetched));
+      counts.fetched += batch.length;
+      const found = await Promise.all(batch.map((id) => fetchAchievementDetail(ns, id)));
+      batch.forEach((id, j) => {
+        if (found[j]) {
+          map[id] = found[j];
+          grew = true;
+        }
+      });
+      if (batch.length < chunk.length) {
+        counts.skipped++;
+        break;
+      }
+    }
+    if (grew) await kv.put(`ref:${ns}:achievement-details`, JSON.stringify(map));
+    return map;
+  }
+
+  async function fetchAchievementDetail(ns, id) {
+    const [info, media] = await Promise.all([client.get(`/data/wow/achievement/${id}`, ns), client.get(`/data/wow/media/achievement/${id}`, ns)]);
+    if (info.status !== 200) return null;
+    return {
+      points: info.data?.points ?? 0,
+      category: info.data?.category?.name ?? null,
+      icon: media.status === 200 ? (media.data?.assets?.find((a) => a.key === "icon")?.value ?? null) : null,
+    };
+  }
 
   // Reads a cached tree from ref:{ns}:{name}, walking it again once it is
   // 30 days old. A walk that fails or would pass the cap keeps nothing and

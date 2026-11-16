@@ -25,6 +25,39 @@ test("itemIcon returns the cached url without an API call", async () => {
   assert.deepEqual(refs.stats(), { hits: 1, fetched: 0, skipped: 0 });
 });
 
+// Counts KV reads: every read is a subrequest, and a run may make 10,000.
+function countingKv(initial) {
+  const kv = fakeKv(initial);
+  const get = kv.get;
+  kv.reads = 0;
+  kv.get = (...args) => {
+    kv.reads++;
+    return get(...args);
+  };
+  return kv;
+}
+
+test("a reference looked up again in the same run is not read from KV again", async () => {
+  const kv = countingKv({ "ref:static-us:item-icon:100": "https://cached/100.jpg" });
+  const refs = createRefs({ client: client(fakeFetch(iconRoute)), kv });
+
+  assert.equal(await refs.itemIcon(NS, 100), "https://cached/100.jpg");
+  assert.equal(await refs.itemIcon(NS, 100), "https://cached/100.jpg");
+  assert.equal(kv.reads, 1);
+  assert.deepEqual(refs.stats(), { hits: 2, fetched: 0, skipped: 0 });
+});
+
+test("a reference fetched once in a run is not fetched again", async () => {
+  const kv = countingKv();
+  const fetchImpl = fakeFetch(iconRoute);
+  const refs = createRefs({ client: client(fetchImpl), kv });
+
+  await Promise.all([refs.itemIcon(NS, 200), refs.itemIcon(NS, 200)]);
+  assert.equal(await refs.itemIcon(NS, 200), "https://render/icons/200.jpg");
+  assert.equal(fetchImpl.calls.filter((p) => p === "/data/wow/media/item/200").length, 1);
+  assert.equal(kv.reads, 1);
+});
+
 test("itemIcon fetches, caches and returns the icon asset on a miss", async () => {
   const kv = fakeKv();
   const refs = createRefs({ client: client(fakeFetch(iconRoute)), kv });
@@ -286,21 +319,57 @@ test("achievementCategories is fetched once per namespace per run", async () => 
   assert.equal(fetchImpl.calls.filter((p) => p === "/data/wow/achievement-category/index").length, 1);
 });
 
-test("achievement returns an achievement's points and category, cached", async () => {
+const DETAILS_KEY = "ref:static-us:achievement-details";
+
+test("achievementDetails fetches points, category and icon, and caches them all under one key", async () => {
   const kv = fakeKv();
   const refs = createRefs({ client: client(fakeFetch(achievementRoute)), kv });
 
-  assert.deepEqual(await refs.achievement(NS, 6), { points: 10, category: "Characters" });
-  assert.deepEqual(kv.json("ref:static-us:achievement:6"), { points: 10, category: "Characters" });
-  assert.equal(await refs.achievement(NS, 7), null);
+  const details = await refs.achievementDetails(NS, [6, 7]);
+  assert.deepEqual(details, { 6: { points: 10, category: "Characters", icon: "https://render/icons/236562.jpg" } });
+  assert.deepEqual(kv.json(DETAILS_KEY), details);
+  // Each achievement is one lookup (two requests); 7 is unknown to the API.
+  assert.deepEqual(refs.stats(), { hits: 0, fetched: 2, skipped: 0 });
 });
 
-test("achievementIcon returns and caches the icon url", async () => {
-  const kv = fakeKv();
-  const refs = createRefs({ client: client(fakeFetch(achievementRoute)), kv });
+test("achievementDetails reads the cached map once a run and fetches only what it lacks", async () => {
+  const cached = { 9: { points: 5, category: "Quests", icon: null } };
+  const kv = countingKv({ [DETAILS_KEY]: cached });
+  const fetchImpl = fakeFetch(achievementRoute);
+  const refs = createRefs({ client: client(fetchImpl), kv });
 
-  assert.equal(await refs.achievementIcon(NS, 6), "https://render/icons/236562.jpg");
-  assert.equal(kv.store.get("ref:static-us:achievement-icon:6"), "https://render/icons/236562.jpg");
+  assert.deepEqual(await refs.achievementDetails(NS, [9]), cached);
+  const both = await refs.achievementDetails(NS, [9, 6]);
+  assert.deepEqual(Object.keys(both).sort(), ["6", "9"]);
+  assert.ok(!fetchImpl.calls.includes("/data/wow/achievement/9"));
+  assert.equal(kv.reads, 1);
+  assert.deepEqual(Object.keys(kv.json(DETAILS_KEY)).sort(), ["6", "9"]);
+});
+
+test("achievementDetails fetches in the order given and stops at the lookup cap", async () => {
+  const route = (path) => {
+    const m = path.match(/^\/data\/wow\/achievement\/(\d+)$/);
+    if (m) return [200, { points: Number(m[1]), category: { name: "C" } }];
+    return [404, undefined];
+  };
+  const kv = fakeKv();
+  const refs = createRefs({ client: client(fakeFetch(route)), kv, maxNewLookups: 2 });
+
+  assert.deepEqual(Object.keys(await refs.achievementDetails(NS, [30, 20, 10])).sort(), ["20", "30"]);
+  assert.equal(refs.stats().skipped, 1);
+});
+
+test("achievementDetails writes nothing when there is nothing new", async () => {
+  const kv = fakeKv({ [DETAILS_KEY]: { 6: { points: 10, category: "Characters", icon: null } } });
+  let puts = 0;
+  const put = kv.put;
+  kv.put = (...args) => {
+    puts++;
+    return put(...args);
+  };
+  const refs = createRefs({ client: client(fakeFetch(achievementRoute)), kv });
+  await refs.achievementDetails(NS, [6]);
+  assert.equal(puts, 0);
 });
 
 function collectionRoute(path) {

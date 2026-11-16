@@ -50,6 +50,8 @@ export function trackedCharacters(region = REGION) {
       displayName: capitalise(c.name),
       profileNamespace: `profile-${region}`,
       staticNamespace: `static-${region}`,
+      // Mythic+ seasons live in the dynamic namespace.
+      dynamicNamespace: `dynamic-${region}`,
     })),
     ...FOREVER.map((c) => ({
       game: "forever",

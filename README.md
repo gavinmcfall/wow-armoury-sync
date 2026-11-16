@@ -29,7 +29,7 @@ A bad night never wipes good data. If Blizzard's API fails for the profile, or f
 | `index` | `schemaVersion`, `updatedAt` and one summary per character (see below) |
 | `view:v1:{key}:character` | The Character view for one character: gear, stats, specs, Mythic+, raids, PvP |
 | `view:v1:{key}:reputation` | The Reputation view: the character's factions, grouped by expansion (retail) or header (Forever) |
-| `view:v1:{key}:achievements` | The Achievements view: totals, progress per top-level category, the newest completions, and every completed achievement |
+| `view:v1:{key}:achievements` | The Achievements view: totals, progress per top-level category, the newest completions, every completed achievement, and their details |
 | `view:v1:{key}:collections` | The Collections view: mounts, pets, toys and heirlooms, each with name and icon |
 | `view:v1:{key}:pvp` | The Player vs Player view: honour level or rank, honourable kills, rated brackets (retail) and battleground records |
 | `view:v1:{key}:pve` | The Dungeons & Raids view: Mythic+ rating (retail), and raids and dungeons by expansion with kills per difficulty |
@@ -37,8 +37,7 @@ A bad night never wipes good data. If Blizzard's API fails for the profile, or f
 | `ref:{namespace}:class-specs:{classId}` | A class's specialisation names, in Blizzard's order |
 | `ref:{namespace}:faction-groups` | Which top-level header (expansion, on retail) each reputation faction sits under, with when it was built. Rebuilt every 30 days. |
 | `ref:{namespace}:achievement-categories` | The top-level achievement categories a character sees, in Blizzard's order, with each one's achievement count and points per faction, and when the list was built. Rebuilt every 30 days. |
-| `ref:{namespace}:achievement:{id}` | An achievement's points and category name |
-| `ref:{namespace}:achievement-icon:{id}` | An achievement's icon URL |
+| `ref:{namespace}:achievement-details` | Points, category name and icon URL for every achievement seen so far, as one map by id |
 | `ref:{namespace}:pet-icon:{speciesId}` | A pet species' icon URL |
 | `ref:{namespace}:mount-icon:{mountId}` | A mount's picture: the zoomed render of its first creature display, since mounts have no icon in the API |
 | `ref:{namespace}:toy-item:{toyId}`, `ref:{namespace}:heirloom-item:{heirloomId}` | The item a toy or heirloom is; its icon is then the item's |
@@ -174,7 +173,10 @@ The view is written only when the reputations call succeeds (or answers 404, mea
   ],
   "completed": [
     { "id": 61604, "name": "It's Nearly Midnight", "completedAt": "2026-02-17T19:52:00.000Z" }
-  ]
+  ],
+  "details": {
+    "61604": { "points": 10, "category": "Midnight", "icon": "https://render.worldofwarcraft.com/us/icons/56/….jpg" }
+  }
 }
 ```
 
@@ -182,6 +184,7 @@ The view is written only when the reputations call succeeds (or answers 404, mea
 - **`categories`:** the top-level categories in Blizzard's order, leaving out guild categories and Forever's hidden "Do Not Display". `quantity` and `points` are the character's (subcategories included); `total` is what the category holds for the character's faction. Empty if the category list couldn't be fetched.
 - **`recent`:** the 20 newest completions, with `points`, `category` (the achievement's own category, which may be a subcategory) and `icon`, each `null` until its details have been fetched.
 - **`completed`:** every completed achievement, newest first, without details.
+- **`details`:** `points`, `category` and `icon` for each completed achievement whose details are known, by id. Details are fetched newest first, so on a first run the oldest may be missing until a later night.
 
 The view is written only when the achievements call succeeds (or answers 404); a server error keeps the previous one.
 
@@ -213,6 +216,10 @@ The view is written only when all four collection calls succeed (or answer 404);
   "game": "retail",
   "fetchedAt": "2026-11-16T14:17:00.000Z",
   "mythicPlus": { "rating": 1835 },
+  "mythicSeason": {
+    "color": "#ff8000",
+    "runs": [{ "dungeon": "Murder Row", "level": 12, "timed": true, "duration": 1800000, "completedAt": "2026-11-03T00:00:00.000Z", "score": 301 }]
+  },
   "raids": [
     {
       "id": 395,
@@ -227,9 +234,10 @@ The view is written only when all four collection calls succeed (or answer 404);
 ```
 
 - **`mythicPlus`:** `null` on Forever. On retail, `rating` is the current season's Mythic+ rating, rounded, or `null` with no rating this season.
+- **`mythicSeason`:** `null` on Forever. On retail, `color` is the rating's colour as Blizzard shows it, and `runs` the best run in each dungeon this season (the higher-scoring of its affix weeks), highest `score` first; `duration` is in milliseconds. `{ "color": null, "runs": [] }` with no run this season. The sync asks for the season's runs only when the Mythic+ profile lists the current season.
 - **`raids` and `dungeons`:** grouped by expansion, newest first (the API's expansion ids rise with each release). Blizzard's dungeon list includes a "Current Season" group, this season's Mythic+ dungeons, which comes first. Instances and difficulties keep the API's order. `completed` of `total` counts the bosses killed at least once.
 
-The view is written only when the Mythic+, raid and dungeon calls all succeed (or answer 404); a server error on any keeps the previous one.
+The view is written only when the Mythic+, season, raid and dungeon calls all succeed (or answer 404); a server error on any keeps the previous one.
 
 ### The Player vs Player view
 
@@ -397,7 +405,7 @@ Elsewhere, read KV through the [Cloudflare REST API](https://developers.cloudfla
 
 ## Notes
 
-- **Limits:** each character costs about 16 API calls (plus one per rated PvP bracket it has played) and one request for its render, plus one call per item icon (and per class, for retail) the first time it's seen. Grouping reputations walks Blizzard's faction tree, a call per faction (about 300 on retail, 60 on Forever), once every 30 days. Achievement categories take about 17 calls on retail and 8 on Forever, also every 30 days, and each of the 20 newest completions costs two calls the first time it is seen. Each mount, pet species, toy and heirloom costs one lookup (up to two calls) the first time it is seen; retail collections are account-wide, so about 650 lookups for the first retail character and few after. Measuring a render takes roughly 50 ms of CPU, and only happens when the render has changed; that needs the Workers Paid plan's CPU allowance, not the free plan's 10 ms. New reference lookups are capped at 2,000 a night; anything over the cap is fetched on a later night. A few dozen characters fits comfortably within Cloudflare's and Blizzard's limits.
+- **Limits:** each character costs about 16 API calls (plus one per rated PvP bracket it has played) and one request for its render, plus one call per item icon (and per class, for retail) the first time it's seen. Grouping reputations walks Blizzard's faction tree, a call per faction (about 300 on retail, 60 on Forever), once every 30 days. Achievement categories take about 17 calls on retail and 8 on Forever, also every 30 days, and each completed achievement costs one lookup (two calls) the first time any character is seen with it: about 1,400 for a long-played retail character, spread over the first nights by the cap. Each mount, pet species, toy and heirloom costs one lookup (up to two calls) the first time it is seen; retail collections are account-wide, so about 650 lookups for the first retail character and few after. Measuring a render takes roughly 50 ms of CPU, and only happens when the render has changed; that needs the Workers Paid plan's CPU allowance, not the free plan's 10 ms. New reference lookups are capped at 2,000 a night; anything over the cap is fetched on a later night. Each reference is read from KV at most once a run, however many characters share it, because every KV read counts against the Worker's subrequest limit; `wrangler.jsonc` raises that limit from 10,000 to 50,000 a run for headroom. A few dozen characters fits comfortably within Cloudflare's and Blizzard's limits.
 - **Blizzard's terms:** data from the Battle.net API is covered by [Blizzard's Developer API Terms of Use](https://www.blizzard.com/legal/a2989b50-5f16-43b1-abec-2ae17cc09dd6/blizzard-developer-api-terms-of-use).
 - This isn't affiliated with or endorsed by Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment.
 

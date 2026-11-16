@@ -1,14 +1,13 @@
 // Builds the Achievements tab view (schema version 1) from the character's
 // achievements response, the top-level categories (refs.achievementCategories)
-// and the details of the newest completions. Pure: no I/O.
+// and the achievement details (refs.achievementDetails). Pure: no I/O.
 //
 // Category progress comes straight from the API's category_progress, whose
 // top-level entries already count their subcategories. A category's total
 // differs by faction, so the character's own faction picks it.
 
 export const ACHIEVEMENTS_VIEW_VERSION = 1;
-// How many of the newest completions get points, category and icon. Each
-// one costs two lookups the first time it is seen.
+// How many of the newest completions the view lists as recent.
 export const RECENT_COUNT = 20;
 
 export function buildAchievementsView({ game, fetchedAt, achievements, categories, faction, details = {} }) {
@@ -36,14 +35,17 @@ export function buildAchievementsView({ game, fetchedAt, achievements, categorie
       icon: details[a.id]?.icon ?? null,
     })),
     completed,
+    // Points, category and icon for every completed achievement whose
+    // details are known, by id: the site looks up its filter matches here.
+    details: Object.fromEntries(completed.filter((a) => details[a.id]).map((a) => [a.id, details[a.id]])),
   };
 }
 
-// The ids whose details the view wants, newest first.
-export function recentIds(achievements) {
+// The completed achievements' ids, newest first: the order their details
+// are fetched in, so the recent ones are always known first.
+export function completedIds(achievements) {
   return (achievements?.achievements ?? [])
     .filter((a) => a.completed_timestamp)
     .sort((a, b) => b.completed_timestamp - a.completed_timestamp)
-    .slice(0, RECENT_COUNT)
     .map((a) => a.id);
 }

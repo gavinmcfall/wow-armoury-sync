@@ -17,7 +17,7 @@
 import { createRefs } from "./refs.js";
 import { buildCharacterView, foreverActiveSpec } from "./views/character.js";
 import { buildCollectionsView, collectionIds } from "./views/collections.js";
-import { buildAchievementsView, recentIds } from "./views/achievements.js";
+import { buildAchievementsView, completedIds } from "./views/achievements.js";
 import { buildPveView } from "./views/pve.js";
 import { bracketPaths, buildPvpView } from "./views/pvp.js";
 import { buildReputationView } from "./views/reputation.js";
@@ -110,7 +110,7 @@ async function syncCharacter({ client, kv, refs, character, previous, now }) {
     if (!failedField("achievements")) {
       const [categories, details] = await Promise.all([
         refs.achievementCategories(ns).catch(() => null),
-        fetchAchievementDetails(refs, sections.achievements, ns),
+        refs.achievementDetails(ns, completedIds(sections.achievements)).catch(() => ({})),
       ]);
       const faction = profile.data.faction?.type?.toLowerCase() ?? null;
       const achievements = buildAchievementsView({ game: character.game, fetchedAt, achievements: sections.achievements, categories, faction, details });
@@ -123,8 +123,11 @@ async function syncCharacter({ client, kv, refs, character, previous, now }) {
       await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:collections`, JSON.stringify(collections));
     }
     if (!PVE.some(failedField)) {
-      const pve = buildPveView({ game: character.game, fetchedAt, ...pick(sections, PVE) });
-      await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:pve`, JSON.stringify(pve));
+      const season = await fetchMythicSeason(client, refs, character, base, sections.mythic);
+      if (season.ok) {
+        const pve = buildPveView({ game: character.game, fetchedAt, ...pick(sections, PVE), season: season.data });
+        await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:pve`, JSON.stringify(pve));
+      }
     }
     if (!failedField("pvp")) {
       const brackets = await fetchBrackets(client, base, character.profileNamespace, sections.pvp);
@@ -155,6 +158,19 @@ async function fetchSections(client, base, namespace, endpoints) {
     sections: Object.fromEntries(results.map((r) => [r.field, r.data])),
     failed: results.filter((r) => r.status !== 200 && r.status !== 404),
   };
+}
+
+// The character's current Mythic+ season detail: { ok, data }. data is
+// null when the character has no run this season (the profile lists only
+// seasons it played); ok is false on a server error, so the previous view
+// stays.
+async function fetchMythicSeason(client, refs, character, base, mythic) {
+  if (!character.dynamicNamespace) return { ok: true, data: null };
+  const current = await refs.currentMythicSeason(character.dynamicNamespace);
+  if (!current || !(mythic?.seasons ?? []).some((s) => s.id === current)) return { ok: true, data: null };
+  const res = await client.get(`${base}/mythic-keystone-profile/season/${current}`, character.profileNamespace);
+  if (res.status === 200) return { ok: true, data: res.data };
+  return { ok: res.status === 404, data: null };
 }
 
 // { segment: response } for each rated bracket the PvP summary links to
@@ -192,19 +208,6 @@ async function fetchItemIcons(refs, equipment, ns) {
     }),
   );
   return icons;
-}
-
-// Returns { achievementId: { points, category, icon } } for the newest
-// completions whose details are known.
-async function fetchAchievementDetails(refs, achievements, ns) {
-  const details = {};
-  await Promise.all(
-    recentIds(achievements).map(async (id) => {
-      const [info, icon] = await Promise.all([refs.achievement(ns, id), refs.achievementIcon(ns, id)]);
-      if (info) details[id] = { ...info, icon };
-    }),
-  );
-  return details;
 }
 
 const pick = (obj, keys) => Object.fromEntries(keys.map((k) => [k, obj[k]]));

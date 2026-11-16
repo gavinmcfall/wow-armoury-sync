@@ -111,3 +111,39 @@ test("no kills, or a section the API did not return, gives empty lists", () => {
   assert.deepEqual(view.raids, []);
   assert.deepEqual(view.dungeons, []);
 });
+
+const run = (dungeon, level, timed, mapRating, ts) => ({
+  completed_timestamp: ts,
+  duration: 1_800_000,
+  keystone_level: level,
+  dungeon: { name: dungeon, id: dungeon.length },
+  is_completed_within_time: timed,
+  mythic_rating: { rating: mapRating / 2 },
+  map_rating: { rating: mapRating },
+});
+
+const SEASON = {
+  mythic_rating: { color: { r: 255, g: 128, b: 0, a: 1 }, rating: 1834.6 },
+  best_runs: [
+    run("Kings' Rest", 22, false, 480.2, Date.UTC(2026, 10, 2)),
+    run("Kings' Rest", 21, true, 495.7, Date.UTC(2026, 10, 3)),
+    run("Murder Row", 20, true, 470, Date.UTC(2026, 10, 4)),
+  ],
+};
+
+test("mythicSeason carries the rating colour and the best run in each dungeon, highest score first", () => {
+  const view = build({ mythic: { current_mythic_rating: { rating: 1834.6, color: { r: 255, g: 128, b: 0, a: 1 } } }, season: SEASON });
+  assert.equal(view.mythicSeason.color, "#ff8000");
+  assert.deepEqual(view.mythicSeason.runs, [
+    { dungeon: "Kings' Rest", level: 21, timed: true, duration: 1_800_000, completedAt: "2026-11-03T00:00:00.000Z", score: 496 },
+    { dungeon: "Murder Row", level: 20, timed: true, duration: 1_800_000, completedAt: "2026-11-04T00:00:00.000Z", score: 470 },
+  ]);
+});
+
+test("without a run this season, mythicSeason has no runs and no colour", () => {
+  assert.deepEqual(build({ season: null }).mythicSeason, { color: null, runs: [] });
+});
+
+test("Forever has no mythicSeason", () => {
+  assert.equal(build({ game: "forever", mythic: null, season: null }).mythicSeason, null);
+});
