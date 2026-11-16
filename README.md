@@ -181,3 +181,7 @@ Elsewhere, read KV through the [Cloudflare REST API](https://developers.cloudfla
 - **Limits:** each character costs about 7 API calls, plus one call per item icon the first time that icon is seen. A few dozen characters fits comfortably within Cloudflare's and Blizzard's limits.
 - **Blizzard's terms:** data from the Battle.net API is covered by [Blizzard's Developer API Terms of Use](https://www.blizzard.com/legal/a2989b50-5f16-43b1-abec-2ae17cc09dd6/blizzard-developer-api-terms-of-use).
 - This isn't affiliated with or endorsed by Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment.
+
+## Licence
+
+[MIT](LICENSE).
