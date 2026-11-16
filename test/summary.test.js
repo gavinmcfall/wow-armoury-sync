@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { buildSummary, notListedSummary } from "../src/views/summary.js";
+import { buildSummary, notListedSummary, primaryProfessions } from "../src/views/summary.js";
 import { trackedCharacters } from "../src/characters.js";
 
 const load = (f) => JSON.parse(readFileSync(new URL(`./fixtures/${f}`, import.meta.url), "utf8"));
@@ -81,3 +81,23 @@ test("summary background is null for a class it doesn't know", () => {
   const profile = { ...RETAIL.profile, character_class: { id: 99, name: "Tinker" } };
   assert.equal(buildSummary(byKey("retail:us:barthilas:cònsecrator"), profile, RETAIL.media, NOW).background, null);
 });
+
+test("primaryProfessions lists the primary professions in the API's order", () => {
+  assert.deepEqual(primaryProfessions(FOREVER.professions), [
+    { id: 165, name: "Leatherworking" },
+    { id: 393, name: "Skinning" },
+  ]);
+  assert.deepEqual(primaryProfessions(RETAIL.professions).map((p) => p.name), ["Engineering", "Blacksmithing"]);
+});
+
+test("primaryProfessions is empty when there is no professions response", () => {
+  assert.deepEqual(primaryProfessions(null), []);
+});
+
+test("summary carries the professions it is given", () => {
+  const c = byKey("retail:us:barthilas:cònsecrator");
+  const professions = [{ id: 164, name: "Blacksmithing" }];
+  assert.deepEqual(buildSummary(c, RETAIL.profile, RETAIL.media, NOW, null, null, professions).professions, professions);
+  assert.deepEqual(buildSummary(c, RETAIL.profile, RETAIL.media, NOW).professions, []);
+});
+

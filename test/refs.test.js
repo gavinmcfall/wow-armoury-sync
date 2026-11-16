@@ -133,3 +133,83 @@ test("portrait falls back to the cached frames when the render server fails", as
 
   assert.deepEqual(await refs.portrait(RENDER), FRAMES);
 });
+
+// A small faction tree: Classic holds a nested header (Horde) and a faction;
+// Midnight holds one faction; Darkmoon Faire is a root that isn't a header.
+const FACTIONS = {
+  index: { root_factions: [{ id: 1, name: "Classic" }, { id: 2, name: "Midnight" }, { id: 3, name: "Darkmoon Faire" }] },
+  1: { id: 1, name: "Classic", is_header: true, factions: [{ id: 10, name: "Horde" }, { id: 11, name: "Argent Dawn" }] },
+  10: { id: 10, name: "Horde", is_header: true, factions: [{ id: 100, name: "Orgrimmar" }] },
+  11: { id: 11, name: "Argent Dawn" },
+  100: { id: 100, name: "Orgrimmar" },
+  2: { id: 2, name: "Midnight", is_header: true, factions: [{ id: 20, name: "Amani Tribe" }] },
+  20: { id: 20, name: "Amani Tribe" },
+  3: { id: 3, name: "Darkmoon Faire" },
+};
+const GROUPS = { order: ["Classic", "Midnight"], byFaction: { 10: "Classic", 11: "Classic", 100: "Classic", 20: "Midnight" } };
+const GROUPS_KEY = "ref:static-us:faction-groups";
+const DAY = 24 * 60 * 60 * 1000;
+const T0 = Date.parse("2026-11-16T14:17:00.000Z");
+
+function factionRoute(path) {
+  if (path === "/data/wow/reputation-faction/index") return [200, FACTIONS.index];
+  const m = path.match(/^\/data\/wow\/reputation-faction\/(\d+)$/);
+  return m && FACTIONS[m[1]] ? [200, FACTIONS[m[1]]] : [404, undefined];
+}
+
+test("factionGroups walks the faction tree and caches which header each faction is under", async () => {
+  const kv = fakeKv();
+  const refs = createRefs({ client: client(fakeFetch(factionRoute)), kv, now: () => T0 });
+
+  assert.deepEqual(await refs.factionGroups(NS), GROUPS);
+  assert.deepEqual(kv.json(GROUPS_KEY), { builtAt: T0, ...GROUPS });
+  // The index, three roots, and the four factions under the two headers.
+  assert.deepEqual(refs.stats(), { hits: 0, fetched: 8, skipped: 0 });
+});
+
+test("factionGroups uses a cached tree younger than 30 days without calling the API", async () => {
+  const kv = fakeKv({ [GROUPS_KEY]: { builtAt: T0 - 29 * DAY, ...GROUPS } });
+  const fetchImpl = fakeFetch(factionRoute);
+  const refs = createRefs({ client: client(fetchImpl), kv, now: () => T0 });
+
+  assert.deepEqual(await refs.factionGroups(NS), GROUPS);
+  assert.deepEqual(fetchImpl.calls, []);
+  assert.deepEqual(refs.stats(), { hits: 1, fetched: 0, skipped: 0 });
+});
+
+test("factionGroups walks the tree again once the cached one is 30 days old", async () => {
+  const stale = { builtAt: T0 - 30 * DAY, order: ["Classic"], byFaction: { 11: "Classic" } };
+  const kv = fakeKv({ [GROUPS_KEY]: stale });
+  const refs = createRefs({ client: client(fakeFetch(factionRoute)), kv, now: () => T0 });
+
+  assert.deepEqual(await refs.factionGroups(NS), GROUPS);
+  assert.equal(kv.json(GROUPS_KEY).builtAt, T0);
+});
+
+test("factionGroups keeps the old tree when a request fails during the walk", async () => {
+  const stale = { builtAt: T0 - 40 * DAY, order: ["Classic"], byFaction: { 11: "Classic" } };
+  const kv = fakeKv({ [GROUPS_KEY]: stale });
+  const failing = (path) => (path.endsWith("/100") ? [503, undefined] : factionRoute(path));
+  const refs = createRefs({ client: client(fakeFetch(failing)), kv, now: () => T0 });
+
+  assert.deepEqual(await refs.factionGroups(NS), { order: ["Classic"], byFaction: { 11: "Classic" } });
+  assert.deepEqual(kv.json(GROUPS_KEY), stale);
+});
+
+test("factionGroups returns null when the walk fails and nothing is cached", async () => {
+  const kv = fakeKv();
+  const refs = createRefs({ client: client(fakeFetch(() => [503, undefined])), kv, now: () => T0 });
+
+  assert.equal(await refs.factionGroups(NS), null);
+  assert.equal(kv.store.size, 0);
+});
+
+test("factionGroups stops a walk that would pass the lookup cap and keeps nothing from it", async () => {
+  const kv = fakeKv();
+  const fetchImpl = fakeFetch(factionRoute);
+  const refs = createRefs({ client: client(fetchImpl), kv, maxNewLookups: 5, now: () => T0 });
+
+  assert.equal(await refs.factionGroups(NS), null);
+  assert.equal(kv.store.size, 0);
+  assert.equal(refs.stats().skipped, 1);
+});

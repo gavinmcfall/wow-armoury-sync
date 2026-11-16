@@ -5,13 +5,15 @@
 // KV layout (schema version 1):
 //   index                         schemaVersion, updatedAt, one summary per character
 //   view:v1:{key}:character       the Character tab view for one character
+//   view:v1:{key}:reputation      the Reputation tab view
 //   ref:{namespace}:…             cached reference data (see refs.js)
 //
 // A failed run never wipes good data: if the profile fetch fails, the
 // previous view stays and the previous summary is kept, marked "error".
 import { createRefs } from "./refs.js";
 import { buildCharacterView, foreverActiveSpec } from "./views/character.js";
-import { buildSummary, notListedSummary } from "./views/summary.js";
+import { buildReputationView } from "./views/reputation.js";
+import { buildSummary, notListedSummary, primaryProfessions } from "./views/summary.js";
 
 export const SCHEMA_VERSION = 1;
 
@@ -22,6 +24,8 @@ const SECTIONS = {
   media: "character-media",
   pvp: "pvp-summary",
   raids: "encounters/raids",
+  reputations: "reputations",
+  professions: "professions",
 };
 const RETAIL_ONLY = { mythic: "mythic-keystone-profile" };
 // Sections the Character view can't do without. A 404 on one means the API
@@ -76,9 +80,18 @@ async function syncCharacter({ client, kv, refs, character, previous, now }) {
     const fetchedAt = now();
     const view = buildCharacterView({ game: character.game, fetchedAt, ...sections, itemIcons, classSpecs });
     await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:character`, JSON.stringify(view));
+    // The other tabs' views are written only when their own data came back
+    // cleanly; otherwise the previous one stays.
+    const failedField = (field) => failed.some((f) => f.field === field);
+    if (!failedField("reputations")) {
+      const groups = await refs.factionGroups(ns).catch(() => null);
+      const reputation = buildReputationView({ game: character.game, fetchedAt, reputations: sections.reputations, groups });
+      await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:reputation`, JSON.stringify(reputation));
+    }
+    const professions = failedField("professions") ? (previous?.professions ?? []) : primaryProfessions(sections.professions);
     const spec = character.game === "forever" ? foreverActiveSpec(sections.specializations) : null;
     const portrait = await measurePortrait(refs, view.render);
-    return buildSummary(character, profile.data, sections.media, fetchedAt, spec, portrait);
+    return buildSummary(character, profile.data, sections.media, fetchedAt, spec, portrait, professions);
   } catch (err) {
     return keep(`sync failed: ${err.message}`);
   }

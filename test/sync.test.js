@@ -24,6 +24,8 @@ const ENDPOINTS = {
   "/pvp-summary": "pvp",
   "/mythic-keystone-profile": "mythic",
   "/encounters/raids": "raids",
+  "/reputations": "reputations",
+  "/professions": "professions",
 };
 
 // Serves the fixtures for both characters, item icons and the Paladin class.
@@ -158,7 +160,8 @@ test("returns ref lookup stats alongside the summaries", async () => {
   const kv = fakeKv();
   const result = await run(kv);
   assert.equal(result.summaries.length, 1);
-  assert.equal(result.refs.fetched, 13);
+  // 12 item icons and the faction tree's index, which the fixtures don't serve.
+  assert.equal(result.refs.fetched, 14);
   assert.equal(result.refs.skipped, 0);
 });
 
@@ -190,3 +193,64 @@ test("a render that can't be fetched leaves the portrait null and the character 
   assert.equal(s.status, "ok");
   assert.equal(s.portrait, null);
 });
+
+const REP_KEY = "view:v1:forever:us:recurve-ravenholt:reputation";
+
+test("writes a reputation view for a listed character", async () => {
+  const kv = fakeKv();
+  await run(kv);
+
+  const view = kv.json(REP_KEY);
+  assert.equal(view.schemaVersion, 1);
+  assert.equal(view.fetchedAt, NOW);
+  // The fixtures serve no faction tree, so every faction is in Other.
+  assert.deepEqual(view.groups.map((g) => [g.name, g.factions.length]), [["Other", 9]]);
+});
+
+test("groups reputations by the faction tree", async () => {
+  const kv = fakeKv();
+  const tree = (path) => {
+    if (path === "/data/wow/reputation-faction/index") return [200, { root_factions: [{ id: 469, name: "Alliance" }] }];
+    if (path === "/data/wow/reputation-faction/469") return [200, { id: 469, name: "Alliance", is_header: true, factions: [{ id: 47 }, { id: 72 }] }];
+    if (path === "/data/wow/reputation-faction/47") return [200, { id: 47, name: "Ironforge" }];
+    if (path === "/data/wow/reputation-faction/72") return [200, { id: 72, name: "Stormwind" }];
+    return fixtureRoute(path);
+  };
+  await run(kv, tree);
+
+  assert.deepEqual(kv.json(REP_KEY).groups.map((g) => [g.name, g.factions.length]), [["Alliance", 2], ["Other", 7]]);
+});
+
+test("a reputations server error keeps the previous reputation view", async () => {
+  const oldView = { schemaVersion: 1, fetchedAt: "2026-11-15T14:17:00.000Z", groups: [] };
+  const kv = fakeKv({ [REP_KEY]: oldView });
+  await run(kv, (path) => (path.endsWith("/reputations") ? [503, undefined] : fixtureRoute(path)));
+
+  assert.deepEqual(kv.json(REP_KEY), oldView);
+  assert.equal(kv.json("index").characters[0].status, "ok");
+});
+
+test("the summary lists the character's primary professions", async () => {
+  const kv = fakeKv();
+  await run(kv);
+  assert.deepEqual(kv.json("index").characters[0].professions, [
+    { id: 165, name: "Leatherworking" },
+    { id: 393, name: "Skinning" },
+  ]);
+});
+
+test("a professions server error keeps the previous professions", async () => {
+  const kv = fakeKv();
+  await run(kv);
+  await run(kv, (path) => (path.endsWith("/professions") ? [503, undefined] : fixtureRoute(path)));
+  assert.deepEqual(kv.json("index").characters[0].professions.map((p) => p.name), ["Leatherworking", "Skinning"]);
+});
+
+test("the faction tree is walked once per run, not once per character", async () => {
+  const kv = fakeKv();
+  const fetchImpl = fakeFetch(fixtureRoute);
+  const both = [RECURVE, { ...RECURVE, key: "forever:us:recurve-copy" }];
+  await syncAll({ client: client(fetchImpl), kv, characters: both, now: () => NOW, fetchImage: noRenders });
+  assert.equal(fetchImpl.calls.filter((p) => p === "/data/wow/reputation-faction/index").length, 1);
+});
+

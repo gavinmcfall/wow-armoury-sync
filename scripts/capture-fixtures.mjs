@@ -19,6 +19,8 @@ const SECTIONS = {
   pvp: "pvp-summary",
   mythic: "mythic-keystone-profile",
   raids: "encounters/raids",
+  reputations: "reputations",
+  professions: "professions",
 };
 
 const CHARACTERS = [
@@ -51,6 +53,10 @@ for (const c of CHARACTERS) {
   // Keep the three newest expansions: the view only uses the newest.
   if (out.raids?.expansions) {
     out.raids.expansions = [...out.raids.expansions].sort((a, b) => b.expansion.id - a.expansion.id).slice(0, 3);
+  }
+  // Recipe lists are long and nothing reads them.
+  for (const prof of [...(out.professions?.primaries ?? []), ...(out.professions?.secondaries ?? [])]) {
+    for (const tier of prof.tiers ?? []) delete tier.known_recipes;
   }
   const json = JSON.stringify(strip(out), null, 1);
   await writeFile(new URL(`../test/fixtures/${c.file}`, import.meta.url), json);

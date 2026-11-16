@@ -24,10 +24,18 @@ export function classBackground(classId) {
   return slug ? `https://render.worldofwarcraft.com/profile-backgrounds/v2/armory_bg_class_${slug}.jpg` : null;
 }
 
+// The character's primary professions, as { id, name }, in the API's order.
+// Skill levels aren't included: retail reports one per expansion, and their
+// ids don't say which expansion is newest.
+export function primaryProfessions(professions) {
+  return (professions?.primaries ?? []).map((p) => ({ id: p.profession.id, name: p.profession.name }));
+}
+
 // `spec` overrides the profile's active spec: Forever profiles report none,
 // so the sync derives it from talent points and passes it in. `portrait` is
 // { url, focus, figure } for the full render (see portrait.js), or null.
-export function buildSummary(character, p, media, fetchedAt, spec = null, portrait = null) {
+// `professions` is primaryProfessions() of the professions response.
+export function buildSummary(character, p, media, fetchedAt, spec = null, portrait = null, professions = []) {
   return {
     key: character.key,
     game: character.game,
@@ -49,6 +57,7 @@ export function buildSummary(character, p, media, fetchedAt, spec = null, portra
     inset: mediaAsset(media, "inset") ?? mediaAsset(media, "avatar"),
     portrait,
     background: classBackground(p.character_class?.id),
+    professions,
     lastSuccessAt: fetchedAt,
   };
 }

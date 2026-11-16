@@ -16,7 +16,7 @@ flowchart LR
 
 1. Cloudflare wakes the Worker on a schedule. There's no public URL: any web request gets a 404.
 2. The Worker gets an app token from Battle.net using the client credentials flow, so no player login is involved.
-3. For each character it fetches the profile, then fetches these sections in parallel: equipment, statistics, specialisations, character media, PvP summary, raid progress and (retail only) Mythic+ profile.
+3. For each character it fetches the profile, then fetches these sections in parallel: equipment, statistics, specialisations, character media, PvP summary, raid progress, reputations, professions and (retail only) Mythic+ profile.
 4. It shapes those responses into **views**: small JSON documents holding exactly what an Armory page shows, already formatted. Your site reads a view and renders it, without knowing anything about Blizzard's response formats.
 5. It writes the views to KV, plus an index your site can use to list characters.
 
@@ -28,8 +28,10 @@ A bad night never wipes good data. If Blizzard's API fails for the profile, or f
 | --- | --- |
 | `index` | `schemaVersion`, `updatedAt` and one summary per character (see below) |
 | `view:v1:{key}:character` | The Character view for one character: gear, stats, specs, Mythic+, raids, PvP |
+| `view:v1:{key}:reputation` | The Reputation view: the character's factions, grouped by expansion (retail) or header (Forever) |
 | `ref:{namespace}:item-icon:{itemId}` | An item's icon URL. Icons never change, so each is fetched once and reused. |
 | `ref:{namespace}:class-specs:{classId}` | A class's specialisation names, in Blizzard's order |
+| `ref:{namespace}:faction-groups` | Which top-level header (expansion, on retail) each reputation faction sits under, with when it was built. Rebuilt every 30 days. |
 | `ref:portrait:{render path}` | Where the character stands in its render (`focus` and `figure`), with the image's ETag. Re-measured only when the render changes, or when the entry predates `figure`. |
 
 A character's `{key}` is `retail:{region}:{realm}:{name}` or `forever:{region}:{name}-{surname}`.
@@ -64,6 +66,7 @@ Each entry in `index.characters` looks like this:
     "figure": { "x": 0.5019, "top": 0.331, "height": 0.4947 }
   },
   "background": "https://render.worldofwarcraft.com/profile-backgrounds/v2/armory_bg_class_demon_hunter.jpg",
+  "professions": [{ "id": 202, "name": "Engineering" }, { "id": 164, "name": "Blacksmithing" }],
   "lastSuccessAt": "2026-11-16T14:17:00.000Z"
 }
 ```
@@ -73,6 +76,7 @@ Each entry in `index.characters` looks like this:
 - `inset` is Blizzard's small (230×116) portrait. Forever characters have none, so it falls back to the 84×84 avatar.
 - `portrait` frames the character in its full 1600×1200 transparent render, for a sharper card image. Blizzard renders every character with the same camera, so a tall race's head sits much higher in the image than a short race's. The sync measures each render: `focus.x` is the figure's horizontal centre, and `focus.top` and `focus.height` mark a window over the head and upper body, all as fractions of the image. To show it, scale the image so `focus.height` fills your frame, shift it up by `focus.top`, and centre it on `focus.x`. `figure` is the same kind of window over the whole body, with a small margin above the head and below the feet, for showing the character at full height. `portrait` is `null` when the render couldn't be read; use `inset` then.
 - `background` is the scene Blizzard's Armory stands each class in (2400×1860, dark at the top). It is `null` for a class the sync doesn't know.
+- `professions` lists the character's primary professions in Blizzard's order, or is empty. Skill levels aren't included: retail reports one per expansion and doesn't say which is newest. If the professions call fails, the previous list is kept.
 
 `status` is one of:
 
@@ -117,6 +121,32 @@ A trimmed example:
 - **`raids`:** progress for the newest expansion the character has raided in, or `null`.
 
 A section the API answers with 404 (it has nothing for this character) becomes empty: an empty list, or `null`. A server error on one of the optional sections (PvP, raids, Mythic+) does the same; a server error on any other section keeps the previous view, as described above.
+
+### The Reputation view
+
+```json
+{
+  "schemaVersion": 1,
+  "game": "retail",
+  "fetchedAt": "2026-11-16T14:17:00.000Z",
+  "groups": [{
+    "name": "Dragonflight",
+    "factions": [
+      { "id": 2503, "name": "Maruuk Centaur", "standing": "Renown 23", "value": 513, "max": 2500, "renown": 23, "paragon": null }
+    ]
+  }, {
+    "name": "Legion",
+    "factions": [
+      { "id": 1859, "name": "The Nightfallen", "standing": "Exalted", "value": 0, "max": 0, "renown": null, "paragon": { "value": 9137, "max": 10000 } }
+    ]
+  }]
+}
+```
+
+- **`groups`:** on retail, one per expansion, newest first, as Blizzard orders them. On Forever, one per faction header Blizzard uses (such as "Alliance"). Factions outside every header go in a last group named `Other`, as does every faction if the faction tree couldn't be fetched. Factions are sorted by name within a group, and a group with none of the character's factions is left out.
+- **`standing`:** Blizzard's display name for the standing. `value` of `max` is progress through it; at the top standing (Exalted) both are 0. `renown` is the renown level for renown factions, otherwise `null`. `paragon` is progress towards the next paragon reward, or `null`.
+
+The view is written only when the reputations call succeeds (or answers 404, meaning no reputations); a server error keeps the previous one.
 
 ### Schema versions
 
@@ -248,6 +278,7 @@ Elsewhere, read KV through the [Cloudflare REST API](https://developers.cloudfla
 | `src/sync.js` | The sync: fetching, error handling, KV writes |
 | `src/views/character.js` | Builds the Character view from raw API responses |
 | `src/views/summary.js` | Builds the index summaries |
+| `src/views/reputation.js` | Builds the Reputation view |
 | `src/refs.js` | The reference-data cache (`ref:` keys) |
 | `src/portrait.js` | Finds where the character stands in its render, for portrait framing |
 | `src/blizzard.js` | Battle.net API client: app token, retry once on rate limits or server errors |
@@ -258,7 +289,7 @@ Elsewhere, read KV through the [Cloudflare REST API](https://developers.cloudfla
 
 ## Notes
 
-- **Limits:** each character costs about 8 API calls and one request for its render, plus one call per item icon (and per class, for retail) the first time it's seen. Measuring a render takes roughly 50 ms of CPU, and only happens when the render has changed; that needs the Workers Paid plan's CPU allowance, not the free plan's 10 ms. New reference lookups are capped at 2,000 a night; anything over the cap is fetched on a later night. A few dozen characters fits comfortably within Cloudflare's and Blizzard's limits.
+- **Limits:** each character costs about 10 API calls and one request for its render, plus one call per item icon (and per class, for retail) the first time it's seen. Grouping reputations walks Blizzard's faction tree, a call per faction (about 300 on retail, 60 on Forever), once every 30 days. Measuring a render takes roughly 50 ms of CPU, and only happens when the render has changed; that needs the Workers Paid plan's CPU allowance, not the free plan's 10 ms. New reference lookups are capped at 2,000 a night; anything over the cap is fetched on a later night. A few dozen characters fits comfortably within Cloudflare's and Blizzard's limits.
 - **Blizzard's terms:** data from the Battle.net API is covered by [Blizzard's Developer API Terms of Use](https://www.blizzard.com/legal/a2989b50-5f16-43b1-abec-2ae17cc09dd6/blizzard-developer-api-terms-of-use).
 - This isn't affiliated with or endorsed by Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment.
 

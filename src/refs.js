@@ -8,9 +8,20 @@ import { measureFigure } from "./portrait.js";
 // season's worth of new gear, stays inside the Worker's subrequest limit.
 // A lookup over the cap returns null; it is fetched on a later night.
 
+// The faction tree changes only when Blizzard adds factions in a patch.
+const FACTION_TREE_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+const FACTION_CHUNK = 20;
+
 // `fetchImage` fetches Blizzard's render images, which need no API token.
-export function createRefs({ client, kv, maxNewLookups = 2000, fetchImage = (...args) => fetch(...args) }) {
+export function createRefs({
+  client,
+  kv,
+  maxNewLookups = 2000,
+  fetchImage = (...args) => fetch(...args),
+  now = () => Date.now(),
+}) {
   const counts = { hits: 0, fetched: 0, skipped: 0 };
+  const factionTrees = new Map();
 
   // Reads key from KV; on a miss, and while under the cap, calls load() and
   // caches a non-null result. Strings are stored as-is, anything else as JSON.
@@ -28,6 +39,51 @@ export function createRefs({ client, kv, maxNewLookups = 2000, fetchImage = (...
     const value = await load();
     if (value !== null) await kv.put(key, asJson ? JSON.stringify(value) : value);
     return value;
+  }
+
+  // Fetches faction records a level at a time. Returns them in order, or
+  // null when any request fails or the batch would pass the cap.
+  async function fetchFactions(ns, ids) {
+    if (counts.fetched + ids.length > maxNewLookups) {
+      counts.skipped++;
+      return null;
+    }
+    counts.fetched += ids.length;
+    // In chunks, to stay under Blizzard's 100 requests per second.
+    const records = [];
+    for (let i = 0; i < ids.length; i += FACTION_CHUNK) {
+      const chunk = ids.slice(i, i + FACTION_CHUNK);
+      const results = await Promise.all(chunk.map((id) => client.get(`/data/wow/reputation-faction/${id}`, ns)));
+      if (results.some((r) => r.status !== 200)) return null;
+      records.push(...results.map((r) => r.data));
+    }
+    return records;
+  }
+
+  async function walkFactionTree(ns) {
+    const [index] = (await fetchFactions(ns, ["index"])) ?? [];
+    if (!index) return null;
+    const roots = await fetchFactions(ns, (index.root_factions ?? []).map((f) => f.id));
+    if (!roots) return null;
+    const order = [];
+    const byFaction = {};
+    // Children waiting to be fetched, each with the header they sit under.
+    let level = [];
+    for (const root of roots.filter((r) => r.is_header)) {
+      order.push(root.name);
+      level.push(...(root.factions ?? []).map((f) => ({ id: f.id, header: root.name })));
+    }
+    while (level.length > 0) {
+      const records = await fetchFactions(ns, level.map((c) => c.id));
+      if (!records) return null;
+      const next = [];
+      records.forEach((record, i) => {
+        byFaction[record.id] = level[i].header;
+        if (record.is_header) next.push(...(record.factions ?? []).map((f) => ({ id: f.id, header: level[i].header })));
+      });
+      level = next;
+    }
+    return { order, byFaction };
   }
 
   return {
@@ -69,8 +125,34 @@ export function createRefs({ client, kv, maxNewLookups = 2000, fetchImage = (...
       if (measured) await kv.put(key, JSON.stringify({ etag: res.headers.get("ETag"), ...measured }));
       return measured;
     },
+    // Which top-level header each faction sits under: { order, byFaction }.
+    // order lists the headers as the API does (retail: newest expansion
+    // first); byFaction maps faction id to header name. Walking the tree is a
+    // request per faction, so the result is cached for 30 days. A walk that
+    // fails or would pass the lookup cap keeps nothing and returns the
+    // previous tree, or null.
+    factionGroups(ns) {
+      // Once per namespace per run: every character asks, and a failed walk
+      // must not be repeated for each of them.
+      if (!factionTrees.has(ns)) factionTrees.set(ns, loadFactionGroups(ns));
+      return factionTrees.get(ns);
+    },
     stats() {
       return { ...counts };
     },
   };
+
+  async function loadFactionGroups(ns) {
+    const key = `ref:${ns}:faction-groups`;
+    const cached = await kv.get(key, "json");
+    const previous = cached ? { order: cached.order, byFaction: cached.byFaction } : null;
+    if (cached && now() - cached.builtAt < FACTION_TREE_MAX_AGE_MS) {
+      counts.hits++;
+      return previous;
+    }
+    const walked = await walkFactionTree(ns);
+    if (!walked) return previous;
+    await kv.put(key, JSON.stringify({ builtAt: now(), ...walked }));
+    return walked;
+  }
 }
