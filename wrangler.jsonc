@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nerdz-armory-sync",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-01",
+  "account_id": "4214879ee537a4840de659aafb7bf201",
+  // No public route: the Worker only runs on its schedule.
+  "workers_dev": false,
+  // Crons are in UTC. 14:17 UTC is 03:17 in New Zealand during daylight
+  // saving (02:17 outside it).
+  "triggers": {
+    "crons": ["17 14 * * *"]
+  },
+  "kv_namespaces": [
+    {
+      "binding": "WOW_ARMORY",
+      "id": "3f1c3a246ead46b6a6bddeb7db8b8455",
+      // Local `wrangler dev` reads and writes the real namespace.
+      "remote": true
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}
