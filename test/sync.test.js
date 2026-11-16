@@ -385,3 +385,47 @@ for (const endpoint of ["/encounters/raids", "/encounters/dungeons"]) {
     assert.equal(kv.json("index").characters[0].status, "ok");
   });
 }
+
+const PVP_KEY = "view:v1:retail:us:barthilas:cònsecrator:pvp";
+const BRACKET_BASE = "/profile/wow/character/barthilas/cònsecrator/pvp-bracket/";
+
+test("writes a Player vs Player view for a listed character", async () => {
+  const kv = fakeKv();
+  await run(kv, fixtureRoute, [CONSECRATOR]);
+
+  const view = kv.json(PVP_KEY);
+  assert.equal(view.schemaVersion, 1);
+  assert.equal(view.fetchedAt, NOW);
+  assert.equal(view.honorableKills, RETAIL.pvp.honorable_kills);
+  assert.equal(view.battlegrounds.length, RETAIL.pvp.pvp_map_statistics.length);
+  assert.ok(view.brackets.every((b) => b.rating === null));
+});
+
+// Cònsecrator's summary, linking to a 3v3 bracket.
+const withBracket = (bracketRoute) => (path) => {
+  if (path === "/profile/wow/character/barthilas/cònsecrator/pvp-summary") {
+    return [200, { ...RETAIL.pvp, brackets: [{ href: `https://us.api.blizzard.com${encodeURI(BRACKET_BASE)}3v3?namespace=profile-us` }] }];
+  }
+  if (path === `${BRACKET_BASE}3v3`) return bracketRoute();
+  return fixtureRoute(path);
+};
+
+test("ratings come from the brackets the PvP summary links to", async () => {
+  const kv = fakeKv();
+  await run(kv, withBracket(() => [200, { rating: 1650 }]), [CONSECRATOR]);
+
+  assert.equal(kv.json(PVP_KEY).brackets.find((b) => b.id === "3v3").rating, 1650);
+});
+
+test("a server error on the PvP summary or a bracket keeps the previous PvP view", async () => {
+  const oldView = { schemaVersion: 1, fetchedAt: "2026-11-15T14:17:00.000Z", brackets: [], battlegrounds: [] };
+  for (const route of [
+    (path) => (path.endsWith("/pvp-summary") ? [503, undefined] : fixtureRoute(path)),
+    withBracket(() => [503, undefined]),
+  ]) {
+    const kv = fakeKv({ [PVP_KEY]: oldView });
+    await run(kv, route, [CONSECRATOR]);
+    assert.deepEqual(kv.json(PVP_KEY), oldView);
+    assert.equal(kv.json("index").characters[0].status, "ok");
+  }
+});

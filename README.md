@@ -31,6 +31,7 @@ A bad night never wipes good data. If Blizzard's API fails for the profile, or f
 | `view:v1:{key}:reputation` | The Reputation view: the character's factions, grouped by expansion (retail) or header (Forever) |
 | `view:v1:{key}:achievements` | The Achievements view: totals, progress per top-level category, the newest completions, and every completed achievement |
 | `view:v1:{key}:collections` | The Collections view: mounts, pets, toys and heirlooms, each with name and icon |
+| `view:v1:{key}:pvp` | The Player vs Player view: honour level or rank, honourable kills, rated brackets (retail) and battleground records |
 | `view:v1:{key}:pve` | The Dungeons & Raids view: Mythic+ rating (retail), and raids and dungeons by expansion with kills per difficulty |
 | `ref:{namespace}:item-icon:{itemId}` | An item's icon URL. Icons never change, so each is fetched once and reused. |
 | `ref:{namespace}:class-specs:{classId}` | A class's specialisation names, in Blizzard's order |
@@ -230,6 +231,27 @@ The view is written only when all four collection calls succeed (or answer 404);
 
 The view is written only when the Mythic+, raid and dungeon calls all succeed (or answer 404); a server error on any keeps the previous one.
 
+### The Player vs Player view
+
+```json
+{
+  "schemaVersion": 1,
+  "game": "retail",
+  "fetchedAt": "2026-11-16T14:17:00.000Z",
+  "honorLevel": 2,
+  "honorableKills": 5103,
+  "rank": null,
+  "brackets": [{ "id": "3v3", "name": "3v3 Arena", "rating": 1650 }],
+  "battlegrounds": [{ "name": "Alterac Valley", "played": 6, "won": 3, "lost": 3 }]
+}
+```
+
+- **`honorLevel`** is retail only and **`rank`** Forever only; the other is `null`.
+- **`brackets`:** on retail, always the five rated brackets in order (2v2, 3v3, Rated Battlegrounds, Solo Shuffle, Battleground Blitz), `rating` `null` where the character has none. The PvP summary links only to brackets the character has played, and the sync fetches each of those (one call each). Solo Shuffle and Blitz are rated per spec, so the bracket takes the best spec's rating. Forever has no rated brackets: `[]`.
+- **`battlegrounds`:** the character's record on each battleground map, most played first.
+
+The view is written only when the summary and every linked bracket succeed (or answer 404); a server error on any keeps the previous one.
+
 ### Schema versions
 
 `index.schemaVersion` is the version of the views the sync writes. Changes to a view's shape get a new version number in the key (`view:v2:…`). When that happens, the sync writes the old and new versions side by side for a while, so a site can move over at its own pace. Fields are only ever added to the index, never removed or renamed.
@@ -364,6 +386,7 @@ Elsewhere, read KV through the [Cloudflare REST API](https://developers.cloudfla
 | `src/views/achievements.js` | Builds the Achievements view |
 | `src/views/collections.js` | Builds the Collections view |
 | `src/views/pve.js` | Builds the Dungeons & Raids view |
+| `src/views/pvp.js` | Builds the Player vs Player view |
 | `src/refs.js` | The reference-data cache (`ref:` keys) |
 | `src/portrait.js` | Finds where the character stands in its render, for portrait framing |
 | `src/blizzard.js` | Battle.net API client: app token, retry once on rate limits or server errors |
@@ -374,7 +397,7 @@ Elsewhere, read KV through the [Cloudflare REST API](https://developers.cloudfla
 
 ## Notes
 
-- **Limits:** each character costs about 16 API calls and one request for its render, plus one call per item icon (and per class, for retail) the first time it's seen. Grouping reputations walks Blizzard's faction tree, a call per faction (about 300 on retail, 60 on Forever), once every 30 days. Achievement categories take about 17 calls on retail and 8 on Forever, also every 30 days, and each of the 20 newest completions costs two calls the first time it is seen. Each mount, pet species, toy and heirloom costs one lookup (up to two calls) the first time it is seen; retail collections are account-wide, so about 650 lookups for the first retail character and few after. Measuring a render takes roughly 50 ms of CPU, and only happens when the render has changed; that needs the Workers Paid plan's CPU allowance, not the free plan's 10 ms. New reference lookups are capped at 2,000 a night; anything over the cap is fetched on a later night. A few dozen characters fits comfortably within Cloudflare's and Blizzard's limits.
+- **Limits:** each character costs about 16 API calls (plus one per rated PvP bracket it has played) and one request for its render, plus one call per item icon (and per class, for retail) the first time it's seen. Grouping reputations walks Blizzard's faction tree, a call per faction (about 300 on retail, 60 on Forever), once every 30 days. Achievement categories take about 17 calls on retail and 8 on Forever, also every 30 days, and each of the 20 newest completions costs two calls the first time it is seen. Each mount, pet species, toy and heirloom costs one lookup (up to two calls) the first time it is seen; retail collections are account-wide, so about 650 lookups for the first retail character and few after. Measuring a render takes roughly 50 ms of CPU, and only happens when the render has changed; that needs the Workers Paid plan's CPU allowance, not the free plan's 10 ms. New reference lookups are capped at 2,000 a night; anything over the cap is fetched on a later night. A few dozen characters fits comfortably within Cloudflare's and Blizzard's limits.
 - **Blizzard's terms:** data from the Battle.net API is covered by [Blizzard's Developer API Terms of Use](https://www.blizzard.com/legal/a2989b50-5f16-43b1-abec-2ae17cc09dd6/blizzard-developer-api-terms-of-use).
 - This isn't affiliated with or endorsed by Blizzard Entertainment. World of Warcraft is a trademark of Blizzard Entertainment.
 

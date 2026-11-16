@@ -9,6 +9,7 @@
 //   view:v1:{key}:achievements    the Achievements tab view
 //   view:v1:{key}:collections     the Collections tab view
 //   view:v1:{key}:pve             the Dungeons & Raids tab view
+//   view:v1:{key}:pvp             the Player vs Player tab view
 //   ref:{namespace}:…             cached reference data (see refs.js)
 //
 // A failed run never wipes good data: if the profile fetch fails, the
@@ -18,6 +19,7 @@ import { buildCharacterView, foreverActiveSpec } from "./views/character.js";
 import { buildCollectionsView, collectionIds } from "./views/collections.js";
 import { buildAchievementsView, recentIds } from "./views/achievements.js";
 import { buildPveView } from "./views/pve.js";
+import { bracketPaths, buildPvpView } from "./views/pvp.js";
 import { buildReputationView } from "./views/reputation.js";
 import { buildSummary, notListedSummary, primaryProfessions } from "./views/summary.js";
 
@@ -124,6 +126,13 @@ async function syncCharacter({ client, kv, refs, character, previous, now }) {
       const pve = buildPveView({ game: character.game, fetchedAt, ...pick(sections, PVE) });
       await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:pve`, JSON.stringify(pve));
     }
+    if (!failedField("pvp")) {
+      const brackets = await fetchBrackets(client, base, character.profileNamespace, sections.pvp);
+      if (brackets) {
+        const pvp = buildPvpView({ game: character.game, fetchedAt, summary: sections.pvp, brackets });
+        await kv.put(`view:v${SCHEMA_VERSION}:${character.key}:pvp`, JSON.stringify(pvp));
+      }
+    }
     const professions = failedField("professions") ? (previous?.professions ?? []) : primaryProfessions(sections.professions);
     const spec = character.game === "forever" ? foreverActiveSpec(sections.specializations) : null;
     const portrait = await measurePortrait(refs, view.render);
@@ -146,6 +155,17 @@ async function fetchSections(client, base, namespace, endpoints) {
     sections: Object.fromEntries(results.map((r) => [r.field, r.data])),
     failed: results.filter((r) => r.status !== 200 && r.status !== 404),
   };
+}
+
+// { segment: response } for each rated bracket the PvP summary links to
+// (most characters have none), or null if any answered with a server
+// error, so the previous view stays.
+async function fetchBrackets(client, base, namespace, summary) {
+  const results = await Promise.all(
+    bracketPaths(summary).map(async (segment) => [segment, await client.get(`${base}/pvp-bracket/${encodeURIComponent(segment)}`, namespace)]),
+  );
+  if (results.some(([, res]) => res.status !== 200 && res.status !== 404)) return null;
+  return Object.fromEntries(results.filter(([, res]) => res.status === 200).map(([segment, res]) => [segment, res.data]));
 }
 
 // { url, focus, figure } for the character's render, or null. Framing is a
